@@ -1,0 +1,6 @@
+@InnerChildApi_HostAddress = http://localhost:5271
+
+GET {{InnerChildApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

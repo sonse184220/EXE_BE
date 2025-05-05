@@ -1,0 +1,39 @@
+using InnerChildApi;
+using Microsoft.EntityFrameworkCore;
+using Repository;
+using Repository.DataSeeder;
+using Repository.DBContext;
+using Repository.SeedData;
+using Service;
+
+var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddControllers();
+
+builder.Services.AddApplicationConfiguration(builder.Configuration);
+builder.Services.AddServices();
+builder.Services.AddRepositories();
+
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+var app = builder.Build();
+//data seeding
+using (var scope = app.Services.CreateScope()) {
+    var services = scope.ServiceProvider;
+    DataSeeder.SeedAll(services);
+};
+
+app.UseCors("AllowAll");
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();

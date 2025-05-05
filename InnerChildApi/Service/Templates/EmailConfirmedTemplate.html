@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Confirmed - Inner Child App</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Poppins:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f5f2;
+            color: #5a5a5a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 650px;
+            background: linear-gradient(to bottom right, #ffffff, #f0e9e2);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(166, 151, 150, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .top-pattern {
+            height: 12px;
+            background: linear-gradient(90deg, #a7c4bc 0%, #e6ccb2 50%, #ddb892 100%);
+        }
+        
+        .content {
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .icon-container {
+            width: 120px;
+            height: 120px;
+            background-color: rgba(167, 196, 188, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 30px;
+            border: 2px solid #a7c4bc;
+        }
+        
+        .check-icon {
+            width: 60px;
+            height: 60px;
+            fill: #7d9d94;
+        }
+        
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            color: #5e8b7e;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            color: #7c7c7c;
+        }
+        
+        .highlight {
+            color: #a68a64;
+            font-weight: 500;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(to right, #a7c4bc, #7d9d94);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 5px 15px rgba(167, 196, 188, 0.4);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(167, 196, 188, 0.6);
+        }
+        
+        .decoration {
+            position: absolute;
+            opacity: 0.06;
+        }
+        
+        .circle-1 {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: #ddb892;
+            top: -100px;
+            right: -100px;
+        }
+        
+        .circle-2 {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: #a7c4bc;
+            bottom: -50px;
+            left: -50px;
+        }
+        
+        .line-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(#ddb892 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.1;
+            top: 0;
+            left: 0;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #a68a64;
+            border-top: 1px solid rgba(167, 196, 188, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-pattern"></div>
+        <div class="decoration circle-1"></div>
+        <div class="decoration circle-2"></div>
+        <div class="line-pattern"></div>
+        
+        <div class="content">
+            <div class="icon-container">
+                <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                </svg>
+            </div>
+            
+            <h1>Email Confirmed Successfully!</h1>
+            
+            <p>Thank you for confirming your email address. Your journey of <span class="highlight">self-discovery and healing</span> with Inner Child App begins now.</p>
+            
+            <p>We're here to support you every step of the way as you explore, reflect, and grow. Welcome to our community of healing and mindfulness.</p>
+            
+            <a href="#" class="btn">Continue to Your Account</a>
+        </div>
+        
+        <div class="footer">
+            <p>Inner Child App © 2025 | Your Journey to Healing</p>
+        </div>
+    </div>
+</body>
+</html>
