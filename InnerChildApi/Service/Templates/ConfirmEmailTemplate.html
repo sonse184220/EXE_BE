@@ -1,0 +1,272 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Confirmation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #3FA796, #2C74B3);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 24px;
+            letter-spacing: 0.5px;
+        }
+        
+        .header-image {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px;
+            background-color: white;
+            border-radius: 50%;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header-image img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .content {
+            padding: 35px 30px;
+            background-color: #ffffff;
+        }
+        
+        .greeting {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2C74B3;
+        }
+        
+        p {
+            margin-bottom: 18px;
+            font-size: 16px;
+            color: #444;
+        }
+        
+        .emphasis {
+            font-weight: 500;
+            color: #3FA796;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin: 35px 0;
+        }
+        
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #3FA796, #2C74B3);
+            color: white;
+            text-decoration: none;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(44, 116, 179, 0.3);
+        }
+        
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(44, 116, 179, 0.4);
+        }
+        
+        .health-tips {
+            background-color: #f0f9f8;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            border-left: 4px solid #3FA796;
+        }
+        
+        .health-tips h3 {
+            margin-top: 0;
+            color: #2C74B3;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .health-tips ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        
+        .health-tips li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .health-tips li:last-child {
+            margin-bottom: 0;
+        }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e0e0e0, transparent);
+            margin: 30px 0;
+        }
+        
+        .footer {
+            background-color: #f0f7fa;
+            padding: 25px 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #666666;
+        }
+        
+        .social-icons {
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            display: inline-block;
+            margin: 0 8px;
+            width: 36px;
+            height: 36px;
+            background-color: #2C74B3;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            color: white;
+            font-size: 16px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-2px);
+            background-color: #3FA796;
+        }
+        
+        .footer-links {
+            margin-top: 15px;
+        }
+        
+        .footer-links a {
+            color: #2C74B3;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #3FA796;
+            text-decoration: underline;
+        }
+        
+        @media screen and (max-width: 600px) {
+            .email-container {
+                width: 100%;
+                border-radius: 0;
+            }
+            
+            .content, .header, .footer {
+                padding: 20px 15px;
+            }
+            
+            .button {
+                padding: 12px 25px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <div class="header-image">
+                <img src="https://via.placeholder.com/100" alt="Inner Child Logo">
+            </div>
+            <h1>Inner Child</h1>
+        </div>
+        
+        <div class="content">
+            <div class="greeting">Dear {{UserName}},</div>
+            
+            <p>Thank you for registering an account with <span class="emphasis">Inner Child App</span>. We're delighted to welcome you to our holistic wellness community.</p>
+            
+            <p>To complete your registration and begin your wellness journey with us, please confirm your email address by clicking the button below:</p>
+            
+            <div class="button-container">
+                <a href="{{ConfirmLink}}" class="button">Confirm My Email</a>
+            </div>
+            
+            <p>This link will expire in 24 hours. If you didn't request this, please disregard this email.</p>
+            
+            <div class="health-tips">
+                <h3>While you wait, here are some wellness tips for you:</h3>
+                <ul>
+                    <li><strong>Start your day with warm water:</strong> Helps boost metabolism and detoxify your body.</li>
+                    <li><strong>Gentle movement:</strong> Just 15 minutes of walking daily benefits cardiovascular health.</li>
+                    <li><strong>Eat your greens:</strong> Include at least 3 different types of leafy greens daily for essential vitamins and minerals.</li>
+                </ul>
+            </div>
+            
+            <p>After confirming your email, you'll gain full access to our platform where you can:</p>
+            <ul>
+                <li>Receive personalized wellness recommendations</li>
+                <li>Track important health metrics</li>
+                <li>Join our wellness courses and workshops</li>
+                <li>Connect with our health-conscious community</li>
+            </ul>
+            
+            <div class="divider"></div>
+            
+            <p>If you encounter any issues or have questions, please contact our support team at <a href="mailto:support@innerchild.com" style="color: #2C74B3;">support@innerchild.com</a> or call us at <strong>+1 (800) 555-0199</strong>.</p>
+            
+            <p>Wishing you a day full of energy and wellness!</p>
+            
+            <p>Warm regards,<br>
+            <strong>The Inner Child Team</strong></p>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 Inner Child. All rights reserved.</p>
+            <p>123 Wellness Avenue, San Francisco, CA 94107</p>
+            
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Support</a>
+            </div>
+            
+            <div class="social-icons">
+                <a href="#" class="social-icon">f</a>
+                <a href="#" class="social-icon">in</a>
+                <a href="#" class="social-icon">yt</a>
+                <a href="#" class="social-icon">t</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
