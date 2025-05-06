@@ -12,7 +12,6 @@ namespace Contract.Dtos.Enums
         Active,
         Inactive,
     }
-    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum UserGenderEnum
     {
         Male ,

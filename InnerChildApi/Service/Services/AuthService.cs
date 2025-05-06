@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,9 @@ namespace Service.Services
         private readonly IEmailService _emailService;
         private readonly IProfileRepository _profileRepo;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public AuthService(IAccountRepository accountRepo, IConfiguration config, IEmailService emailService,IProfileRepository profileRepo,IRoleRepository roleRepo, IHttpContextAccessor httpContextAccessor)
+        private readonly ICloudinaryImageService _cloudinaryImageService;
+        private readonly ISessionRepository _sessionRepo;
+        public AuthService(IAccountRepository accountRepo, IConfiguration config, IEmailService emailService,IProfileRepository profileRepo,IRoleRepository roleRepo, IHttpContextAccessor httpContextAccessor,ICloudinaryImageService cloudinaryImageService,ISessionRepository sessionRepo)
         {
             _accountRepo = accountRepo;
             _config = config;
@@ -34,38 +37,39 @@ namespace Service.Services
             _httpContextAccessor = httpContextAccessor;
             _profileRepo = profileRepo; 
             _roleRepo = roleRepo;
+            _cloudinaryImageService = cloudinaryImageService;
+            _sessionRepo = sessionRepo;
         }
-
-        public async Task<RegisterResponse> RegisterAccountAsync(RegisterRequest request)
+        #region register
+        public async Task RegisterAccountAsync(RegisterRequest request)
         {
-            try
-            {
                 var userByName = await _accountRepo.GetByUserNameAsync(request.FullName);
                 if (userByName != null)
                 {
-                    return new RegisterResponse
-                    {
-                        IsSuccess = false,
-                        Message = "User already exists."
-                    };
+                    throw new InvalidCredentialException("Name already existed");
                 }
                 var userByEmail = await _accountRepo.GetByEmailAsync(request.Email);
                 if (userByEmail != null)
                 {
-                    return new RegisterResponse
-                    {
-                        IsSuccess = false,
-                        Message = "Email already exists."
-                    };
+                    throw new InvalidCredentialException("Email already existed");
                 }
                 var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
                 var role = await _roleRepo.GetByRoleNameAsync(RoleEnum.User.ToString());
+                string imageUrl = null;
+                if (request.ProfilePicture != null)
+                {
+                    imageUrl =  await _cloudinaryImageService.UploadImageAsync(request.ProfilePicture, CloudinaryFolderEnum.UserPicture.ToString());
+                }
                 var user = new User
                 {
                     UserId = Guid.NewGuid().ToString(),
                     Email = request.Email,
                     PasswordHash = hashedPassword,
                     FullName = request.FullName,
+                    DateOfBirth = request.DateOfBirth,
+                    Gender = request.gender.ToString(),
+                    PhoneNumber = request.PhoneNumber,
+                    ProfilePicture = imageUrl,
                     CreatedAt = DateTime.UtcNow,
                     RoleId = role.RoleId,
                     Verified = false
@@ -86,21 +90,73 @@ namespace Service.Services
                 var baseUrl = $"{requestUrl.Scheme}://{requestUrl.Host.Value}";
                 var emailConfirmationTokenLink = $"{baseUrl}/innerchild/auth/confirm-email?token={emailConfirmationToken}";
                 await _emailService.SendConfirmationEmailAsync(user.Email, user.FullName, emailConfirmationTokenLink);
-                return new RegisterResponse
-                {
-                    IsSuccess = true,
-                    Message = "User registered successfully, please check your email for confirmation."
-                };
-            }
-            catch(Exception ex)
+        }
+        #endregion
+
+
+
+        #region normal login
+        public async Task<LoginResponse> CheckLoginAccountAsync(LoginRequest request)
+        {
+            var existingUser = await _accountRepo.GetByEmailAsync(request.Email);
+            if (existingUser == null)
             {
-                return new RegisterResponse
-                {
-                    IsSuccess = false,
-                    Message = $"Something went wrong: {ex.Message}"
-                };
+                throw new InvalidCredentialException("User not found.");
             }
-            
+            if (!BCrypt.Net.BCrypt.Verify(request.Password, existingUser.PasswordHash))
+            {
+                throw new InvalidCredentialException("Invalid password.");
+            }
+            if (existingUser.Verified==false)
+            {
+                throw new InvalidCredentialException("Email not verified.");
+            }
+            var userProfiles = await _accountRepo.GetUserProfilesAsync(existingUser.UserId);
+            var profileDtos = userProfiles.Select(p => new UserProfileDto
+            {
+                ProfileId = p.ProfileId,
+                ProfileStatus = p.ProfileStatus,
+            }).ToList();
+            return new LoginResponse
+            {
+                UserId = existingUser.UserId,
+                Email = existingUser.Email,
+                Profiles = profileDtos
+            };
+        }
+        #endregion
+
+        public async Task<FinalLoginResponse> LoginAccountAsync(string userId, string profileId)
+        {
+            var user = await _accountRepo.GetByUserIdAsync(userId);
+            if (user == null)
+            {
+                throw new InvalidCredentialException("User not found.");
+            }
+            var profile = await _profileRepo.GetByProfileIdAsync(profileId);
+            if (profile == null)
+            {
+                throw new InvalidCredentialException("Profile not found.");
+            }
+            var sessionId = Guid.NewGuid().ToString();
+            var userSession = new Session()
+            {
+                SessionId = sessionId,
+                UserId = user.UserId,
+                ProfileId = profileId,
+                Token = sessionId,
+                SessionIsActive = true,
+            };
+            var sessionCreated = await _sessionRepo.CreateSessionAsync(userSession);
+            if (sessionCreated > 0)
+            {
+                await InvalidateOtherSessionsAsync(user.UserId, profileId, sessionId);
+            }
+            var token = GenerateJwtToken(user.UserId, user.Email,profile.ProfileId ,sessionId);
+            return new FinalLoginResponse
+            {
+                Token = token,
+            };
         }
 
 
@@ -108,13 +164,7 @@ namespace Service.Services
 
 
 
-
-
-
-
-
-
-
+        #region helper methods
         private string GenerateEmailConfirmation(string userId)
         {
             var jwtSettings = _config.GetSection("JwtSettings");
@@ -136,6 +186,40 @@ namespace Service.Services
             var emailConfirmationToken = new JwtSecurityTokenHandler().WriteToken(token);
             return emailConfirmationToken;
         }
+
+
+
+        private string GenerateJwtToken(string userId,string email,string profileId,string sessionId)
+        {
+            var jwtSettings = _config.GetSection("JwtSettings");
+            var secretKey = jwtSettings["SecretKey"];
+            var issuer = jwtSettings["Issuer"];
+            var audience = jwtSettings["Audience"];
+            var expiresInMinutes = int.Parse(jwtSettings["Expires"]);
+
+            var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.NameIdentifier, userId),
+        new Claim(ClaimTypes.Email, email),
+        new Claim("ProfileId", profileId),
+        new Claim("SessionId", sessionId)
+    };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
+
+            var token = new JwtSecurityToken(
+                issuer: issuer,
+                audience: audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddDays(expiresInMinutes),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+
         public string? ValidateEmailConfirmationToken(string token)
         {
             var jwtSettings = _config.GetSection("JwtSettings");
@@ -143,9 +227,6 @@ namespace Service.Services
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var issuer = jwtSettings["Issuer"];
             var audience = jwtSettings["Audience"];
-            Console.WriteLine($"SecretKey: {secretKey ?? "null"}");
-            Console.WriteLine($"Issuer: {issuer ?? "null"}");
-            Console.WriteLine($"Audience: {audience ?? "null"}");
             var tokenHandler = new JwtSecurityTokenHandler();
             try
             {
@@ -191,6 +272,23 @@ namespace Service.Services
             }
             return false;
         }
+        public async Task InvalidateOtherSessionsAsync(string userId,string profileId,string token)
+        {
+            await _sessionRepo.InvalidateOtherSessionsAsync(userId, profileId, token);  
+        }
+        public async Task<bool> IsSessionValidAsync(string userId, string profileId, string sessionId)
+        {
+            var sessionChecked = await _sessionRepo.IsSessionValidAsync(userId, profileId, sessionId);
+            if (sessionChecked == true)
+            {
+                return true;
+            }
+            return false;
+        }
+    #endregion
+
     }
-    
+
+
+
 }
