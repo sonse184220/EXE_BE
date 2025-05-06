@@ -18,4 +18,11 @@ namespace Contract.Dtos.Enums
         Female, 
         Other
     }
+    public enum JwtTypeEnum
+    {
+        PreLogin,
+        FinalLogin,
+        EmailConfirm,
+        Other
+    }
 }

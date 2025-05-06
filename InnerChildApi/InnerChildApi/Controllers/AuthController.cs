@@ -23,7 +23,7 @@ namespace InnerChildApi.Controllers
             _cloudinaryImageService = cloudinaryImageService;
         }
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        public async Task<IActionResult> Register([FromForm] RegisterRequest request)
         {
             if (!ModelState.IsValid)
             {

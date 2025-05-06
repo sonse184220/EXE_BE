@@ -1,4 +1,5 @@
 using InnerChildApi;
+using InnerChildApi.Common.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Repository;
 using Repository.DataSeeder;
@@ -34,6 +35,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseMiddleware<SessionMiddleware>();
 app.MapControllers();
 
 app.Run();

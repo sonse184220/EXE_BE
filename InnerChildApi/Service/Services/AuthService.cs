@@ -96,7 +96,7 @@ namespace Service.Services
 
 
         #region normal login
-        public async Task<LoginResponse> CheckLoginAccountAsync(LoginRequest request)
+        public async Task<List<PreLoginResponse>> CheckLoginAccountAsync(LoginRequest request)
         {
             var existingUser = await _accountRepo.GetByEmailAsync(request.Email);
             if (existingUser == null)
@@ -112,17 +112,9 @@ namespace Service.Services
                 throw new InvalidCredentialException("Email not verified.");
             }
             var userProfiles = await _accountRepo.GetUserProfilesAsync(existingUser.UserId);
-            var profileDtos = userProfiles.Select(p => new UserProfileDto
-            {
-                ProfileId = p.ProfileId,
-                ProfileStatus = p.ProfileStatus,
-            }).ToList();
-            return new LoginResponse
-            {
-                UserId = existingUser.UserId,
-                Email = existingUser.Email,
-                Profiles = profileDtos
-            };
+
+            var result = GeneratePreJwtToken(userProfiles);
+            return result;
         }
         #endregion
 
@@ -152,7 +144,7 @@ namespace Service.Services
             {
                 await InvalidateOtherSessionsAsync(user.UserId, profileId, sessionId);
             }
-            var token = GenerateJwtToken(user.UserId, user.Email,profile.ProfileId ,sessionId);
+            var token = GenerateFinalJwtToken(user.UserId, user.Email,profile.ProfileId ,sessionId);
             return new FinalLoginResponse
             {
                 Token = token,
@@ -172,7 +164,7 @@ namespace Service.Services
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, userId),
-                new Claim("type", "EmailConfirmation")
+                new Claim("TokenType",JwtTypeEnum.EmailConfirm.ToString())
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));  
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
@@ -187,22 +179,65 @@ namespace Service.Services
             return emailConfirmationToken;
         }
 
-
-
-        private string GenerateJwtToken(string userId,string email,string profileId,string sessionId)
+        private List<PreLoginResponse>  GeneratePreJwtToken(List<Profile> profiles)
         {
             var jwtSettings = _config.GetSection("JwtSettings");
             var secretKey = jwtSettings["SecretKey"];
             var issuer = jwtSettings["Issuer"];
             var audience = jwtSettings["Audience"];
-            var expiresInMinutes = int.Parse(jwtSettings["Expires"]);
+            var expires = int.Parse(jwtSettings["Expires"]);
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
+
+            var tokens = new List<string>();
+            var finalProfiles = new List<PreLoginResponse>();
+            foreach (var profile in profiles)
+            {
+                var claims = new List<Claim>
+            {
+            new Claim(ClaimTypes.NameIdentifier, profile.UserId),
+            new Claim("ProfileId", profile.ProfileId),
+            new Claim("TokenType", JwtTypeEnum.PreLogin.ToString())
+            };
+
+                var token = new JwtSecurityToken(
+                    issuer: issuer,
+                    audience: audience,
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddDays(expires),
+                    signingCredentials: creds
+                );
+                var tokenResult = new JwtSecurityTokenHandler().WriteToken(token);
+                tokens.Add(tokenResult);
+                var eachProfileToken = new PreLoginResponse()
+                {
+                    ProfileId = profile.ProfileId,
+                    UserId = profile.UserId,
+                    ProfileStatus = profile.ProfileStatus,
+                    ProfileToken = tokenResult
+                };
+                finalProfiles.Add(eachProfileToken);
+            }
+
+            return finalProfiles ;
+        }
+
+        private string GenerateFinalJwtToken(string userId,string email,string profileId,string sessionId)
+        {
+            var jwtSettings = _config.GetSection("JwtSettings");
+            var secretKey = jwtSettings["SecretKey"];
+            var issuer = jwtSettings["Issuer"];
+            var audience = jwtSettings["Audience"];
+            var expires = int.Parse(jwtSettings["Expires"]);
 
             var claims = new List<Claim>
     {
         new Claim(ClaimTypes.NameIdentifier, userId),
         new Claim(ClaimTypes.Email, email),
         new Claim("ProfileId", profileId),
-        new Claim("SessionId", sessionId)
+        new Claim("SessionId", sessionId),
+        new Claim("TokenType",JwtTypeEnum.FinalLogin.ToString())
     };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
@@ -212,7 +247,7 @@ namespace Service.Services
                 issuer: issuer,
                 audience: audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(expiresInMinutes),
+                expires: DateTime.UtcNow.AddDays(expires),
                 signingCredentials: creds
             );
 
@@ -243,8 +278,8 @@ namespace Service.Services
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 },out SecurityToken validatedToken);
-                var typeClaim = principle.FindFirst("type");
-                if (typeClaim?.Value!= "EmailConfirmation")
+                var typeClaim = principle.FindFirst("TokenType");
+                if (typeClaim?.Value!= JwtTypeEnum.EmailConfirm.ToString())
                 {
                     return null;
                 }

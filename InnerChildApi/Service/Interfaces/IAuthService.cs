@@ -14,8 +14,9 @@ namespace Service.Interfaces
         Task RegisterAccountAsync(RegisterRequest request);
         string? ValidateEmailConfirmationToken(string token);
         Task<bool> VerifyAccount(string userId);
-        Task<LoginResponse> CheckLoginAccountAsync(LoginRequest request);
+        Task<List<PreLoginResponse>> CheckLoginAccountAsync(LoginRequest request);
         Task<FinalLoginResponse> LoginAccountAsync(string userId, string profileId);
         Task InvalidateOtherSessionsAsync(string userId, string profileId, string token);
+        Task<bool> IsSessionValidAsync(string userId, string profileId, string sessionId);
     }
 }
