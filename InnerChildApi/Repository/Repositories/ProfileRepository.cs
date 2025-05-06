@@ -24,5 +24,10 @@ namespace Repository.Repositories
         {
             return await base.CreateAsync(profile);
         }
+
+        public async Task<Profile> GetByProfileIdAsync(string profileId)
+        {
+           return await base.GetByIdAsync(profileId);
+        }
     }
 }

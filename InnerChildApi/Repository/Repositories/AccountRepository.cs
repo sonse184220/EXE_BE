@@ -1,4 +1,5 @@
-﻿using Contract.Dtos.Requests;
+﻿using Contract.Dtos.Enums;
+using Contract.Dtos.Requests;
 using Contract.Dtos.Responses;
 using Microsoft.EntityFrameworkCore;
 using Repository.Base;
@@ -43,6 +44,16 @@ namespace Repository.Repositories
         public async Task<int> UpdateUserAsync(User user)
         {
             return await base.UpdateAsync(user);
+        }
+
+        public async Task<User> LoginAsync(string email, string password)
+        {
+            return await _context.Users.FirstOrDefaultAsync(x => x.Email == email && x.PasswordHash == password);
+        }
+
+        public async Task<List<Profile>> GetUserProfilesAsync(string userId)
+        {
+            return await _context.Profiles.Where(x => x.UserId == userId&&x.ProfileStatus==UserAccountEnum.Active.ToString()).ToListAsync();
         }
     }
    

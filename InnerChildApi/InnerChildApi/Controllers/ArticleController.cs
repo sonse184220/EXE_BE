@@ -1,5 +1,6 @@
 ﻿using Contract.Dtos.Enums;
 using Contract.Dtos.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Models;
@@ -33,7 +34,7 @@ namespace InnerChildApi.Controllers
                     ArticleUrl = articleImageUrl
                 };
                 await _contentService.CreateArticleAsync(article);
-                return Ok("Article created successfully");
+                return Created("", new { message = "Article created successfully" });
             }
             catch(Exception ex)
             {
@@ -41,6 +42,7 @@ namespace InnerChildApi.Controllers
             }
            
         }
+        [Authorize]
         [HttpGet("all")]
         public async Task<IActionResult> GetAllArticle()
         {
@@ -82,23 +84,24 @@ namespace InnerChildApi.Controllers
             }
         }
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateArticle(string id, [FromForm] CreateArticleRequest updatedArticle)
+        public async Task<IActionResult> UpdateArticle(string id, [FromForm] UpdateArticleRequest updatedArticle)
         {
             var existingArticle = await _contentService.GetArticleByIdAsync(id);
             if (existingArticle == null)
+            {
                 return NotFound("Article not found");
-
-            string articleImageUrl = existingArticle.ArticleUrl;
-                
-            articleImageUrl = await _cloudinaryImageService.UploadImageAsync(updatedArticle.Image, CloudinaryFolderEnum.Article.ToString());
-
-            await _cloudinaryImageService.DeleteImageAsync(existingArticle.ArticleUrl);
-            
-
-            existingArticle.ArticleName = updatedArticle.ArticleName;
-            existingArticle.ArticleDescription = updatedArticle.ArticleDescription;
-            existingArticle.ArticleContent = updatedArticle.ArticleContent;
-            existingArticle.ArticleUrl = articleImageUrl;
+            }
+            if (updatedArticle.Image != null)
+            {
+                if (!string.IsNullOrEmpty(existingArticle.ArticleUrl))
+                {
+                    await _cloudinaryImageService.DeleteImageAsync(existingArticle.ArticleUrl);
+                }
+                existingArticle.ArticleUrl = await _cloudinaryImageService.UploadImageAsync(updatedArticle.Image, CloudinaryFolderEnum.Article.ToString());
+            }
+            existingArticle.ArticleName = updatedArticle.ArticleName ?? existingArticle.ArticleName;
+            existingArticle.ArticleDescription = updatedArticle.ArticleDescription ?? existingArticle.ArticleDescription;
+            existingArticle.ArticleContent = updatedArticle.ArticleContent ?? existingArticle.ArticleContent;
 
             await _contentService.UpdateArticleAsync(existingArticle);
             return Ok("Article updated successfully");

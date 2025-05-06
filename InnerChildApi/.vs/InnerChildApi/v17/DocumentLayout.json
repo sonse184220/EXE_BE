@@ -3,84 +3,28 @@
   "WorkspaceRootPath": "E:\\EXE_BE\\InnerChildApi\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{111041B7-5645-4C6C-8B99-208DDA47193C}|InnerChildApi\\InnerChildApi.csproj|e:\\exe_be\\innerchildapi\\innerchildapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{111041B7-5645-4C6C-8B99-208DDA47193C}|InnerChildApi\\InnerChildApi.csproj|solutionrelative:innerchildapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|e:\\exe_be\\innerchildapi\\service\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|solutionrelative:service\\services\\emailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{111041B7-5645-4C6C-8B99-208DDA47193C}|InnerChildApi\\InnerChildApi.csproj|e:\\exe_be\\innerchildapi\\innerchildapi\\controllers\\articlecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{111041B7-5645-4C6C-8B99-208DDA47193C}|InnerChildApi\\InnerChildApi.csproj|solutionrelative:innerchildapi\\controllers\\articlecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{111041B7-5645-4C6C-8B99-208DDA47193C}|InnerChildApi\\InnerChildApi.csproj|e:\\exe_be\\innerchildapi\\innerchildapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{111041B7-5645-4C6C-8B99-208DDA47193C}|InnerChildApi\\InnerChildApi.csproj|solutionrelative:innerchildapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{111041B7-5645-4C6C-8B99-208DDA47193C}|InnerChildApi\\InnerChildApi.csproj|e:\\exe_be\\innerchildapi\\innerchildapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{111041B7-5645-4C6C-8B99-208DDA47193C}|InnerChildApi\\InnerChildApi.csproj|solutionrelative:innerchildapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|e:\\exe_be\\innerchildapi\\service\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|solutionrelative:service\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|e:\\exe_be\\innerchildapi\\service\\interfaces\\iemailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|solutionrelative:service\\interfaces\\iemailservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{36184514-945B-46BD-A7D8-2F38001CA94E}|Repository\\Repository.csproj|e:\\exe_be\\innerchildapi\\repository\\repositories\\sessionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36184514-945B-46BD-A7D8-2F38001CA94E}|Repository\\Repository.csproj|solutionrelative:repository\\repositories\\sessionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{111041B7-5645-4C6C-8B99-208DDA47193C}|InnerChildApi\\InnerChildApi.csproj|e:\\exe_be\\innerchildapi\\innerchildapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{111041B7-5645-4C6C-8B99-208DDA47193C}|InnerChildApi\\InnerChildApi.csproj|solutionrelative:innerchildapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{111041B7-5645-4C6C-8B99-208DDA47193C}|InnerChildApi\\InnerChildApi.csproj|e:\\exe_be\\innerchildapi\\innerchildapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{111041B7-5645-4C6C-8B99-208DDA47193C}|InnerChildApi\\InnerChildApi.csproj|solutionrelative:innerchildapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|e:\\exe_be\\innerchildapi\\service\\services\\notificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|solutionrelative:service\\services\\notificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|e:\\exe_be\\innerchildapi\\service\\interfaces\\inotificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|solutionrelative:service\\interfaces\\inotificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{36184514-945B-46BD-A7D8-2F38001CA94E}|Repository\\Repository.csproj|e:\\exe_be\\innerchildapi\\repository\\interfaces\\inotificationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{36184514-945B-46BD-A7D8-2F38001CA94E}|Repository\\Repository.csproj|solutionrelative:repository\\interfaces\\inotificationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{36184514-945B-46BD-A7D8-2F38001CA94E}|Repository\\Repository.csproj|e:\\exe_be\\innerchildapi\\repository\\repositories\\notificationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{36184514-945B-46BD-A7D8-2F38001CA94E}|Repository\\Repository.csproj|solutionrelative:repository\\repositories\\notificationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{36184514-945B-46BD-A7D8-2F38001CA94E}|Repository\\Repository.csproj|e:\\exe_be\\innerchildapi\\repository\\repositories\\articlerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{36184514-945B-46BD-A7D8-2F38001CA94E}|Repository\\Repository.csproj|solutionrelative:repository\\repositories\\articlerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|e:\\exe_be\\innerchildapi\\service\\interfaces\\icontentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|solutionrelative:service\\interfaces\\icontentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|e:\\exe_be\\innerchildapi\\service\\interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|solutionrelative:service\\interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|e:\\exe_be\\innerchildapi\\service\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|solutionrelative:service\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|e:\\exe_be\\innerchildapi\\service\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{68F6FB95-367A-4790-8182-6C036B3ED546}|Service\\Service.csproj|solutionrelative:service\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{111041B7-5645-4C6C-8B99-208DDA47193C}|InnerChildApi\\InnerChildApi.csproj|e:\\exe_be\\innerchildapi\\innerchildapi\\controllers\\notificationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{111041B7-5645-4C6C-8B99-208DDA47193C}|InnerChildApi\\InnerChildApi.csproj|solutionrelative:innerchildapi\\controllers\\notificationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{70DC2CFC-06D8-4FC4-B853-5609A8569A1A}|Contract\\Contract.csproj|e:\\exe_be\\innerchildapi\\contract\\dtos\\enums\\useraccountenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{70DC2CFC-06D8-4FC4-B853-5609A8569A1A}|Contract\\Contract.csproj|solutionrelative:contract\\dtos\\enums\\useraccountenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{70DC2CFC-06D8-4FC4-B853-5609A8569A1A}|Contract\\Contract.csproj|e:\\exe_be\\innerchildapi\\contract\\dtos\\requests\\updateprofilerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{70DC2CFC-06D8-4FC4-B853-5609A8569A1A}|Contract\\Contract.csproj|solutionrelative:contract\\dtos\\requests\\updateprofilerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{36184514-945B-46BD-A7D8-2F38001CA94E}|Repository\\Repository.csproj|e:\\exe_be\\innerchildapi\\repository\\repositories\\accountrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{36184514-945B-46BD-A7D8-2F38001CA94E}|Repository\\Repository.csproj|solutionrelative:repository\\repositories\\accountrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{70DC2CFC-06D8-4FC4-B853-5609A8569A1A}|Contract\\Contract.csproj|e:\\exe_be\\innerchildapi\\contract\\dtos\\requests\\finalloginrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70DC2CFC-06D8-4FC4-B853-5609A8569A1A}|Contract\\Contract.csproj|solutionrelative:contract\\dtos\\requests\\finalloginrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -95,244 +39,80 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\InnerChildApi\\appsettings.json",
-              "RelativeDocumentMoniker": "InnerChildApi\\appsettings.json",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\InnerChildApi\\appsettings.json",
-              "RelativeToolTip": "InnerChildApi\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-05-05T13:33:26.447Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "launchSettings.json",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\InnerChildApi\\Properties\\launchSettings.json",
-              "RelativeDocumentMoniker": "InnerChildApi\\Properties\\launchSettings.json",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\InnerChildApi\\Properties\\launchSettings.json",
-              "RelativeToolTip": "InnerChildApi\\Properties\\launchSettings.json",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-05-05T13:16:26.14Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "EmailService.cs",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\Service\\Services\\EmailService.cs",
-              "RelativeDocumentMoniker": "Service\\Services\\EmailService.cs",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\Service\\Services\\EmailService.cs",
-              "RelativeToolTip": "Service\\Services\\EmailService.cs",
-              "ViewState": "AgIAADwAAAAAAAAAAAAowE0AAABQAAAAAAAAAA==",
+              "Title": "ArticleController.cs",
+              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\InnerChildApi\\Controllers\\ArticleController.cs",
+              "RelativeDocumentMoniker": "InnerChildApi\\Controllers\\ArticleController.cs",
+              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\InnerChildApi\\Controllers\\ArticleController.cs",
+              "RelativeToolTip": "InnerChildApi\\Controllers\\ArticleController.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAowCMAAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T13:05:28.968Z",
+              "WhenOpened": "2025-05-06T13:51:57.258Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\InnerChildApi\\appsettings.json",
+              "RelativeDocumentMoniker": "InnerChildApi\\appsettings.json",
+              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\InnerChildApi\\appsettings.json",
+              "RelativeToolTip": "InnerChildApi\\appsettings.json",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAUwAYAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-05-06T13:42:27.632Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "SessionRepository.cs",
+              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\Repository\\Repositories\\SessionRepository.cs",
+              "RelativeDocumentMoniker": "Repository\\Repositories\\SessionRepository.cs",
+              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\Repository\\Repositories\\SessionRepository.cs",
+              "RelativeToolTip": "Repository\\Repositories\\SessionRepository.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABsAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-06T13:39:59.463Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "AuthService.cs",
               "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\Service\\Services\\AuthService.cs",
               "RelativeDocumentMoniker": "Service\\Services\\AuthService.cs",
               "ToolTip": "E:\\EXE_BE\\InnerChildApi\\Service\\Services\\AuthService.cs",
               "RelativeToolTip": "Service\\Services\\AuthService.cs",
-              "ViewState": "AgIAAHEAAAAAAAAAAAApwLUAAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAAIUAAAAAAAAAAAAcwJ8AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T13:03:58.147Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "INotificationRepository.cs",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\Repository\\Interfaces\\INotificationRepository.cs",
-              "RelativeDocumentMoniker": "Repository\\Interfaces\\INotificationRepository.cs",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\Repository\\Interfaces\\INotificationRepository.cs",
-              "RelativeToolTip": "Repository\\Interfaces\\INotificationRepository.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAqwAwAAAA8AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T06:36:42.428Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "IContentService.cs",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\Service\\Interfaces\\IContentService.cs",
-              "RelativeDocumentMoniker": "Service\\Interfaces\\IContentService.cs",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\Service\\Interfaces\\IContentService.cs",
-              "RelativeToolTip": "Service\\Interfaces\\IContentService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T06:35:20.516Z"
+              "WhenOpened": "2025-05-06T13:36:49.336Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "IEmailService.cs",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\Service\\Interfaces\\IEmailService.cs",
-              "RelativeDocumentMoniker": "Service\\Interfaces\\IEmailService.cs",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\Service\\Interfaces\\IEmailService.cs",
-              "RelativeToolTip": "Service\\Interfaces\\IEmailService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAiAAAAAAAAAA==",
+              "Title": "FinalLoginRequest.cs",
+              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\Contract\\Dtos\\Requests\\FinalLoginRequest.cs",
+              "RelativeDocumentMoniker": "Contract\\Dtos\\Requests\\FinalLoginRequest.cs",
+              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\Contract\\Dtos\\Requests\\FinalLoginRequest.cs",
+              "RelativeToolTip": "Contract\\Dtos\\Requests\\FinalLoginRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T06:35:19.965Z"
+              "WhenOpened": "2025-05-06T13:35:52.898Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "NotificationService.cs",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\Service\\Services\\NotificationService.cs",
-              "RelativeDocumentMoniker": "Service\\Services\\NotificationService.cs",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\Service\\Services\\NotificationService.cs",
-              "RelativeToolTip": "Service\\Services\\NotificationService.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAQwBoAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T06:34:01.878Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "AuthController.cs",
               "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\InnerChildApi\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "InnerChildApi\\Controllers\\AuthController.cs",
               "ToolTip": "E:\\EXE_BE\\InnerChildApi\\InnerChildApi\\Controllers\\AuthController.cs",
               "RelativeToolTip": "InnerChildApi\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAAEoAAAAAAAAAAAAIwBAAAAA1AAAAAAAAAA==",
+              "ViewState": "AgIAAIgAAAAAAAAAAAAcwK0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T05:36:29.813Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "NotificationRepository.cs",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\Repository\\Repositories\\NotificationRepository.cs",
-              "RelativeDocumentMoniker": "Repository\\Repositories\\NotificationRepository.cs",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\Repository\\Repositories\\NotificationRepository.cs",
-              "RelativeToolTip": "Repository\\Repositories\\NotificationRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAABhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T06:36:55.17Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "ArticleRepository.cs",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\Repository\\Repositories\\ArticleRepository.cs",
-              "RelativeDocumentMoniker": "Repository\\Repositories\\ArticleRepository.cs",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\Repository\\Repositories\\ArticleRepository.cs",
-              "RelativeToolTip": "Repository\\Repositories\\ArticleRepository.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T06:40:50.865Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Program.cs",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\InnerChildApi\\Program.cs",
-              "RelativeDocumentMoniker": "InnerChildApi\\Program.cs",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\InnerChildApi\\Program.cs",
-              "RelativeToolTip": "InnerChildApi\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T08:20:32.173Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "INotificationService.cs",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\Service\\Interfaces\\INotificationService.cs",
-              "RelativeDocumentMoniker": "Service\\Interfaces\\INotificationService.cs",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\Service\\Interfaces\\INotificationService.cs",
-              "RelativeToolTip": "Service\\Interfaces\\INotificationService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAwAAAA8AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T06:33:46.209Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "DependencyInjection.cs",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\Service\\DependencyInjection.cs",
-              "RelativeDocumentMoniker": "Service\\DependencyInjection.cs",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\Service\\DependencyInjection.cs",
-              "RelativeToolTip": "Service\\DependencyInjection.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAbAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T06:34:04.953Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "NotificationController.cs",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\InnerChildApi\\Controllers\\NotificationController.cs",
-              "RelativeDocumentMoniker": "InnerChildApi\\Controllers\\NotificationController.cs",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\InnerChildApi\\Controllers\\NotificationController.cs",
-              "RelativeToolTip": "InnerChildApi\\Controllers\\NotificationController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T06:32:23.9Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "UserAccountEnum.cs",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\Contract\\Dtos\\Enums\\UserAccountEnum.cs",
-              "RelativeDocumentMoniker": "Contract\\Dtos\\Enums\\UserAccountEnum.cs",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\Contract\\Dtos\\Enums\\UserAccountEnum.cs",
-              "RelativeToolTip": "Contract\\Dtos\\Enums\\UserAccountEnum.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBIAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T06:07:54.986Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "UserService.cs",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\Service\\Services\\UserService.cs",
-              "RelativeDocumentMoniker": "Service\\Services\\UserService.cs",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\Service\\Services\\UserService.cs",
-              "RelativeToolTip": "Service\\Services\\UserService.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABYAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T06:05:06.713Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "IUserService.cs",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\Service\\Interfaces\\IUserService.cs",
-              "RelativeDocumentMoniker": "Service\\Interfaces\\IUserService.cs",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\Service\\Interfaces\\IUserService.cs",
-              "RelativeToolTip": "Service\\Interfaces\\IUserService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA3AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T06:04:10.616Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "UpdateProfileRequest.cs",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\Contract\\Dtos\\Requests\\UpdateProfileRequest.cs",
-              "RelativeDocumentMoniker": "Contract\\Dtos\\Requests\\UpdateProfileRequest.cs",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\Contract\\Dtos\\Requests\\UpdateProfileRequest.cs",
-              "RelativeToolTip": "Contract\\Dtos\\Requests\\UpdateProfileRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBAAAAAdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T06:07:45.235Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "AccountRepository.cs",
-              "DocumentMoniker": "E:\\EXE_BE\\InnerChildApi\\Repository\\Repositories\\AccountRepository.cs",
-              "RelativeDocumentMoniker": "Repository\\Repositories\\AccountRepository.cs",
-              "ToolTip": "E:\\EXE_BE\\InnerChildApi\\Repository\\Repositories\\AccountRepository.cs",
-              "RelativeToolTip": "Repository\\Repositories\\AccountRepository.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAQwB0AAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-05T06:04:24.766Z"
+              "WhenOpened": "2025-05-06T13:34:29.336Z",
+              "EditorCaption": ""
             }
           ]
         }
