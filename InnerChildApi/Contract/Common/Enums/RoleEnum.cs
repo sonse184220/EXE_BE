@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contract.Dtos.Enums
+namespace Contract.Common.Enums
 {
-    public enum CloudinaryFolderEnum
+    public enum RoleEnum
     {
-        Article,
-        UserPicture,
-        CommunityPost,
-
+        Admin,
+        User,
     }
 }

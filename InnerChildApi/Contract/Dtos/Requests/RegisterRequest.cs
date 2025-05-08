@@ -1,4 +1,4 @@
-﻿using Contract.Dtos.Enums;
+﻿using Contract.Common.Enums;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;

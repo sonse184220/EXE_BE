@@ -18,6 +18,10 @@ namespace Service
             service.AddScoped<ICloudinaryImageService, CloudinaryImageService>();
             service.AddScoped<IContentService, ContentService>();
             service.AddScoped<IUserService, UserService>();
+            service.AddScoped<INotificationService, NotificationService>();
+            service.AddScoped<ITokenService, TokenService>();
+            service.AddScoped<ISessionService, SessionService>();
+
             return service;
         }
     }

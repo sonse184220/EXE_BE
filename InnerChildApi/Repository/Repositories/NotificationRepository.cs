@@ -1,4 +1,5 @@
 ﻿using Repository.Base;
+using Repository.DBContext;
 using Repository.Interfaces;
 using Repository.Models;
 using System;
@@ -11,6 +12,14 @@ namespace Repository.Repositories
 {
     public class NotificationRepository : GenericRepository<Notification>,INotificationRepository
     {
+        public NotificationRepository() : base()
+        {
+
+        }
+        public NotificationRepository(InnerChildExeContext context) : base(context)
+        {
+
+        }
         public async Task<int> CreateNotificationAsync(Notification notification)
         {
             return await base.CreateAsync(notification);

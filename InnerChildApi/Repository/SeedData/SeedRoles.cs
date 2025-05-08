@@ -1,4 +1,4 @@
-﻿using Contract.Dtos.Enums;
+﻿using Contract.Common.Enums;
 using Microsoft.Extensions.DependencyInjection;
 using Repository.DBContext;
 using System;
