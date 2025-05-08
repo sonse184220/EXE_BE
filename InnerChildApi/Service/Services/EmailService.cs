@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using MimeKit;
+using Repository.Interfaces;
 using Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -7,6 +9,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using static Contract.Common.Config.AppSettingConfig;
 namespace Service.Services
 {
     public class EmailService : IEmailService
@@ -17,15 +20,19 @@ namespace Service.Services
         private readonly string _smtpPass;
         private readonly string _fromEmail;
         private readonly string _displayName;
-        public EmailService(IConfiguration config)
+        private readonly IAccountRepository _accountRepo;
+        private readonly EmailSettingConfig _emailSettingConfig;
+        public EmailService(IConfiguration config, IAccountRepository accountRepo,IOptions<EmailSettingConfig> emailSettingConfig)
         {
-            var sectionConfig = config.GetSection("EmailSettings");
-            _smtpServer = sectionConfig["SmtpServer"];
-            _smtpPort = int.Parse(sectionConfig["SmtpPort"]);
-            _smtpUser = sectionConfig["SmtpUser"];
-            _smtpPass = sectionConfig["SmtpPass"];
-            _fromEmail = sectionConfig["FromEmail"];
-            _displayName = sectionConfig["DisplayName"];
+            _emailSettingConfig = emailSettingConfig.Value;
+            _accountRepo = accountRepo;
+           
+            _smtpServer = _emailSettingConfig.SmtpServer;
+            _smtpPort = _emailSettingConfig.SmtpPort;
+            _smtpUser = _emailSettingConfig.SmtpUser;
+            _smtpPass = _emailSettingConfig.SmtpPass;
+            _fromEmail = _emailSettingConfig.FromEmail;
+            _displayName = _emailSettingConfig.DisplayName;
         }
 
         public async Task SendEmailAsync(string toEmail, string subject, string body)
@@ -77,9 +84,24 @@ namespace Service.Services
             string body = LoadTemplate(templatePath, replacements);
             await SendEmailAsync(toEmail, "Confirm Account Registration", body);
         }
-        
 
-
+        #region verify account (gmail confirm)
+        public async Task<bool> VerifyAccount(string userId)
+        {
+            var user = await _accountRepo.GetByUserIdAsync(userId);
+            if (user == null)
+            {
+                return false;
+            }
+            user.Verified = true;
+            var result = await _accountRepo.UpdateUserAsync(user);
+            if (result > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        #endregion
 
     }
 }

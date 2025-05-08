@@ -12,11 +12,9 @@ namespace Service.Interfaces
     public interface IAuthService
     {
         Task RegisterAccountAsync(RegisterRequest request);
-        string? ValidateEmailConfirmationToken(string token);
-        Task<bool> VerifyAccount(string userId);
         Task<List<PreLoginResponse>> CheckLoginAccountAsync(LoginRequest request);
         Task<FinalLoginResponse> LoginAccountAsync(string userId, string profileId);
-        Task InvalidateOtherSessionsAsync(string userId, string profileId, string token);
-        Task<bool> IsSessionValidAsync(string userId, string profileId, string sessionId);
+        Task ChangePassword(string userId, string currentPassword, string newPassword);
+        Task<List<PreLoginResponse>> AuthenticateWithFirebaseAsync(FirebaseTokenRequest request);
     }
 }
