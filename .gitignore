@@ -54,4 +54,6 @@ TestResult.xml
 nunit-*.xml
 
 appsettings.json
+
+**/.vs/
 firebase-adminsdk.json
