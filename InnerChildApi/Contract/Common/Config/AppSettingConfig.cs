@@ -13,7 +13,8 @@ namespace Contract.Common.Config
             public string SecretKey { get; set; }
             public string Issuer { get; set; }
             public string Audience { get; set; }
-            public int Expires { get; set; }
+            public int ExpiresAccessToken { get; set; }
+            public int ExpiresRefreshToken { get; set; }
         }
         public class CloudinarySettingConfig
         {

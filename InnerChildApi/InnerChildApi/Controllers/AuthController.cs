@@ -5,6 +5,7 @@ using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Repository.Models;
 using Service.Interfaces;
 using System.Security.Authentication;
 using System.Security.Claims;
@@ -233,6 +234,28 @@ namespace InnerChildApi.Controllers
                 throw new Exception("Error authorization:" + ex.Message);
             }
         }
-
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
+        {
+            try
+            {
+                var storedToken = await _tokenService.GetByRefreshTokenAsync(request.RefreshToken);
+                if (storedToken == null || storedToken.IsRevoked==true || storedToken.ExpiresAt < DateTime.UtcNow)
+                {
+                    return Unauthorized("Invalid or expired refresh token");
+                }
+                await _tokenService.RevokeTokenAsync(storedToken);
+                var result = await _authService.LoginAccountAsync(storedToken.UserId, storedToken.ProfileId);
+                return Ok(result);
+            }
+            catch (InvalidCredentialException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

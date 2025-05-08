@@ -21,7 +21,7 @@ namespace Repository
             service.AddScoped<IArticleRepository, ArticleRepository>();
             service.AddScoped<ISessionRepository, SessionRepository>();
             service.AddScoped<INotificationRepository, NotificationRepository>();
-
+            service.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             return service;
         }
     }

@@ -39,6 +39,8 @@ public partial class User
 
     public virtual ICollection<Purchase> Purchases { get; set; } = new List<Purchase>();
 
+    public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+
     public virtual Role Role { get; set; }
 
     public virtual ICollection<Session> Sessions { get; set; } = new List<Session>();

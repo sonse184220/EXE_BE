@@ -24,15 +24,18 @@ namespace Service.Services
 {
     public class AuthService:IAuthService
     {
+        //repo
         private readonly IAccountRepository _accountRepo;
         private readonly IRoleRepository _roleRepo;         
+        private readonly IRefreshTokenRepository _refreshTokenRepo;
+
         private readonly IEmailService _emailService;
         private readonly IProfileRepository _profileRepo;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICloudinaryImageService _cloudinaryImageService;
         private readonly ITokenService _tokenService;
         private readonly ISessionService _sessionService;
-        public AuthService(IAccountRepository accountRepo, IEmailService emailService,IProfileRepository profileRepo,IRoleRepository roleRepo, IHttpContextAccessor httpContextAccessor,ICloudinaryImageService cloudinaryImageService,ISessionService sessionService,ITokenService tokenService)
+        public AuthService(IAccountRepository accountRepo, IEmailService emailService,IProfileRepository profileRepo,IRoleRepository roleRepo, IHttpContextAccessor httpContextAccessor,ICloudinaryImageService cloudinaryImageService,ISessionService sessionService,ITokenService tokenService,IRefreshTokenRepository refreshTokenRepo)
         {
             _accountRepo = accountRepo;
             _emailService = emailService;
@@ -42,6 +45,7 @@ namespace Service.Services
             _cloudinaryImageService = cloudinaryImageService;
             _tokenService = tokenService;
             _sessionService = sessionService;
+            _refreshTokenRepo = refreshTokenRepo;
         }
         #region register acccount async
         public async Task RegisterAccountAsync(RegisterRequest request)
@@ -147,10 +151,12 @@ namespace Service.Services
             {
                 await _sessionService.InvalidateOtherSessionsAsync(user.UserId, profileId, sessionId);
             }
-            var token = _tokenService.GenerateFinalLoginJwtToken(user.UserId, user.Email,profile.ProfileId ,sessionId);
+            var accessToken = _tokenService.GenerateFinalLoginJwtToken(user.UserId, user.Email,profile.ProfileId ,sessionId);
+            var refreshToken = await _tokenService.GenerateRefreshToken(user.UserId,profile.ProfileId);
             return new FinalLoginResponse
             {
-                Token = token,
+                AccessToken = accessToken,
+                RefreshToken = refreshToken,
             };
         }
         #endregion
