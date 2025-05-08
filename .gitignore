@@ -57,3 +57,24 @@ appsettings.json
 
 **/.vs/
 firebase-adminsdk.json
+
+
+
+# Ignore database files
+*.db
+
+# Ignore cache files
+.dtbcache.v2
+.futdcache.v2
+
+# Ignore JSON layout files
+DocumentLayout.backup.json
+DocumentLayout.json
+
+# Ignore metadata and project evaluation files
+innerchildapi.metadata.v9.bin
+innerchildapi.projects.v9.bin
+innerchildapi.strings.v9.bin
+
+# Ignore SlickEdit workspace files
+.suo
