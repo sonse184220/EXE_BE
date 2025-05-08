@@ -4,7 +4,9 @@ using Contract.Dtos.Responses;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Repository.Interfaces;
 using Repository.Models;
+using Repository.Repositories;
 using Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,6 +14,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using static Contract.Common.Config.AppSettingConfig;
@@ -20,14 +23,16 @@ namespace Service.Services
 {
     public class TokenService : ITokenService
     {
+        private readonly IRefreshTokenRepository _refreshTokenRepo;
         private readonly JwtTokenSetting _jwtTokenSetting;
         private readonly SymmetricSecurityKey _key;
         private readonly SigningCredentials _credentials;
-        public TokenService(IOptions<JwtTokenSetting> jwtTokenSetting)
+        public TokenService(IOptions<JwtTokenSetting> jwtTokenSetting,IRefreshTokenRepository refreshTokenRepo)
         {
             _jwtTokenSetting = jwtTokenSetting.Value;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtTokenSetting.SecretKey));
             _credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512);
+            _refreshTokenRepo = refreshTokenRepo;
         }
         #region generate email confirmation token
         public string GenerateEmailConfirmationToken(string userId)
@@ -54,7 +59,7 @@ namespace Service.Services
         new Claim(JwtClaimTypeConstant.TokenType,JwtTypeEnum.FinalLogin.ToString())
         };
 
-            return GenerateToken(claims, TimeSpan.FromDays(_jwtTokenSetting.Expires));
+            return GenerateToken(claims, TimeSpan.FromDays(_jwtTokenSetting.ExpiresAccessToken));
         }
         #endregion
         #region generate prelogin token
@@ -70,7 +75,7 @@ namespace Service.Services
             new Claim(JwtClaimTypeConstant.TokenType, JwtTypeEnum.PreLogin.ToString())
             };
 
-              var tokenResult = GenerateToken(claims, TimeSpan.FromDays(_jwtTokenSetting.Expires));
+              var tokenResult = GenerateToken(claims, TimeSpan.FromDays(_jwtTokenSetting.ExpiresAccessToken));
                 finalProfiles.Add(new PreLoginResponse
                 {
                     ProfileId = profile.ProfileId,
@@ -82,6 +87,8 @@ namespace Service.Services
 
             return finalProfiles;
         }
+
+       
         #endregion
         #region validate email confirmation token
         public string ValidateEmailConfirmationToken(string token)
@@ -151,6 +158,28 @@ namespace Service.Services
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
             }, out _);
+        }
+        public async Task<string> GenerateRefreshToken(string userId, string profileId)
+        {
+            var token = GenerateRandomToken();
+            var createAt = DateTime.UtcNow;
+            var expireAt = createAt.AddDays(_jwtTokenSetting.ExpiresRefreshToken);
+            var result = await _refreshTokenRepo.CreateRefreshTokenAsync(userId,profileId, token, createAt, expireAt);
+            return token;
+        }
+        private string GenerateRandomToken()
+        {
+            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+        }
+
+        public async Task<RefreshToken> GetByRefreshTokenAsync(string refreshToken)
+        {
+            return await _refreshTokenRepo.GetByRefreshTokenAsync(refreshToken);
+        }
+       
+        public async Task<int> RevokeTokenAsync(RefreshToken refreshToken)
+        {
+            return await _refreshTokenRepo.RevokeTokenAsync(refreshToken);
         }
     }
 }
