@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Service.Interfaces;
 using System.Security.Claims;
-using Contract.Dtos.Enums;
+using Contract.Common.Enums;
 
 namespace InnerChildApi.Common.Middleware
 {
@@ -22,7 +22,7 @@ namespace InnerChildApi.Common.Middleware
                 if (tokenType != JwtTypeEnum.FinalLogin.ToString())
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    await context.Response.WriteAsync("Unauthorize: Invalid token type");
+                    await context.Response.WriteAsync("Invalid token type");
                     return;
                 }
                 var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -31,8 +31,8 @@ namespace InnerChildApi.Common.Middleware
                 if (!string.IsNullOrEmpty(userId) &&!string.IsNullOrEmpty(profileId) &&!string.IsNullOrEmpty(sessionId))
                 {
                     
-                    var authService = context.RequestServices.GetRequiredService<IAuthService>();
-                    var result = await authService.IsSessionValidAsync(userId, profileId, sessionId);
+                    var sessionService = context.RequestServices.GetRequiredService<ISessionService>();
+                    var result = await sessionService.IsSessionValidAsync(userId, profileId, sessionId);
                     if (!result)
                     {
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;

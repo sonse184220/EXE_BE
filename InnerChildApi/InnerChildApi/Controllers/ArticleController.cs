@@ -1,4 +1,4 @@
-﻿using Contract.Dtos.Enums;
+﻿using Contract.Common.Enums;
 using Contract.Dtos.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

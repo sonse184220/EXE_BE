@@ -1,4 +1,5 @@
-﻿using Repository.Models;
+﻿using Repository.Interfaces;
+using Repository.Models;
 using Repository.Repositories;
 using Service.Interfaces;
 using System;
@@ -11,8 +12,8 @@ namespace Service.Services
 {
     public class NotificationService : INotificationService
     {
-        private readonly NotificationRepository _notiRepo;
-        public NotificationService(NotificationRepository notiRepo)
+        private readonly INotificationRepository _notiRepo;
+        public NotificationService(INotificationRepository notiRepo)
         {
             _notiRepo = notiRepo;
         }
@@ -26,14 +27,14 @@ namespace Service.Services
            return await _notiRepo.DeleteNotificationAsync(notification);
         }
 
-        public Task<List<Notification>> GetAllNotificationsAsync()
+        public async Task<List<Notification>> GetAllNotificationsAsync()
         {
-            throw new NotImplementedException();
+            return await _notiRepo.GetAllNotificationsAsync();
         }
 
-        public Task<Notification> GetNotificationByIdAsync(string id)
+        public async Task<Notification> GetNotificationByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            return await _notiRepo.GetNotificationByIdAsync(id);
         }
     }
 }

@@ -1,3 +1,5 @@
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using InnerChildApi;
 using InnerChildApi.Common.Middleware;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +10,13 @@ using Repository.SeedData;
 using Service;
 
 var builder = WebApplication.CreateBuilder(args);
-
+if (FirebaseApp.DefaultInstance == null)
+{
+    var firebaseApp = FirebaseApp.Create(new AppOptions()
+    {
+        Credential = GoogleCredential.FromFile("firebase-adminsdk.json")
+    });
+}
 
 builder.Services.AddControllers();
 

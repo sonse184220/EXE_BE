@@ -10,4 +10,11 @@ namespace Contract.Dtos.Responses
     {
         public string Token { get; set; }   
     }
+
+
+    public class PreFinalLoginResponse
+    {
+        public string UserId { get; set; }
+        public string ProfileId { get; set; }
+    }
 }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Contract.Dtos.Requests
 {
-    public class FinalLoginRequest
+    public class FirebaseTokenRequest
     {
-       public string Token { get; set; }
+        public string FirebaseToken { get; set; }
     }
 }

@@ -1,10 +1,13 @@
-﻿using Contract.Dtos.Enums;
+﻿using Contract.Common.Enums;
 using Contract.Dtos.Requests;
 using Contract.Dtos.Responses;
+using FirebaseAdmin.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
 using System.Security.Authentication;
+using System.Security.Claims;
 using System.Text;
 
 namespace InnerChildApi.Controllers
@@ -16,11 +19,15 @@ namespace InnerChildApi.Controllers
         private readonly IAuthService _authService;
         private readonly IUserService _userService;
         private readonly ICloudinaryImageService _cloudinaryImageService;
-        public AuthController(IAuthService authService, IUserService userService, ICloudinaryImageService cloudinaryImageService)
+        private readonly ITokenService _tokenService;
+        private readonly IEmailService _emailService;
+        public AuthController(IAuthService authService, IUserService userService, ICloudinaryImageService cloudinaryImageService,ITokenService tokenService,IEmailService emailService)
         {
             _authService = authService;
             _userService = userService;
             _cloudinaryImageService = cloudinaryImageService;
+            _tokenService = tokenService;
+            _emailService = emailService;
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromForm] RegisterRequest request)
@@ -64,12 +71,12 @@ namespace InnerChildApi.Controllers
                 {
                     return BadRequest("Missing token");
                 }
-                var userId = _authService.ValidateEmailConfirmationToken(token);
+                var userId = _tokenService.ValidateEmailConfirmationToken(token);
                 if (userId == null)
                 {
                     return BadRequest("Invalid or expired token!");
                 }
-                var result = await _authService.VerifyAccount(userId);
+                var result = await _emailService.VerifyAccount(userId);
                 if (!result)
                 {
                     return NotFound("User not found.");
@@ -162,7 +169,12 @@ namespace InnerChildApi.Controllers
          
             try
             {
-                var result = await _authService.LoginAccountAsync(request.UserId,request.ProfileId);
+                var user = _tokenService.ValidatePreLoginJwtToken(request.Token);
+                if (user == null)
+                {
+                    throw new Exception("Validation failed");
+                }
+                var result = await _authService.LoginAccountAsync(user.UserId,user.ProfileId);
                 return Ok(result);
             }
             catch (InvalidCredentialException ex) 
@@ -174,10 +186,53 @@ namespace InnerChildApi.Controllers
                 return StatusCode(500,ex.Message);
             }
         }
-
-
-
-
+        [Authorize]
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized("Invalid token or missing token");
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                await _authService.ChangePassword(userId, request.CurrentPassword, request.ConfirmPassword);
+                return Ok("Password changed");
+            }
+            catch(InvalidCredentialException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+           
+        }
+        [HttpPost("check-login-firebase")]
+        public async Task<IActionResult> CheckLoginFirebase([FromBody] FirebaseTokenRequest request)
+        {
+            try
+            {
+                var result = await _authService.AuthenticateWithFirebaseAsync(request);
+                return Ok(result);
+            }
+            catch (InvalidCredentialException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (FirebaseAuthException ex)
+            {
+                throw new UnauthorizedAccessException("Firebase authentication failed: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error authorization:" + ex.Message);
+            }
+        }
 
     }
 }

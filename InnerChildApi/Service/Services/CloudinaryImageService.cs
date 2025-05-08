@@ -9,17 +9,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using static Contract.Common.Config.AppSettingConfig;
+using Microsoft.Extensions.Options;
 
 namespace Service.Services
 {
     public class CloudinaryImageService : ICloudinaryImageService
     {
         private readonly Cloudinary _cloudinary;
-        public CloudinaryImageService(IConfiguration config)
+        private readonly CloudinarySettingConfig _cloudinarySettingConfig;
+        public CloudinaryImageService(IConfiguration config,IOptions<CloudinarySettingConfig> cloudinarySettingConfig)
         {
-            var cloudName = config["CloudinarySettings:CloudName"];
-            var apiKey = config["CloudinarySettings:ApiKey"];
-            var apiSecret = config["CloudinarySettings:ApiSecret"];
+            _cloudinarySettingConfig = cloudinarySettingConfig.Value;
+            var cloudName = _cloudinarySettingConfig.CloudName;
+            var apiKey = _cloudinarySettingConfig.ApiKey;
+            var apiSecret = _cloudinarySettingConfig.ApiSecret;
             var account = new Account(cloudName, apiKey, apiSecret);
             _cloudinary = new Cloudinary(account);  
         }

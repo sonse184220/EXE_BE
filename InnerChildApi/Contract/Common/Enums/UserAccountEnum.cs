@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Contract.Dtos.Enums
+namespace Contract.Common.Enums
 {
     public enum UserAccountEnum
     {

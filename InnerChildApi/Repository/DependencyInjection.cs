@@ -20,6 +20,8 @@ namespace Repository
             service.AddScoped<IRoleRepository, RoleRepository>();
             service.AddScoped<IArticleRepository, ArticleRepository>();
             service.AddScoped<ISessionRepository, SessionRepository>();
+            service.AddScoped<INotificationRepository, NotificationRepository>();
+
             return service;
         }
     }

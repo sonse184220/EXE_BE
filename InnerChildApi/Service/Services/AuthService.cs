@@ -1,11 +1,14 @@
-﻿using Contract.Dtos.Enums;
+﻿using CloudinaryDotNet;
+using Contract.Common.Enums;
 using Contract.Dtos.Requests;
 using Contract.Dtos.Responses;
+using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Repository.Interfaces;
 using Repository.Models;
+using Repository.Repositories;
 using Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -23,24 +26,24 @@ namespace Service.Services
     {
         private readonly IAccountRepository _accountRepo;
         private readonly IRoleRepository _roleRepo;         
-        private readonly IConfiguration _config;
         private readonly IEmailService _emailService;
         private readonly IProfileRepository _profileRepo;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICloudinaryImageService _cloudinaryImageService;
-        private readonly ISessionRepository _sessionRepo;
-        public AuthService(IAccountRepository accountRepo, IConfiguration config, IEmailService emailService,IProfileRepository profileRepo,IRoleRepository roleRepo, IHttpContextAccessor httpContextAccessor,ICloudinaryImageService cloudinaryImageService,ISessionRepository sessionRepo)
+        private readonly ITokenService _tokenService;
+        private readonly ISessionService _sessionService;
+        public AuthService(IAccountRepository accountRepo, IEmailService emailService,IProfileRepository profileRepo,IRoleRepository roleRepo, IHttpContextAccessor httpContextAccessor,ICloudinaryImageService cloudinaryImageService,ISessionService sessionService,ITokenService tokenService)
         {
             _accountRepo = accountRepo;
-            _config = config;
             _emailService = emailService;
             _httpContextAccessor = httpContextAccessor;
             _profileRepo = profileRepo; 
             _roleRepo = roleRepo;
             _cloudinaryImageService = cloudinaryImageService;
-            _sessionRepo = sessionRepo;
+            _tokenService = tokenService;
+            _sessionService = sessionService;
         }
-        #region register
+        #region register acccount async
         public async Task RegisterAccountAsync(RegisterRequest request)
         {
                 var userByName = await _accountRepo.GetByUserNameAsync(request.FullName);
@@ -85,7 +88,7 @@ namespace Service.Services
                     };
                     await _profileRepo.CreateProfileAsync(profile);
                 }
-                var emailConfirmationToken = GenerateEmailConfirmation(user.UserId);
+                var emailConfirmationToken = _tokenService.GenerateEmailConfirmationToken(user.UserId);
                 var requestUrl = _httpContextAccessor.HttpContext.Request;
                 var baseUrl = $"{requestUrl.Scheme}://{requestUrl.Host.Value}";
                 var emailConfirmationTokenLink = $"{baseUrl}/innerchild/auth/confirm-email?token={emailConfirmationToken}";
@@ -95,7 +98,7 @@ namespace Service.Services
 
 
 
-        #region normal login
+        #region check login account async
         public async Task<List<PreLoginResponse>> CheckLoginAccountAsync(LoginRequest request)
         {
             var existingUser = await _accountRepo.GetByEmailAsync(request.Email);
@@ -113,11 +116,11 @@ namespace Service.Services
             }
             var userProfiles = await _accountRepo.GetUserProfilesAsync(existingUser.UserId);
 
-            var result = GeneratePreJwtToken(userProfiles);
+            var result = _tokenService.GeneratePreLoginJwtTokens(userProfiles);
             return result;
         }
         #endregion
-
+        #region Final  Login Account Async
         public async Task<FinalLoginResponse> LoginAccountAsync(string userId, string profileId)
         {
             var user = await _accountRepo.GetByUserIdAsync(userId);
@@ -139,188 +142,97 @@ namespace Service.Services
                 Token = sessionId,
                 SessionIsActive = true,
             };
-            var sessionCreated = await _sessionRepo.CreateSessionAsync(userSession);
+            var sessionCreated = await _sessionService.CreateSessionAsync(userSession);
             if (sessionCreated > 0)
             {
-                await InvalidateOtherSessionsAsync(user.UserId, profileId, sessionId);
+                await _sessionService.InvalidateOtherSessionsAsync(user.UserId, profileId, sessionId);
             }
-            var token = GenerateFinalJwtToken(user.UserId, user.Email,profile.ProfileId ,sessionId);
+            var token = _tokenService.GenerateFinalLoginJwtToken(user.UserId, user.Email,profile.ProfileId ,sessionId);
             return new FinalLoginResponse
             {
                 Token = token,
             };
         }
+        #endregion
 
 
 
 
 
-
-        #region helper methods
-        private string GenerateEmailConfirmation(string userId)
-        {
-            var jwtSettings = _config.GetSection("JwtSettings");
-            var secretKey = jwtSettings["SecretKey"];
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, userId),
-                new Claim("TokenType",JwtTypeEnum.EmailConfirm.ToString())
-            };
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));  
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
-            var token = new JwtSecurityToken(
-                issuer: jwtSettings["Issuer"],
-                audience: jwtSettings["Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddDays(1),
-                signingCredentials: creds
-            );
-            var emailConfirmationToken = new JwtSecurityTokenHandler().WriteToken(token);
-            return emailConfirmationToken;
-        }
-
-        private List<PreLoginResponse>  GeneratePreJwtToken(List<Profile> profiles)
-        {
-            var jwtSettings = _config.GetSection("JwtSettings");
-            var secretKey = jwtSettings["SecretKey"];
-            var issuer = jwtSettings["Issuer"];
-            var audience = jwtSettings["Audience"];
-            var expires = int.Parse(jwtSettings["Expires"]);
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
-
-            var tokens = new List<string>();
-            var finalProfiles = new List<PreLoginResponse>();
-            foreach (var profile in profiles)
-            {
-                var claims = new List<Claim>
-            {
-            new Claim(ClaimTypes.NameIdentifier, profile.UserId),
-            new Claim("ProfileId", profile.ProfileId),
-            new Claim("TokenType", JwtTypeEnum.PreLogin.ToString())
-            };
-
-                var token = new JwtSecurityToken(
-                    issuer: issuer,
-                    audience: audience,
-                    claims: claims,
-                    expires: DateTime.UtcNow.AddDays(expires),
-                    signingCredentials: creds
-                );
-                var tokenResult = new JwtSecurityTokenHandler().WriteToken(token);
-                tokens.Add(tokenResult);
-                var eachProfileToken = new PreLoginResponse()
-                {
-                    ProfileId = profile.ProfileId,
-                    UserId = profile.UserId,
-                    ProfileStatus = profile.ProfileStatus,
-                    ProfileToken = tokenResult
-                };
-                finalProfiles.Add(eachProfileToken);
-            }
-
-            return finalProfiles ;
-        }
-
-        private string GenerateFinalJwtToken(string userId,string email,string profileId,string sessionId)
-        {
-            var jwtSettings = _config.GetSection("JwtSettings");
-            var secretKey = jwtSettings["SecretKey"];
-            var issuer = jwtSettings["Issuer"];
-            var audience = jwtSettings["Audience"];
-            var expires = int.Parse(jwtSettings["Expires"]);
-
-            var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.NameIdentifier, userId),
-        new Claim(ClaimTypes.Email, email),
-        new Claim("ProfileId", profileId),
-        new Claim("SessionId", sessionId),
-        new Claim("TokenType",JwtTypeEnum.FinalLogin.ToString())
-    };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
-
-            var token = new JwtSecurityToken(
-                issuer: issuer,
-                audience: audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddDays(expires),
-                signingCredentials: creds
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        
+        
 
 
-        public string? ValidateEmailConfirmationToken(string token)
-        {
-            var jwtSettings = _config.GetSection("JwtSettings");
-            var secretKey = jwtSettings["SecretKey"];
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-            var issuer = jwtSettings["Issuer"];
-            var audience = jwtSettings["Audience"];
-            var tokenHandler = new JwtSecurityTokenHandler();
-            try
-            {
-                var principle = tokenHandler.ValidateToken(token, new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = issuer,
+       
+       
+      
 
-                    ValidateAudience = true,
-                    ValidAudience = audience,
+       
+        
+       
 
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = key,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
-                },out SecurityToken validatedToken);
-                var typeClaim = principle.FindFirst("TokenType");
-                if (typeClaim?.Value!= JwtTypeEnum.EmailConfirm.ToString())
-                {
-                    return null;
-                }
-                var userId = principle.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                return userId;
-            }catch(Exception ex)
-            {
-                return null;
-            }
 
-        }
 
-        public async Task<bool> VerifyAccount(string userId)
+
+        #region change password function
+        public async Task ChangePassword(string userId,string currentPassword,string newPassword)
         {
             var user = await _accountRepo.GetByUserIdAsync(userId);
             if (user == null)
             {
-                return false;
+                throw new InvalidCredentialException("User not found.");
             }
-            user.Verified = true;
-            var result = await _accountRepo.UpdateUserAsync(user);
-            if (result>0)
+            if (!BCrypt.Net.BCrypt.Verify(currentPassword, user.PasswordHash))
             {
-                return true;
+                throw new InvalidCredentialException("Wrong current password please try again.");
             }
-            return false;
+            var newPasswordHashed = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            user.PasswordHash = newPasswordHashed;
+            await _accountRepo.UpdateUserAsync(user);   
         }
-        public async Task InvalidateOtherSessionsAsync(string userId,string profileId,string token)
+
+        #endregion
+
+        #region firebase authen
+        public async Task<List<PreLoginResponse>> AuthenticateWithFirebaseAsync(FirebaseTokenRequest request)
         {
-            await _sessionRepo.InvalidateOtherSessionsAsync(userId, profileId, token);  
+                FirebaseToken decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(request.FirebaseToken);
+                var email = decodedToken.Claims.ContainsKey("email") ? decodedToken.Claims["email"].ToString() : null;
+                var name = decodedToken.Claims.ContainsKey("name") ? decodedToken.Claims["name"].ToString() : null;
+                var user = await _accountRepo.GetByEmailAsync(email);
+                if (user == null)
+                {
+                    var userRole = await _roleRepo.GetByRoleNameAsync(RoleEnum.User.ToString());
+                    if (userRole == null)
+                    {
+                        throw new InvalidCredentialException("User role not found in database");
+                    }
+                    var userId = Guid.NewGuid();
+                     user = new User
+                    {
+                        UserId = Guid.NewGuid().ToString(),
+                        Email = email,
+                        //PasswordHash = hashedPassword,
+                        FullName = name,
+                        CreatedAt = DateTime.UtcNow,
+                        RoleId = userRole.RoleId,
+                        Verified = true,
+                    };
+                    await _accountRepo.CreateUserAsync(user);
+                    user = await _accountRepo.GetByEmailAsync(email);
+                }
+                var userProfiles = await _accountRepo.GetUserProfilesAsync(user.UserId);
+                var result =  _tokenService.GeneratePreLoginJwtTokens(userProfiles);
+               
+                return result;
         }
-        public async Task<bool> IsSessionValidAsync(string userId, string profileId, string sessionId)
-        {
-            var sessionChecked = await _sessionRepo.IsSessionValidAsync(userId, profileId, sessionId);
-            if (sessionChecked == true)
-            {
-                return true;
-            }
-            return false;
-        }
-    #endregion
+           
+        
+
+        #endregion
+
+
+
 
     }
 
