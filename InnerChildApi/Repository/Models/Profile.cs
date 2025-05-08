@@ -11,6 +11,8 @@ public partial class Profile
 
     public string UserId { get; set; }
 
+    public string ProfileName { get; set; }
+
     public string ProfileStatus { get; set; }
 
     public virtual ICollection<AichatSession> AichatSessions { get; set; } = new List<AichatSession>();
@@ -30,6 +32,8 @@ public partial class Profile
     public virtual ICollection<QuizUserAttempt> QuizUserAttempts { get; set; } = new List<QuizUserAttempt>();
 
     public virtual ICollection<QuizUserResult> QuizUserResults { get; set; } = new List<QuizUserResult>();
+
+    public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 
     public virtual ICollection<Session> Sessions { get; set; } = new List<Session>();
 
