@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contract.Dtos.Requests
+namespace Contract.Common.Enums
 {
-    public class FinalLoginRequest
+    public enum AudioEnum
     {
-       public string Token { get; set; }
+        Active,
+        Inactive,
     }
 }

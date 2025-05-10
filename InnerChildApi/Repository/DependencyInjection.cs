@@ -22,6 +22,9 @@ namespace Repository
             service.AddScoped<ISessionRepository, SessionRepository>();
             service.AddScoped<INotificationRepository, NotificationRepository>();
             service.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            service.AddScoped<IAudioCategoryRepository, AudioCategoryRepository>();
+            service.AddScoped<ISubAudioCategoryRepository, SubAudioCategoryRepository>();
+            service.AddScoped<IAudioRepository, AudioRepository>();
             return service;
         }
     }

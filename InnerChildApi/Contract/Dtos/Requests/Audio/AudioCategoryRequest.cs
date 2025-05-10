@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contract.Dtos.Requests
+namespace Contract.Dtos.Requests.Audio
 {
-    public class RefreshTokenRequest
+    public class AudioCategoryRequest
     {
-        public string RefreshToken { get; set; }
+        public string AudioCategoryName { get; set; }
     }
 }

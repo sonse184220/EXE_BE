@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contract.Dtos.Requests
+namespace Contract.Dtos.Requests.Auth
 {
-    public class UpdateProfileRequest
+    public class ProfileUpdateRequest
     {
         public string? FullName { get; set; }
 

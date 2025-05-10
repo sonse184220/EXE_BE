@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contract.Dtos.Requests
+namespace Contract.Dtos.Requests.Auth
 {
-    public class FirebaseTokenRequest
+    public class RefreshTokenRequest
     {
-        public string FirebaseToken { get; set; }
+        public string RefreshToken { get; set; }
     }
 }

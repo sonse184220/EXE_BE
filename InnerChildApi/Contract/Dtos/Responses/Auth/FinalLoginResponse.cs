@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contract.Dtos.Responses
+namespace Contract.Dtos.Responses.Auth
 {
     public class FinalLoginResponse
     {

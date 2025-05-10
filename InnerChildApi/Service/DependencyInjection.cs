@@ -15,12 +15,13 @@ namespace Service
         {
             service.AddScoped<IAuthService, AuthService>();
             service.AddScoped<IEmailService, EmailService>();
-            service.AddScoped<ICloudinaryImageService, CloudinaryImageService>();
+            service.AddScoped<ICloudinaryService, CloudinaryService>();
             service.AddScoped<IContentService, ContentService>();
             service.AddScoped<IUserService, UserService>();
             service.AddScoped<INotificationService, NotificationService>();
             service.AddScoped<ITokenService, TokenService>();
             service.AddScoped<ISessionService, SessionService>();
+            service.AddScoped<IAudioService, AudioService>();
 
             return service;
         }

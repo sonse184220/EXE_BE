@@ -1,7 +1,7 @@
 ﻿using CloudinaryDotNet;
 using Contract.Common.Enums;
-using Contract.Dtos.Requests;
-using Contract.Dtos.Responses;
+using Contract.Dtos.Requests.Auth;
+using Contract.Dtos.Responses.Auth;
 using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -32,17 +32,17 @@ namespace Service.Services
         private readonly IEmailService _emailService;
         private readonly IProfileRepository _profileRepo;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ICloudinaryImageService _cloudinaryImageService;
+        private readonly ICloudinaryService _cloudinaryService;
         private readonly ITokenService _tokenService;
         private readonly ISessionService _sessionService;
-        public AuthService(IAccountRepository accountRepo, IEmailService emailService,IProfileRepository profileRepo,IRoleRepository roleRepo, IHttpContextAccessor httpContextAccessor,ICloudinaryImageService cloudinaryImageService,ISessionService sessionService,ITokenService tokenService,IRefreshTokenRepository refreshTokenRepo)
+        public AuthService(IAccountRepository accountRepo, IEmailService emailService,IProfileRepository profileRepo,IRoleRepository roleRepo, IHttpContextAccessor httpContextAccessor,ICloudinaryService cloudinaryService,ISessionService sessionService,ITokenService tokenService,IRefreshTokenRepository refreshTokenRepo)
         {
             _accountRepo = accountRepo;
             _emailService = emailService;
             _httpContextAccessor = httpContextAccessor;
             _profileRepo = profileRepo; 
             _roleRepo = roleRepo;
-            _cloudinaryImageService = cloudinaryImageService;
+            _cloudinaryService = cloudinaryService;
             _tokenService = tokenService;
             _sessionService = sessionService;
             _refreshTokenRepo = refreshTokenRepo;
@@ -65,7 +65,8 @@ namespace Service.Services
                 string imageUrl = null;
                 if (request.ProfilePicture != null)
                 {
-                    imageUrl =  await _cloudinaryImageService.UploadImageAsync(request.ProfilePicture, CloudinaryFolderEnum.UserPicture.ToString());
+                var uploadParams = _cloudinaryService.CreateUploadParams(request.ProfilePicture, CloudinaryFolderEnum.UserPicture.ToString());
+                    imageUrl =  await _cloudinaryService.UploadAsync(uploadParams, request.ProfilePicture);
                 }
                 var user = new User
                 {
@@ -92,11 +93,8 @@ namespace Service.Services
                     };
                     await _profileRepo.CreateProfileAsync(profile);
                 }
-                var emailConfirmationToken = _tokenService.GenerateEmailConfirmationToken(user.UserId);
-                var requestUrl = _httpContextAccessor.HttpContext.Request;
-                var baseUrl = $"{requestUrl.Scheme}://{requestUrl.Host.Value}";
-                var emailConfirmationTokenLink = $"{baseUrl}/innerchild/auth/confirm-email?token={emailConfirmationToken}";
-                await _emailService.SendConfirmationEmailAsync(user.Email, user.FullName, emailConfirmationTokenLink);
+                var emailConfirmationLink =  _tokenService.GenerateEmailConfirmationLink(user.UserId);
+                await _emailService.SendConfirmationEmailAsync(user.Email, user.FullName, emailConfirmationLink);
         }
         #endregion
 
@@ -237,7 +235,7 @@ namespace Service.Services
 
         #endregion
 
-
+       
 
 
     }

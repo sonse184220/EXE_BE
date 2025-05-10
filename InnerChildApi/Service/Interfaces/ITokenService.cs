@@ -1,4 +1,4 @@
-﻿using Contract.Dtos.Responses;
+﻿using Contract.Dtos.Responses.Auth;
 using Repository.Models;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,10 @@ namespace Service.Interfaces
         Task<string> GenerateRefreshToken(string userId,string profileId);
         Task<RefreshToken> GetByRefreshTokenAsync(string refreshToken);
         Task<int> RevokeTokenAsync(RefreshToken refreshToken);
-        
+
+        string GenerateEmailConfirmationLink(string userId);
+
+
 
     }
 }

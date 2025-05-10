@@ -1,5 +1,5 @@
-﻿using Contract.Dtos.Requests;
-using Contract.Dtos.Responses;
+﻿using Contract.Dtos.Requests.Auth;
+using Contract.Dtos.Responses.Auth;
 using Repository.Models;
 using System;
 using System.Collections.Generic;

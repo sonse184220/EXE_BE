@@ -21,6 +21,10 @@ namespace Service.Services
         {
             return await _accountRepo.GetByUserNameAsync(fullname);
         }
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            return await _accountRepo.GetByEmailAsync(email);
+        }
 
         public async Task<User> GetUserByIdAsync(string userId)
         {

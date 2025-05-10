@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using Repository.Interfaces;
+using Repository.Models;
 using Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -22,17 +24,20 @@ namespace Service.Services
         private readonly string _displayName;
         private readonly IAccountRepository _accountRepo;
         private readonly EmailSettingConfig _emailSettingConfig;
-        public EmailService(IConfiguration config, IAccountRepository accountRepo,IOptions<EmailSettingConfig> emailSettingConfig)
+        private readonly ITokenService _tokenService;
+        public EmailService(IConfiguration config, IAccountRepository accountRepo,IOptions<EmailSettingConfig> emailSettingConfig, ITokenService tokenService)
         {
             _emailSettingConfig = emailSettingConfig.Value;
             _accountRepo = accountRepo;
-           
+
+
             _smtpServer = _emailSettingConfig.SmtpServer;
             _smtpPort = _emailSettingConfig.SmtpPort;
             _smtpUser = _emailSettingConfig.SmtpUser;
             _smtpPass = _emailSettingConfig.SmtpPass;
             _fromEmail = _emailSettingConfig.FromEmail;
             _displayName = _emailSettingConfig.DisplayName;
+            _tokenService = tokenService;
         }
 
         public async Task SendEmailAsync(string toEmail, string subject, string body)
@@ -73,6 +78,7 @@ namespace Service.Services
             }
             return html;
         }
+      
         public async Task SendConfirmationEmailAsync(string toEmail, string userName, string confirmLink)
         {
             var replacements = new Dictionary<string, string>
@@ -84,6 +90,7 @@ namespace Service.Services
             string body = LoadTemplate(templatePath, replacements);
             await SendEmailAsync(toEmail, "Confirm Account Registration", body);
         }
+       
 
         #region verify account (gmail confirm)
         public async Task<bool> VerifyAccount(string userId)
@@ -101,6 +108,8 @@ namespace Service.Services
             }
             return false;
         }
+
+       
         #endregion
 
     }
