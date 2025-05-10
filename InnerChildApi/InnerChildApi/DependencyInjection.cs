@@ -1,5 +1,6 @@
 ﻿using Contract.Common.Config;
 using InnerChildApi.Common.Configurations;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Repository.DBContext;
 using System.Text.Json.Serialization;
@@ -16,7 +17,7 @@ namespace InnerChildApi
             services.Configure<AppSettingConfig.JwtTokenSetting>(config.GetSection("JwtSettings"));
             services.Configure<AppSettingConfig.CloudinarySettingConfig>(config.GetSection("CloudinarySettings"));
             services.Configure<AppSettingConfig.EmailSettingConfig>(config.GetSection("EmailSettings"));
-
+            
 
 
 
@@ -28,9 +29,16 @@ namespace InnerChildApi
             services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
+            
             //auto mapper
             services.AddAutoMapper(typeof(Program).Assembly);
+            //support larger file upload
+            services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 104857600; // 100 MB
+            });
 
         }
     }

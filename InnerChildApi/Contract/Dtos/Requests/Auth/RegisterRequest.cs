@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contract.Dtos.Requests
+namespace Contract.Dtos.Requests.Auth
 {
     public class RegisterRequest
     {

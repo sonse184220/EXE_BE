@@ -1,6 +1,7 @@
 ﻿using Contract.Common.Constant;
 using Contract.Common.Enums;
-using Contract.Dtos.Responses;
+using Contract.Dtos.Responses.Auth;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -27,12 +28,15 @@ namespace Service.Services
         private readonly JwtTokenSetting _jwtTokenSetting;
         private readonly SymmetricSecurityKey _key;
         private readonly SigningCredentials _credentials;
-        public TokenService(IOptions<JwtTokenSetting> jwtTokenSetting,IRefreshTokenRepository refreshTokenRepo)
+
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public TokenService(IOptions<JwtTokenSetting> jwtTokenSetting,IRefreshTokenRepository refreshTokenRepo, IHttpContextAccessor httpContextAccessor)
         {
             _jwtTokenSetting = jwtTokenSetting.Value;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtTokenSetting.SecretKey));
             _credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512);
             _refreshTokenRepo = refreshTokenRepo;
+            _httpContextAccessor = httpContextAccessor;
         }
         #region generate email confirmation token
         public string GenerateEmailConfirmationToken(string userId)
@@ -180,6 +184,15 @@ namespace Service.Services
         public async Task<int> RevokeTokenAsync(RefreshToken refreshToken)
         {
             return await _refreshTokenRepo.RevokeTokenAsync(refreshToken);
+        }
+
+        public string GenerateEmailConfirmationLink(string userId)
+        {
+            var emailConfirmationToken = GenerateEmailConfirmationToken(userId);
+            var requestUrl = _httpContextAccessor.HttpContext.Request;
+            var baseUrl = $"{requestUrl.Scheme}://{requestUrl.Host.Value}";
+            var emailConfirmationTokenLink = $"{baseUrl}/innerchild/auth/confirm-email?token={emailConfirmationToken}";
+            return emailConfirmationTokenLink;
         }
     }
 }

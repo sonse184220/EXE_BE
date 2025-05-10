@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Contract.Dtos.Requests
+namespace Contract.Dtos.Requests.Article
 {
-    public class UpdateArticleRequest
+    public class ArticleUpdateRequest
     {
         public string? ArticleName { get; set; }
         public string? ArticleDescription { get; set; }

@@ -1,6 +1,7 @@
 ﻿using Contract.Common.Enums;
-using Contract.Dtos.Requests;
+using Contract.Dtos.Requests.Auth;
 using Contract.Dtos.Responses;
+using Contract.Dtos.Responses.Auth;
 using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,20 +20,27 @@ namespace InnerChildApi.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IUserService _userService;
-        private readonly ICloudinaryImageService _cloudinaryImageService;
+        private readonly ICloudinaryService _cloudinaryService;
         private readonly ITokenService _tokenService;
         private readonly IEmailService _emailService;
-        public AuthController(IAuthService authService, IUserService userService, ICloudinaryImageService cloudinaryImageService,ITokenService tokenService,IEmailService emailService)
+        public AuthController(IAuthService authService, IUserService userService, ICloudinaryService cloudinaryService,ITokenService tokenService,IEmailService emailService)
         {
             _authService = authService;
             _userService = userService;
-            _cloudinaryImageService = cloudinaryImageService;
+            _cloudinaryService = cloudinaryService;
             _tokenService = tokenService;
             _emailService = emailService;
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromForm] RegisterRequest request)
         {
+            if (request.ProfilePicture != null)
+            {
+                if (!request.ProfilePicture.ContentType.StartsWith("image/"))
+                {
+                    return BadRequest($"{request.ProfilePicture.FileName} is not image file");
+                }
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -72,10 +80,16 @@ namespace InnerChildApi.Controllers
                 {
                     return BadRequest("Missing token");
                 }
+
                 var userId = _tokenService.ValidateEmailConfirmationToken(token);
                 if (userId == null)
                 {
                     return BadRequest("Invalid or expired token!");
+                }
+                var user = await _userService.GetUserByIdAsync(userId);
+                if (user.Verified == true)
+                {
+                    return BadRequest("Email already confirmed");
                 }
                 var result = await _emailService.VerifyAccount(userId);
                 if (!result)
@@ -91,9 +105,44 @@ namespace InnerChildApi.Controllers
          
 
         }
-        [HttpPut("update-profile/{id}")]
-        public async Task<IActionResult> UpdateProfile(string id, [FromForm] UpdateProfileRequest request)
+        [HttpGet("resend-email-confirmation")]
+        public async Task<IActionResult> ResendEmailConfirmation(string email)
         {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(email))
+                {
+                    return BadRequest("Missing email");
+                }
+                var user = await _userService.GetByEmailAsync(email);
+                if (user == null)
+                {
+                    return NotFound("User not found.");
+                }
+                if (user.Verified == true)
+                {
+                    return BadRequest("Email already confirmed");
+                }
+                var confirmLink = _tokenService.GenerateEmailConfirmationLink(user.UserId);
+                await _emailService.SendConfirmationEmailAsync(user.Email, user.FullName, confirmLink);
+                return Ok("Email confirmation resent");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPut("update-profile/{id}")]
+        public async Task<IActionResult> UpdateProfile(string id, [FromForm] ProfileUpdateRequest request)
+        {
+            if (request.ProfilePicture != null)
+            {
+                if (!request.ProfilePicture.ContentType.StartsWith("image/"))
+                {
+                    return BadRequest($"{request.ProfilePicture.FileName} is not image file");
+                }
+            }
             try
             {
                 var user = await _userService.GetUserByIdAsync(id);
@@ -114,9 +163,10 @@ namespace InnerChildApi.Controllers
                 {
                     if (!string.IsNullOrEmpty(user.ProfilePicture))
                     {
-                        await _cloudinaryImageService.DeleteImageAsync(user.ProfilePicture);
+                        await _cloudinaryService.DeleteAsync(user.ProfilePicture);
                     }
-                var avatarUrl = await _cloudinaryImageService.UploadImageAsync(request.ProfilePicture, CloudinaryFolderEnum.UserPicture.ToString());
+                var imageUploadParams = _cloudinaryService.CreateUploadParams(request.ProfilePicture, CloudinaryFolderEnum.UserPicture.ToString());
+                var avatarUrl = await _cloudinaryService.UploadAsync(imageUploadParams, request.ProfilePicture);
                 user.ProfilePicture = avatarUrl;
                 }
                 
@@ -129,7 +179,7 @@ namespace InnerChildApi.Controllers
                 var result = await _userService.UpdateUserAsync(user);
                 if (result > 0)
                 {
-                    return Ok("Profile updated successfully");
+                    return NoContent();
                 }
                 return StatusCode(500, "Failed to update profile");
             }
@@ -257,5 +307,7 @@ namespace InnerChildApi.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+       
+
     }
 }

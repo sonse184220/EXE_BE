@@ -12,5 +12,10 @@ namespace Contract.Common.Enums
         UserPicture,
         CommunityPost,
 
+
+        Audio,
+        AudioThumbnail
+
     }
+
 }

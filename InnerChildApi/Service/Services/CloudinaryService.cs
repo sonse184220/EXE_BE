@@ -14,11 +14,11 @@ using Microsoft.Extensions.Options;
 
 namespace Service.Services
 {
-    public class CloudinaryImageService : ICloudinaryImageService
+    public class CloudinaryService : ICloudinaryService
     {
         private readonly Cloudinary _cloudinary;
         private readonly CloudinarySettingConfig _cloudinarySettingConfig;
-        public CloudinaryImageService(IConfiguration config,IOptions<CloudinarySettingConfig> cloudinarySettingConfig)
+        public CloudinaryService(IConfiguration config,IOptions<CloudinarySettingConfig> cloudinarySettingConfig)
         {
             _cloudinarySettingConfig = cloudinarySettingConfig.Value;
             var cloudName = _cloudinarySettingConfig.CloudName;
@@ -27,37 +27,69 @@ namespace Service.Services
             var account = new Account(cloudName, apiKey, apiSecret);
             _cloudinary = new Cloudinary(account);  
         }
-        public async Task<string> UploadImageAsync(IFormFile file, string cloudinaryFolder)
+        public RawUploadParams CreateUploadParams(IFormFile file, string cloudinaryFolder)
         {
-            try
+            if (file == null || file.Length == 0)
+                throw new ArgumentException("File is required.");
+
+
+            RawUploadParams uploadParams;
+
+            if (file.ContentType.StartsWith("image/"))
             {
-                using var stream = file.OpenReadStream();   
-                var uploadParams = new ImageUploadParams
+                uploadParams = new ImageUploadParams
                 {
-                    File = new FileDescription(file.FileName, stream),
                     Folder = cloudinaryFolder,
                 };
-                var result = await _cloudinary.UploadAsync(uploadParams);
-                if (result.StatusCode == HttpStatusCode.OK)
-                {
-                    return result.SecureUrl.ToString();
-                }
-                throw new Exception("Upload failed with status " + result.StatusCode);
-            }catch(Exception ex)
-            {
-                throw;
             }
-            
+            else if (file.ContentType.StartsWith("audio/"))
+            {
+                uploadParams = new RawUploadParams
+                {
+                    Folder = cloudinaryFolder,
+                };
+            }
+            else if (file.ContentType.StartsWith("video/"))
+            {
+                uploadParams = new VideoUploadParams
+                {
+                    Folder = cloudinaryFolder,
+                    
+                };
+            }
+            else
+            {
+                throw new ArgumentException("Unsupported file type.");
+            }
 
+            return uploadParams;
         }
-        public async Task<bool> DeleteImageAsync(string imageUrl)
+
+
+        public async Task<string> UploadAsync(RawUploadParams uploadParams,IFormFile file)
+        {
+            using var stream = file.OpenReadStream();
+            uploadParams.File = new FileDescription(file.FileName, stream);
+            var result = await _cloudinary.UploadAsync(uploadParams);
+            string fileUrl = null; 
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+                 fileUrl = result.SecureUrl.ToString();
+            }
+            else
+            {
+                throw new Exception($"Upload failed with status {result.StatusCode}");
+            }
+                return fileUrl;
+        }
+        public async Task<bool> DeleteAsync(string fileUrl)
         {
             try
             {
-                var publicId = GetPublicIdFromUrl(imageUrl);
+                var publicId = GetPublicIdFromUrl(fileUrl);
                 if (string.IsNullOrEmpty(publicId))
                 {
-                    throw new ArgumentException("Invalid image URL.");
+                    throw new ArgumentException("Invalid file URL.");
                 }
                 var deleteParams = new DeletionParams(publicId);
                 var result = await _cloudinary.DestroyAsync(deleteParams);
@@ -66,7 +98,7 @@ namespace Service.Services
             }
             catch (Exception ex)
             {
-                throw new Exception("Failed to delete image from Cloudinary", ex);
+                throw new Exception("Failed to delete file from Cloudinary", ex);
             }
         }
         private string GetPublicIdFromUrl(string url)
