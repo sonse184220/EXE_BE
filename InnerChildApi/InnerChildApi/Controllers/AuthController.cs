@@ -1,16 +1,12 @@
 ﻿using Contract.Common.Enums;
 using Contract.Dtos.Requests.Auth;
-using Contract.Dtos.Responses;
 using Contract.Dtos.Responses.Auth;
 using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Repository.Models;
 using Service.Interfaces;
 using System.Security.Authentication;
 using System.Security.Claims;
-using System.Text;
 
 namespace InnerChildApi.Controllers
 {
@@ -23,7 +19,7 @@ namespace InnerChildApi.Controllers
         private readonly ICloudinaryService _cloudinaryService;
         private readonly ITokenService _tokenService;
         private readonly IEmailService _emailService;
-        public AuthController(IAuthService authService, IUserService userService, ICloudinaryService cloudinaryService,ITokenService tokenService,IEmailService emailService)
+        public AuthController(IAuthService authService, IUserService userService, ICloudinaryService cloudinaryService, ITokenService tokenService, IEmailService emailService)
         {
             _authService = authService;
             _userService = userService;
@@ -34,16 +30,16 @@ namespace InnerChildApi.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromForm] RegisterRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (request.ProfilePicture != null)
             {
                 if (!request.ProfilePicture.ContentType.StartsWith("image/"))
                 {
                     return BadRequest($"{request.ProfilePicture.FileName} is not image file");
                 }
-            }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
             }
             try
             {
@@ -64,7 +60,7 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500,new RegisterResponse()
+                return StatusCode(500, new RegisterResponse()
                 {
                     IsSuccess = false,
                     Message = ex.Message,
@@ -98,11 +94,11 @@ namespace InnerChildApi.Controllers
                 }
                 return Ok("Email confirmed");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
-         
+
 
         }
         [HttpGet("resend-email-confirmation")]
@@ -165,11 +161,11 @@ namespace InnerChildApi.Controllers
                     {
                         await _cloudinaryService.DeleteAsync(user.ProfilePicture);
                     }
-                var imageUploadParams = _cloudinaryService.CreateUploadParams(request.ProfilePicture, CloudinaryFolderEnum.UserPicture.ToString());
-                var avatarUrl = await _cloudinaryService.UploadAsync(imageUploadParams, request.ProfilePicture);
-                user.ProfilePicture = avatarUrl;
+                    var imageUploadParams = _cloudinaryService.CreateUploadParams(request.ProfilePicture, CloudinaryFolderEnum.UserPicture.ToString());
+                    var avatarUrl = await _cloudinaryService.UploadAsync(imageUploadParams, request.ProfilePicture);
+                    user.ProfilePicture = avatarUrl;
                 }
-                
+
                 user.DateOfBirth = request.DateOfBirth ?? user.DateOfBirth;
                 if (request.Gender != null)
                 {
@@ -187,8 +183,8 @@ namespace InnerChildApi.Controllers
             {
                 return StatusCode(500, "Failed to update profile, " + ex.Message);
             }
-            
-            
+
+
         }
         [HttpPost("check-login")]
         public async Task<IActionResult> CheckLogin([FromBody] LoginRequest request)
@@ -203,21 +199,21 @@ namespace InnerChildApi.Controllers
                 return Ok(result);
 
             }
-            catch (InvalidCredentialException ex) 
+            catch (InvalidCredentialException ex)
             {
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return StatusCode(500,ex.Message);
+                return StatusCode(500, ex.Message);
             }
-           
-         
+
+
         }
         [HttpPost("login")]
-        public async  Task<IActionResult> Login([FromBody] FinalLoginRequest request)
+        public async Task<IActionResult> Login([FromBody] FinalLoginRequest request)
         {
-         
+
             try
             {
                 var user = _tokenService.ValidatePreLoginJwtToken(request.Token);
@@ -225,16 +221,16 @@ namespace InnerChildApi.Controllers
                 {
                     throw new Exception("Validation failed");
                 }
-                var result = await _authService.LoginAccountAsync(user.UserId,user.ProfileId);
+                var result = await _authService.LoginAccountAsync(user.UserId, user.ProfileId);
                 return Ok(result);
             }
-            catch (InvalidCredentialException ex) 
+            catch (InvalidCredentialException ex)
             {
                 return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return StatusCode(500,ex.Message);
+                return StatusCode(500, ex.Message);
             }
         }
         [Authorize]
@@ -253,7 +249,7 @@ namespace InnerChildApi.Controllers
                 await _authService.ChangePassword(userId, request.CurrentPassword, request.ConfirmPassword);
                 return Ok("Password changed");
             }
-            catch(InvalidCredentialException ex)
+            catch (InvalidCredentialException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -261,7 +257,7 @@ namespace InnerChildApi.Controllers
             {
                 return StatusCode(500, ex.Message);
             }
-           
+
         }
         [HttpPost("check-login-firebase")]
         public async Task<IActionResult> CheckLoginFirebase([FromBody] FirebaseTokenRequest request)
@@ -290,7 +286,7 @@ namespace InnerChildApi.Controllers
             try
             {
                 var storedToken = await _tokenService.GetByRefreshTokenAsync(request.RefreshToken);
-                if (storedToken == null || storedToken.IsRevoked==true || storedToken.ExpiresAt < DateTime.UtcNow)
+                if (storedToken == null || storedToken.IsRevoked == true || storedToken.ExpiresAt < DateTime.UtcNow)
                 {
                     return Unauthorized("Invalid or expired refresh token");
                 }
@@ -307,7 +303,7 @@ namespace InnerChildApi.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-       
+
 
     }
 }

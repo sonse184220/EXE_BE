@@ -1,11 +1,6 @@
 ﻿using Contract.Common.Enums;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Contract.Dtos.Requests.Auth
 {
@@ -37,7 +32,7 @@ namespace Contract.Dtos.Requests.Auth
 
 
         [EnumDataType(typeof(UserGenderEnum), ErrorMessage = "Invalid gender value.")]
-        public UserGenderEnum? gender{ get; set; }
+        public UserGenderEnum? gender { get; set; }
 
 
         [Phone(ErrorMessage = "Invalid phone number.")]

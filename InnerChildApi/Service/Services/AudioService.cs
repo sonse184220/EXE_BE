@@ -1,13 +1,6 @@
-﻿using CloudinaryDotNet.Actions;
-using Repository.Interfaces;
+﻿using Repository.Interfaces;
 using Repository.Models;
-using Repository.Repositories;
 using Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 namespace Service.Services
 {
     public class AudioService : IAudioService
@@ -15,7 +8,7 @@ namespace Service.Services
         private readonly IAudioRepository _audioRepo;
         private readonly ISubAudioCategoryRepository _subAudioCategoryRepo;
         private readonly IAudioCategoryRepository _audioCategoryRepo;
-        public AudioService(IAudioRepository audioRepo,ISubAudioCategoryRepository subAudioCategoryRepo, IAudioCategoryRepository audioCategoryRepo)
+        public AudioService(IAudioRepository audioRepo, ISubAudioCategoryRepository subAudioCategoryRepo, IAudioCategoryRepository audioCategoryRepo)
         {
             _subAudioCategoryRepo = subAudioCategoryRepo;
             _audioCategoryRepo = audioCategoryRepo;

@@ -3,15 +3,10 @@ using Repository.Base;
 using Repository.DBContext;
 using Repository.Interfaces;
 using Repository.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository.Repositories
 {
-    public class SessionRepository:GenericRepository<Session>,ISessionRepository
+    public class SessionRepository : GenericRepository<Session>, ISessionRepository
     {
         public SessionRepository(InnerChildExeContext context) : base(context)
         {
@@ -23,7 +18,7 @@ namespace Repository.Repositories
         {
             return await base.CreateAsync(session);
         }
-        public async Task InvalidateOtherSessionsAsync(string userId,string profileId,string token)
+        public async Task InvalidateOtherSessionsAsync(string userId, string profileId, string token)
         {
             var otherSession = await _context.Sessions.Where(x => x.UserId == userId && x.ProfileId == profileId && x.Token != token).ToListAsync();
             if (otherSession != null && otherSession.Count > 0)
@@ -46,5 +41,5 @@ namespace Repository.Repositories
             return false;
         }
     }
-   
+
 }

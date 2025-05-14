@@ -3,15 +3,10 @@ using Repository.Base;
 using Repository.DBContext;
 using Repository.Interfaces;
 using Repository.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository.Repositories
 {
-    public class RefreshTokenRepository:GenericRepository<RefreshToken>,IRefreshTokenRepository
+    public class RefreshTokenRepository : GenericRepository<RefreshToken>, IRefreshTokenRepository
     {
         public RefreshTokenRepository() : base()
         {
@@ -19,7 +14,7 @@ namespace Repository.Repositories
         public RefreshTokenRepository(InnerChildExeContext context) : base(context)
         {
         }
-        public async Task<int> CreateRefreshTokenAsync(string userId,string profileId, string token, DateTime createAt, DateTime expireAt)
+        public async Task<int> CreateRefreshTokenAsync(string userId, string profileId, string token, DateTime createAt, DateTime expireAt)
         {
             var refreshToken = new RefreshToken
             {
@@ -41,7 +36,7 @@ namespace Repository.Repositories
         }
         public async Task<RefreshToken> GetByRefreshTokenWithIncludeAsync(string refreshToken)
         {
-            return await _context.RefreshTokens.Include(x=>x.User).Include(x=>x.Profile).FirstOrDefaultAsync(x => x.Token == refreshToken);
+            return await _context.RefreshTokens.Include(x => x.User).Include(x => x.Profile).FirstOrDefaultAsync(x => x.Token == refreshToken);
         }
 
         public async Task<int> RevokeTokenAsync(RefreshToken refreshToken)
@@ -50,5 +45,5 @@ namespace Repository.Repositories
             return await base.UpdateAsync(refreshToken);
         }
     }
-   
+
 }

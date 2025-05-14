@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Contract.Common.Config
+﻿namespace Contract.Common.Config
 {
     public static class AppSettingConfig
     {
@@ -30,6 +24,15 @@ namespace Contract.Common.Config
             public string SmtpPass { get; set; }
             public string FromEmail { get; set; }
             public string DisplayName { get; set; }
+        }
+        public class AiSettingConfig
+        {
+            public string ApiKey { get; set; }
+            public string Url { get; set; }
+            public string Model { get; set; }
+            public string UserRole { get; set; }
+            public string AssistantRole { get; set; }
+            public string SystemRole { get; set; }
         }
     }
 }

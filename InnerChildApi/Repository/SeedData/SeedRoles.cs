@@ -1,11 +1,5 @@
 ﻿using Contract.Common.Enums;
-using Microsoft.Extensions.DependencyInjection;
 using Repository.DBContext;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository.SeedData
 {

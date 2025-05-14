@@ -1,8 +1,4 @@
-﻿using Contract.Common.Enums;
-using Contract.Dtos.Requests;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Repository.Models;
 using Service.Interfaces;
 
@@ -56,14 +52,14 @@ namespace InnerChildApi.Controllers
             {
                 var deleteResult = await _notificationService.DeleteNotificationAsync(notification);
                 return Ok("Deleted notification");
-                
+
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
         }
-        
+
 
     }
 }
