@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
+﻿using Contract.Common.Enums;
 using Service.Interfaces;
 using System.Security.Claims;
-using Contract.Common.Enums;
 
 namespace InnerChildApi.Common.Middleware
 {
@@ -28,9 +26,9 @@ namespace InnerChildApi.Common.Middleware
                 var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 var profileId = context.User.FindFirst("ProfileId")?.Value;
                 var sessionId = context.User.FindFirst("SessionId")?.Value;
-                if (!string.IsNullOrEmpty(userId) &&!string.IsNullOrEmpty(profileId) &&!string.IsNullOrEmpty(sessionId))
+                if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(profileId) && !string.IsNullOrEmpty(sessionId))
                 {
-                    
+
                     var sessionService = context.RequestServices.GetRequiredService<ISessionService>();
                     var result = await sessionService.IsSessionValidAsync(userId, profileId, sessionId);
                     if (!result)

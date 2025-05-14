@@ -1,16 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using Repository.Interfaces;
-using Repository.Models;
 using Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 using static Contract.Common.Config.AppSettingConfig;
 namespace Service.Services
 {
@@ -25,7 +17,7 @@ namespace Service.Services
         private readonly IAccountRepository _accountRepo;
         private readonly EmailSettingConfig _emailSettingConfig;
         private readonly ITokenService _tokenService;
-        public EmailService(IConfiguration config, IAccountRepository accountRepo,IOptions<EmailSettingConfig> emailSettingConfig, ITokenService tokenService)
+        public EmailService(IConfiguration config, IAccountRepository accountRepo, IOptions<EmailSettingConfig> emailSettingConfig, ITokenService tokenService)
         {
             _emailSettingConfig = emailSettingConfig.Value;
             _accountRepo = accountRepo;
@@ -45,7 +37,7 @@ namespace Service.Services
             var email = new MimeMessage();
             email.From.Add(new MailboxAddress(_displayName, _fromEmail));
             email.To.Add(MailboxAddress.Parse(toEmail));
-            email.Subject = subject; 
+            email.Subject = subject;
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
                 Text = body
@@ -57,11 +49,12 @@ namespace Service.Services
                 if (!string.IsNullOrEmpty(_smtpUser) && !string.IsNullOrEmpty(_smtpPass))
                 {
                     smtp.Authenticate(_smtpUser, _smtpPass);
-                }   
-                await smtp.SendAsync(email);    
-            }catch(Exception ex)
+                }
+                await smtp.SendAsync(email);
+            }
+            catch (Exception ex)
             {
-                throw new Exception($"Error sending mail: {ex.Message}",ex);
+                throw new Exception($"Error sending mail: {ex.Message}", ex);
             }
             finally
             {
@@ -78,7 +71,7 @@ namespace Service.Services
             }
             return html;
         }
-      
+
         public async Task SendConfirmationEmailAsync(string toEmail, string userName, string confirmLink)
         {
             var replacements = new Dictionary<string, string>
@@ -86,11 +79,11 @@ namespace Service.Services
         { "{{UserName}}", userName },
         { "{{ConfirmLink}}", confirmLink }
         };
-            var templatePath = Path.Combine(AppContext.BaseDirectory, "Templates","ConfirmEmailTemplate.html");
+            var templatePath = Path.Combine(AppContext.BaseDirectory, "Templates", "ConfirmEmailTemplate.html");
             string body = LoadTemplate(templatePath, replacements);
             await SendEmailAsync(toEmail, "Confirm Account Registration", body);
         }
-       
+
 
         #region verify account (gmail confirm)
         public async Task<bool> VerifyAccount(string userId)
@@ -109,7 +102,7 @@ namespace Service.Services
             return false;
         }
 
-       
+
         #endregion
 
     }

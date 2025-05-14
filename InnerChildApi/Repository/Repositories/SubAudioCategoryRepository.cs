@@ -3,15 +3,10 @@ using Repository.Base;
 using Repository.DBContext;
 using Repository.Interfaces;
 using Repository.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository.Repositories
 {
-    public class SubAudioCategoryRepository :GenericRepository<SubAudioCategory>, ISubAudioCategoryRepository
+    public class SubAudioCategoryRepository : GenericRepository<SubAudioCategory>, ISubAudioCategoryRepository
     {
         public SubAudioCategoryRepository() : base()
         {
@@ -28,13 +23,13 @@ namespace Repository.Repositories
 
         public async Task<List<SubAudioCategory>> GetAllSubAudioCategoryAsync()
         {
-            return await _context.SubAudioCategories.Include(x=>x.AudioCategory).ToListAsync();
+            return await _context.SubAudioCategories.Include(x => x.AudioCategory).ToListAsync();
         }
 
 
         public async Task<SubAudioCategory> GetSubAudioCategoryByIdAsync(string subAudioCategoryId)
         {
-            return await _context.SubAudioCategories.Include(x=>x.AudioCategory).FirstOrDefaultAsync(x=>x.SubAudioCategoryId == subAudioCategoryId);
+            return await _context.SubAudioCategories.Include(x => x.AudioCategory).FirstOrDefaultAsync(x => x.SubAudioCategoryId == subAudioCategoryId);
         }
 
         public async Task<int> UpdateSubAudioSubCategoryAsync(SubAudioCategory subAudioCategory)

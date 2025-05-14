@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-
-namespace Contract.Common.Enums
+﻿namespace Contract.Common.Enums
 {
     public enum UserAccountEnum
     {
@@ -14,8 +7,8 @@ namespace Contract.Common.Enums
     }
     public enum UserGenderEnum
     {
-        Male ,
-        Female, 
+        Male,
+        Female,
         Other
     }
     public enum JwtTypeEnum

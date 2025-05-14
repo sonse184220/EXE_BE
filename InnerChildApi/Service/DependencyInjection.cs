@@ -1,11 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Service.Interfaces;
 using Service.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service
 {
@@ -22,7 +17,8 @@ namespace Service
             service.AddScoped<ITokenService, TokenService>();
             service.AddScoped<ISessionService, SessionService>();
             service.AddScoped<IAudioService, AudioService>();
-
+            service.AddScoped<IAiService, AiService>();
+            service.AddScoped<ICommunityService,CommunityService>();
             return service;
         }
     }

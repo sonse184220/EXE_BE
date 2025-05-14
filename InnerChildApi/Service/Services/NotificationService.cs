@@ -1,12 +1,6 @@
 ﻿using Repository.Interfaces;
 using Repository.Models;
-using Repository.Repositories;
 using Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.Services
 {
@@ -24,7 +18,7 @@ namespace Service.Services
 
         public async Task<bool> DeleteNotificationAsync(Notification notification)
         {
-           return await _notiRepo.DeleteNotificationAsync(notification);
+            return await _notiRepo.DeleteNotificationAsync(notification);
         }
 
         public async Task<List<Notification>> GetAllNotificationsAsync()

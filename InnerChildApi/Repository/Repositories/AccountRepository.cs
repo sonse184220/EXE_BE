@@ -1,20 +1,13 @@
 ﻿using Contract.Common.Enums;
-using Contract.Dtos.Requests;
-using Contract.Dtos.Responses;
 using Microsoft.EntityFrameworkCore;
 using Repository.Base;
 using Repository.DBContext;
 using Repository.Interfaces;
 using Repository.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository.Repositories
 {
-    public class AccountRepository:GenericRepository<User>,IAccountRepository
+    public class AccountRepository : GenericRepository<User>, IAccountRepository
     {
         public AccountRepository() : base()
         {
@@ -53,8 +46,8 @@ namespace Repository.Repositories
 
         public async Task<List<Profile>> GetUserProfilesAsync(string userId)
         {
-            return await _context.Profiles.Where(x => x.UserId == userId&&x.ProfileStatus==UserAccountEnum.Active.ToString()).ToListAsync();
+            return await _context.Profiles.Where(x => x.UserId == userId && x.ProfileStatus == UserAccountEnum.Active.ToString()).ToListAsync();
         }
     }
-   
+
 }

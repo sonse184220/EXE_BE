@@ -2,11 +2,6 @@
 using Repository.Interfaces;
 using Repository.Repositories;
 using Repository.SeedData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository
 {
@@ -25,6 +20,9 @@ namespace Repository
             service.AddScoped<IAudioCategoryRepository, AudioCategoryRepository>();
             service.AddScoped<ISubAudioCategoryRepository, SubAudioCategoryRepository>();
             service.AddScoped<IAudioRepository, AudioRepository>();
+            service.AddScoped<ICommunityGroupRepository,CommunityGroupRepository>();
+            service.AddScoped<ICommunityMemberRepository, CommunityMemberRepository>();
+            service.AddScoped<ICommunityPostRepository, CommunityPostRepository>();
             return service;
         }
     }

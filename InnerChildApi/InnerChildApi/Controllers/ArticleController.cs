@@ -1,7 +1,5 @@
 ﻿using Contract.Common.Enums;
 using Contract.Dtos.Requests.Article;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Models;
 using Service.Interfaces;
@@ -22,6 +20,10 @@ namespace InnerChildApi.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateArticle([FromForm] ArticleCreateRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (request.Image != null)
             {
                 if (!request.Image.ContentType.StartsWith("image/"))
@@ -34,8 +36,8 @@ namespace InnerChildApi.Controllers
                 string articleImageUrl = null;
                 if (request.Image != null)
                 {
-                var articleImageParams =  _cloudinaryService.CreateUploadParams(request.Image,CloudinaryFolderEnum.Article.ToString());
-                articleImageUrl = await _cloudinaryService.UploadAsync(articleImageParams, request.Image);
+                    var articleImageParams = _cloudinaryService.CreateUploadParams(request.Image, CloudinaryFolderEnum.Article.ToString());
+                    articleImageUrl = await _cloudinaryService.UploadAsync(articleImageParams, request.Image);
                 }
                 var article = new Article()
                 {
@@ -48,20 +50,20 @@ namespace InnerChildApi.Controllers
                 await _contentService.CreateArticleAsync(article);
                 return Created("", new { message = "Article created successfully" });
             }
-            catch(ArgumentException ex)
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return StatusCode(500,$"Something went wrong "+ex.Message);
+                return StatusCode(500, $"Something went wrong " + ex.Message);
             }
-           
+
         }
         [HttpGet("all")]
         public async Task<IActionResult> GetAllArticle()
         {
-            var articles=  await _contentService.GetAllArticlesAsync();
+            var articles = await _contentService.GetAllArticlesAsync();
             return Ok(articles);
 
         }
@@ -101,6 +103,7 @@ namespace InnerChildApi.Controllers
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateArticle(string id, [FromForm] ArticleUpdateRequest updatedArticle)
         {
+           
             if (updatedArticle.Image != null)
             {
                 if (!updatedArticle.Image.ContentType.StartsWith("image/"))
@@ -139,7 +142,7 @@ namespace InnerChildApi.Controllers
             {
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
-          
+
         }
 
     }

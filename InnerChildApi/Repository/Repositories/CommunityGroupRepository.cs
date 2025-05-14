@@ -1,0 +1,41 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Repository.Base;
+using Repository.DBContext;
+using Repository.Interfaces;
+using Repository.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Repository.Repositories
+{
+    public class CommunityGroupRepository:GenericRepository<UserCommunity>,ICommunityGroupRepository
+    {
+        public CommunityGroupRepository():base()
+        {
+            
+        }
+        public CommunityGroupRepository(InnerChildExeContext context) : base(context)
+        {
+        }
+        public async Task<UserCommunity> GetCommunityByIdAsync(string communityGroupId)
+        {
+            return await base.GetByIdAsync(communityGroupId);
+        }
+        public async Task<IEnumerable<UserCommunity>> GetAllCommunitiesAsync()
+        {
+            return await base.GetAllAsync();
+        }
+        public async Task<int> CreateCommunityAsync(UserCommunity userCommunity)
+        {
+           return await base.CreateAsync(userCommunity);
+        }
+        public async Task<int> UpdateUserCommunityAsync(UserCommunity userCommunity)
+        {
+           return await base.UpdateAsync(userCommunity);
+        }
+        
+    }
+}

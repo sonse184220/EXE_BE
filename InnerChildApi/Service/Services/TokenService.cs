@@ -2,24 +2,17 @@
 using Contract.Common.Enums;
 using Contract.Dtos.Responses.Auth;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Repository.Interfaces;
 using Repository.Models;
-using Repository.Repositories;
 using Service.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using static Contract.Common.Config.AppSettingConfig;
-using static Org.BouncyCastle.Math.EC.ECCurve;
 namespace Service.Services
 {
     public class TokenService : ITokenService
@@ -30,7 +23,7 @@ namespace Service.Services
         private readonly SigningCredentials _credentials;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public TokenService(IOptions<JwtTokenSetting> jwtTokenSetting,IRefreshTokenRepository refreshTokenRepo, IHttpContextAccessor httpContextAccessor)
+        public TokenService(IOptions<JwtTokenSetting> jwtTokenSetting, IRefreshTokenRepository refreshTokenRepo, IHttpContextAccessor httpContextAccessor)
         {
             _jwtTokenSetting = jwtTokenSetting.Value;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtTokenSetting.SecretKey));
@@ -46,8 +39,8 @@ namespace Service.Services
                 new Claim(ClaimTypes.NameIdentifier, userId),
                 new Claim(JwtClaimTypeConstant.TokenType,JwtTypeEnum.EmailConfirm.ToString())
             };
-           
-            return GenerateToken(claims,TimeSpan.FromDays(1));
+
+            return GenerateToken(claims, TimeSpan.FromDays(1));
         }
         #endregion
         #region generate final jwt token
@@ -79,7 +72,7 @@ namespace Service.Services
             new Claim(JwtClaimTypeConstant.TokenType, JwtTypeEnum.PreLogin.ToString())
             };
 
-              var tokenResult = GenerateToken(claims, TimeSpan.FromDays(_jwtTokenSetting.ExpiresAccessToken));
+                var tokenResult = GenerateToken(claims, TimeSpan.FromDays(_jwtTokenSetting.ExpiresAccessToken));
                 finalProfiles.Add(new PreLoginResponse
                 {
                     ProfileId = profile.ProfileId,
@@ -92,23 +85,23 @@ namespace Service.Services
             return finalProfiles;
         }
 
-       
+
         #endregion
         #region validate email confirmation token
         public string ValidateEmailConfirmationToken(string token)
         {
-                var principle = ValidateToken(token);
-                var typeClaim = principle.FindFirst(JwtClaimTypeConstant.TokenType)?.Value;
-                if (typeClaim != JwtTypeEnum.EmailConfirm.ToString())
-                {
-                    throw new InvalidCredentialException("Invalid token type");
-                }
-                var userId = principle.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                if (string.IsNullOrEmpty(userId))
-                {
+            var principle = ValidateToken(token);
+            var typeClaim = principle.FindFirst(JwtClaimTypeConstant.TokenType)?.Value;
+            if (typeClaim != JwtTypeEnum.EmailConfirm.ToString())
+            {
+                throw new InvalidCredentialException("Invalid token type");
+            }
+            var userId = principle.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
                 throw new InvalidCredentialException("User Id not found in token");
-                }
-                return userId;
+            }
+            return userId;
         }
         #endregion
         #region validate prelogin token
@@ -136,7 +129,7 @@ namespace Service.Services
         #endregion
 
 
-        private string GenerateToken(IEnumerable<Claim> claims,TimeSpan expiration)
+        private string GenerateToken(IEnumerable<Claim> claims, TimeSpan expiration)
         {
             var token = new JwtSecurityToken(
                issuer: _jwtTokenSetting.Issuer,
@@ -168,7 +161,7 @@ namespace Service.Services
             var token = GenerateRandomToken();
             var createAt = DateTime.UtcNow;
             var expireAt = createAt.AddDays(_jwtTokenSetting.ExpiresRefreshToken);
-            var result = await _refreshTokenRepo.CreateRefreshTokenAsync(userId,profileId, token, createAt, expireAt);
+            var result = await _refreshTokenRepo.CreateRefreshTokenAsync(userId, profileId, token, createAt, expireAt);
             return token;
         }
         private string GenerateRandomToken()
@@ -180,7 +173,7 @@ namespace Service.Services
         {
             return await _refreshTokenRepo.GetByRefreshTokenAsync(refreshToken);
         }
-       
+
         public async Task<int> RevokeTokenAsync(RefreshToken refreshToken)
         {
             return await _refreshTokenRepo.RevokeTokenAsync(refreshToken);

@@ -2,15 +2,10 @@
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Net;
 using static Contract.Common.Config.AppSettingConfig;
-using Microsoft.Extensions.Options;
 
 namespace Service.Services
 {
@@ -18,14 +13,14 @@ namespace Service.Services
     {
         private readonly Cloudinary _cloudinary;
         private readonly CloudinarySettingConfig _cloudinarySettingConfig;
-        public CloudinaryService(IConfiguration config,IOptions<CloudinarySettingConfig> cloudinarySettingConfig)
+        public CloudinaryService(IConfiguration config, IOptions<CloudinarySettingConfig> cloudinarySettingConfig)
         {
             _cloudinarySettingConfig = cloudinarySettingConfig.Value;
             var cloudName = _cloudinarySettingConfig.CloudName;
             var apiKey = _cloudinarySettingConfig.ApiKey;
             var apiSecret = _cloudinarySettingConfig.ApiSecret;
             var account = new Account(cloudName, apiKey, apiSecret);
-            _cloudinary = new Cloudinary(account);  
+            _cloudinary = new Cloudinary(account);
         }
         public RawUploadParams CreateUploadParams(IFormFile file, string cloudinaryFolder)
         {
@@ -54,7 +49,7 @@ namespace Service.Services
                 uploadParams = new VideoUploadParams
                 {
                     Folder = cloudinaryFolder,
-                    
+
                 };
             }
             else
@@ -66,21 +61,21 @@ namespace Service.Services
         }
 
 
-        public async Task<string> UploadAsync(RawUploadParams uploadParams,IFormFile file)
+        public async Task<string> UploadAsync(RawUploadParams uploadParams, IFormFile file)
         {
             using var stream = file.OpenReadStream();
             uploadParams.File = new FileDescription(file.FileName, stream);
             var result = await _cloudinary.UploadAsync(uploadParams);
-            string fileUrl = null; 
+            string fileUrl = null;
             if (result.StatusCode == HttpStatusCode.OK)
             {
-                 fileUrl = result.SecureUrl.ToString();
+                fileUrl = result.SecureUrl.ToString();
             }
             else
             {
                 throw new Exception($"Upload failed with status {result.StatusCode}");
             }
-                return fileUrl;
+            return fileUrl;
         }
         public async Task<bool> DeleteAsync(string fileUrl)
         {

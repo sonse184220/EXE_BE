@@ -1,6 +1,5 @@
 ﻿using Contract.Dtos.Requests.Audio;
 using Contract.Dtos.Responses.Audio;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Models;
 using Service.Interfaces;
@@ -14,7 +13,7 @@ namespace InnerChildApi.Controllers
         private readonly IAudioService _audioService;
         public SubAudioCategoryController(IAudioService audioService)
         {
-            _audioService = audioService;  
+            _audioService = audioService;
         }
         [HttpGet("all")]
         public async Task<IActionResult> GetAllSubAudioCategories()
@@ -25,7 +24,7 @@ namespace InnerChildApi.Controllers
                 SubAudioCategoryId = s.SubAudioCategoryId,
                 SubAudioCategoryName = s.SubAudioCategoryName,
                 AudioCategoryId = s.AudioCategoryId,
-                AudioCategoryName = s.AudioCategory.AudioCategoryName 
+                AudioCategoryName = s.AudioCategory.AudioCategoryName
             }).ToList();
 
             return Ok(response);
@@ -39,7 +38,7 @@ namespace InnerChildApi.Controllers
             {
                 return NotFound();
             }
-            var response =  new SubAudioCategoryResponse
+            var response = new SubAudioCategoryResponse
             {
                 SubAudioCategoryId = subCategory.SubAudioCategoryId,
                 SubAudioCategoryName = subCategory.SubAudioCategoryName,
@@ -52,6 +51,10 @@ namespace InnerChildApi.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateSubAudioCategory([FromBody] SubAudioCategoryCreateRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var audioCategory = await _audioService.GetAudioCategoryByIdAsync(request.AudioCategoryId);
             if (audioCategory == null)
             {
@@ -69,23 +72,23 @@ namespace InnerChildApi.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateSubAudioCategory(string id, [FromBody] SubAudioCategoryCreateRequest request)
+        public async Task<IActionResult> UpdateSubAudioCategory(string id, [FromBody] SubAudioCategoryUpdateRequest updatedSubAudio)
         {
             var existingSubAudioCategory = await _audioService.GetSubAudioCategoryByIdAsync(id);
             if (existingSubAudioCategory == null)
             {
                 return NotFound();
             }
-            if (string.IsNullOrWhiteSpace(request.AudioCategoryId))
+            if (!string.IsNullOrWhiteSpace(updatedSubAudio.AudioCategoryId))
             {
-                var audioCategory = await _audioService.GetAudioCategoryByIdAsync(request.AudioCategoryId);
+                var audioCategory = await _audioService.GetAudioCategoryByIdAsync(updatedSubAudio.AudioCategoryId);
                 if (audioCategory == null)
                 {
-                    return NotFound($"Audio category with ID {request.AudioCategoryId} not found.");
+                    return NotFound($"Audio category with ID {updatedSubAudio.AudioCategoryId} not found.");
                 }
-                existingSubAudioCategory.AudioCategoryId = request.AudioCategoryId;
+                existingSubAudioCategory.AudioCategoryId = updatedSubAudio.AudioCategoryId;
             }
-            existingSubAudioCategory.SubAudioCategoryName = request.SubAudioCategoryName ?? existingSubAudioCategory.SubAudioCategoryName;
+            existingSubAudioCategory.SubAudioCategoryName = updatedSubAudio.SubAudioCategoryName ?? existingSubAudioCategory.SubAudioCategoryName;
             var updatedRows = await _audioService.UpdateSubAudioSubCategoryAsync(existingSubAudioCategory);
             if (updatedRows <= 0) return StatusCode(500);
             return NoContent();
