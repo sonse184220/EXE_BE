@@ -20,9 +20,11 @@ namespace Repository
             service.AddScoped<IAudioCategoryRepository, AudioCategoryRepository>();
             service.AddScoped<ISubAudioCategoryRepository, SubAudioCategoryRepository>();
             service.AddScoped<IAudioRepository, AudioRepository>();
-            service.AddScoped<ICommunityGroupRepository,CommunityGroupRepository>();
+            service.AddScoped<ICommunityGroupRepository, CommunityGroupRepository>();
             service.AddScoped<ICommunityMemberRepository, CommunityMemberRepository>();
             service.AddScoped<ICommunityPostRepository, CommunityPostRepository>();
+            service.AddScoped<IMoodJournalTypeRepository, MoodJournalTypeRepository>();
+            service.AddScoped<IMoodJournalRepository, MoodJournalRepository>();
             return service;
         }
     }

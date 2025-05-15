@@ -1,4 +1,5 @@
-﻿using Contract.Common.Enums;
+﻿using Contract.Common.Constant;
+using Contract.Common.Enums;
 using Service.Interfaces;
 using System.Security.Claims;
 
@@ -16,7 +17,7 @@ namespace InnerChildApi.Common.Middleware
             if (context.User.Identity?.IsAuthenticated == true)
             {
 
-                var tokenType = context.User.FindFirst("TokenType")?.Value;
+                var tokenType = context.User.FindFirst(JwtClaimTypeConstant.TokenType)?.Value;
                 if (tokenType != JwtTypeEnum.FinalLogin.ToString())
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -24,8 +25,8 @@ namespace InnerChildApi.Common.Middleware
                     return;
                 }
                 var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                var profileId = context.User.FindFirst("ProfileId")?.Value;
-                var sessionId = context.User.FindFirst("SessionId")?.Value;
+                var profileId = context.User.FindFirst(JwtClaimTypeConstant.ProfileId)?.Value;
+                var sessionId = context.User.FindFirst(JwtClaimTypeConstant.SessionId)?.Value;
                 if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(profileId) && !string.IsNullOrEmpty(sessionId))
                 {
 

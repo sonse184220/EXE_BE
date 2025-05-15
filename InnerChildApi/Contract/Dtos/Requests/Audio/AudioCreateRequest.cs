@@ -11,10 +11,10 @@ namespace Contract.Dtos.Requests.Audio
         public AudioEnum AudioStatus { get; set; }
         public IFormFile? AudioFile { get; set; }
         public IFormFile? AudioThumbnailFile { get; set; }
-        [Required(ErrorMessage ="Audio premium is required")]
+        [Required(ErrorMessage = "Audio premium is required")]
         public bool AudioIsPremium { get; set; }
 
-        [Required(ErrorMessage ="Sub audio category id is required")]
+        [Required(ErrorMessage = "Sub audio category id is required")]
         public string SubAudioCategoryId { get; set; }
 
     }

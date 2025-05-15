@@ -2,16 +2,11 @@
 using Contract.Dtos.Requests.Auth;
 using Contract.Dtos.Responses.Auth;
 using FirebaseAdmin.Auth;
-using FirebaseAdmin.Auth.Hash;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Authentication;
 using System.Security.Claims;
-using System.Text;
 
 namespace InnerChildApi.Controllers
 {
@@ -359,7 +354,7 @@ namespace InnerChildApi.Controllers
             }
             try
             {
-                var userId =  _tokenService.ValidateForgotPasswordToken(request.Token);
+                var userId = _tokenService.ValidateForgotPasswordToken(request.Token);
                 if (userId == null)
                 {
                     return NotFound("User not found");
@@ -374,9 +369,9 @@ namespace InnerChildApi.Controllers
                     return BadRequest("Email not confirmed");
                 }
 
-                var token = _tokenService.GenerateResetPasswordToken(userId,request.NewPassword);
+                var token = _tokenService.GenerateResetPasswordToken(userId, request.NewPassword);
                 var resetLink = _tokenService.GenerateEmailConfirmationResetPasswordLink(token);
-                await _emailService.SendResetPasswordEmailAsync(user.Email,user.FullName , resetLink);
+                await _emailService.SendResetPasswordEmailAsync(user.Email, user.FullName, resetLink);
                 return Ok("Reset password link has been sent, please check gmail");
             }
             catch (Exception ex)

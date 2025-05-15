@@ -92,7 +92,7 @@ namespace Service.Services
         public async Task<List<PreLoginResponse>> CheckLoginAccountAsync(LoginRequest request)
         {
             var existingUser = await _accountRepo.GetByEmailAsync(request.Email);
-            if (existingUser !=null && existingUser.PasswordHash == null)
+            if (existingUser != null && existingUser.PasswordHash == null)
             {
                 throw new InvalidCredentialException("User already has this account link with another sign in method.");
             }
