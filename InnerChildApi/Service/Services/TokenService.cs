@@ -56,7 +56,7 @@ namespace Service.Services
             }
             return userId;
         }
-        public string GenerateResetPasswordToken(string userId,string password)
+        public string GenerateResetPasswordToken(string userId, string password)
         {
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
             var claims = new List<Claim>
@@ -251,7 +251,7 @@ namespace Service.Services
 
         public string GenerateEmailConfirmationResetPasswordLink(string token)
         {
-          
+
             var requestUrl = _httpContextAccessor.HttpContext.Request;
             var baseUrl = $"{requestUrl.Scheme}://{requestUrl.Host.Value}";
             var emailResetPasswordTokenLink = $"{baseUrl}/innerchild/auth/verify-reset-password?token={token}";

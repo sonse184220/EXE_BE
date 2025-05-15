@@ -59,10 +59,10 @@ namespace Service.Services
             Console.WriteLine($"Full API response: {responseJson}");
             var responseObj = JsonSerializer.Deserialize<AiResponse>(responseJson);
             string result = null;
-             result = responseObj.choices.FirstOrDefault()?.message?.content;
+            result = responseObj.choices.FirstOrDefault()?.message?.content;
             if (string.IsNullOrEmpty(result))
             {
-                return result="Server is busy";
+                return result = "Server is busy";
             }
             return result;
         }

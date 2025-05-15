@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Contract.Dtos.Requests.Auth
 {
     public class ResetPasswordRequest
     {
-        [Required(ErrorMessage ="Token is required")]
-        public string Token { get; set;}
+        [Required(ErrorMessage = "Token is required")]
+        public string Token { get; set; }
         [Required(ErrorMessage = "New password is required")]
 
         public string NewPassword { get; set; }

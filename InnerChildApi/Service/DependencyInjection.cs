@@ -18,7 +18,8 @@ namespace Service
             service.AddScoped<ISessionService, SessionService>();
             service.AddScoped<IAudioService, AudioService>();
             service.AddScoped<IAiService, AiService>();
-            service.AddScoped<ICommunityService,CommunityService>();
+            service.AddScoped<ICommunityService, CommunityService>();
+            service.AddScoped<IMoodJournalService, MoodJournalService>();
             return service;
         }
     }

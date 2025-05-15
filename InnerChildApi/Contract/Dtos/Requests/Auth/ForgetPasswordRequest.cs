@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Contract.Dtos.Requests.Auth
 {
@@ -11,6 +6,6 @@ namespace Contract.Dtos.Requests.Auth
     {
         [Required]
         public string Email { get; set; }
-        
+
     }
 }

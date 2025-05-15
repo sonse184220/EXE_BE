@@ -103,7 +103,7 @@ namespace InnerChildApi.Controllers
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateArticle(string id, [FromForm] ArticleUpdateRequest updatedArticle)
         {
-           
+
             if (updatedArticle.Image != null)
             {
                 if (!updatedArticle.Image.ContentType.StartsWith("image/"))

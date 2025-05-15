@@ -1,13 +1,11 @@
 ﻿using Contract.Common.Constant;
 using Contract.Common.Enums;
-using Contract.Dtos.Requests.Article;
 using Contract.Dtos.Requests.Community;
+using Contract.Dtos.Responses.Community;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Models;
 using Service.Interfaces;
-using Service.Services;
 
 namespace InnerChildApi.Controllers
 {
@@ -29,18 +27,19 @@ namespace InnerChildApi.Controllers
         {
             try
             {
-            var community = new UserCommunity()
-            {
-                CommunityGroupId = Guid.NewGuid().ToString(),
-                CommunityName = request.CommunityName,
-                CommunityDescription = request.CommunityDescription,
-                CommunityStatus = request.CommunityStatus.ToString(),
-                CommunityCreatedAt = DateTime.UtcNow,
-            };
-            await _communityService.CreateCommunityAsync(community);
-            return Created("", new { message = "Community created successfully" });
+                var community = new UserCommunity()
+                {
+                    CommunityGroupId = Guid.NewGuid().ToString(),
+                    CommunityName = request.CommunityName,
+                    CommunityDescription = request.CommunityDescription,
+                    CommunityStatus = request.CommunityStatus.ToString(),
+                    CommunityCreatedAt = DateTime.UtcNow,
+                };
+                await _communityService.CreateCommunityAsync(community);
+                return Created("", new { message = "Community created successfully" });
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
@@ -59,17 +58,45 @@ namespace InnerChildApi.Controllers
             var community = await _communityService.GetCommunityByIdAsync(id);
             if (community == null)
                 return NotFound("Community not found");
-            return Ok(community);
+            var result = new CommunityDetailReponse()
+            {
+                CommunityGroupId = community.CommunityGroupId,
+                CommunityName = community.CommunityName,
+                CommunityDescription = community.CommunityDescription,
+                CommunityCreatedAt = community.CommunityCreatedAt,
+                CommunityStatus = community.CommunityStatus,
+                CommunityMembersDetail = community.CommunityMembers.Select(m => new CommunityMemberDetail()
+                {
+                    CommunityMemberId = m.CommunityMemberId,
+                    CommunityMemberStatus = m.CommunityMemberStatus,
+                    CommunityGroupId = m.CommunityGroupId,
+                    ProfileId = m.ProfileId,
+                }),
+                CommunityPostsDetail = community.CommunityPosts.Select(m => new CommunityPostDetail()
+                {
+                    CommunityPostId = m.CommunityPostId,
+                    CommunityPostTitle = m.CommunityPostTitle,
+                    CommunityPostContent = m.CommunityPostContent,
+                    CommunityPostImageUrl = m.CommunityPostImageUrl,
+                    CommunityPostStatus = m.CommunityPostStatus,
+                    CommunityPostCreatedAt = m.CommunityPostCreatedAt,
+                    CommunityGroupId = m.CommunityGroupId,
+                    ProfileId = m.ProfileId,
+                })
+            };
+
+            return Ok(result);
         }
-        
+
         [HttpPut("update-community/{id}")]
         public async Task<IActionResult> UpdateCommunity(string id, [FromForm] CommunityUpdateRequest updatedCommunity)
         {
-         
+
             try
             {
                 var existingCommunity = await _communityService.GetCommunityByIdAsync(id);
-                if (existingCommunity == null) { 
+                if (existingCommunity == null)
+                {
                     return NotFound("Community not found");
                 }
                 existingCommunity.CommunityDescription = updatedCommunity.CommunityDescription ?? existingCommunity.CommunityDescription;
@@ -77,11 +104,12 @@ namespace InnerChildApi.Controllers
                 if (updatedCommunity.CommunityStatus.HasValue)
                 {
                     existingCommunity.CommunityStatus = updatedCommunity.CommunityStatus.ToString() ?? existingCommunity.CommunityStatus;
-                };
+                }
+                ;
                 await _communityService.UpdateUserCommunityAsync(existingCommunity);
                 return NoContent();
             }
-           
+
             catch (Exception ex)
             {
                 return StatusCode(500, $"An error occurred: {ex.Message}");
@@ -140,8 +168,8 @@ namespace InnerChildApi.Controllers
                 string imageUrl = null;
                 if (request.CommunityPostImageFile != null)
                 {
-                    var postParams =  _cloudinaryService.CreateUploadParams(request.CommunityPostImageFile, CloudinaryFolderEnum.CommunityPostThumbnail.ToString());
-                    imageUrl= await _cloudinaryService.UploadAsync(postParams, request.CommunityPostImageFile);
+                    var postParams = _cloudinaryService.CreateUploadParams(request.CommunityPostImageFile, CloudinaryFolderEnum.CommunityPostThumbnail.ToString());
+                    imageUrl = await _cloudinaryService.UploadAsync(postParams, request.CommunityPostImageFile);
                 }
                 var userCommunityPost = new CommunityPost()
                 {
@@ -206,6 +234,16 @@ namespace InnerChildApi.Controllers
             }
 
         }
+
+        [HttpGet("post-detail/{id}")]
+        public async Task<IActionResult> GetPostDetail(string id)
+        {
+            var postDetail = await _communityService.GetCommunityPostByIdAsync(id);
+            if (postDetail == null)
+                return NotFound("Post not found");
+            return Ok(postDetail);
+        }
+
 
     }
 }

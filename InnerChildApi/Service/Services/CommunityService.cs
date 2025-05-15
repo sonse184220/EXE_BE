@@ -1,11 +1,6 @@
 ﻿using Repository.Interfaces;
 using Repository.Models;
 using Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.Services
 {
@@ -52,7 +47,7 @@ namespace Service.Services
 
         public async Task<UserCommunity> GetCommunityByIdAsync(string communityGroupId)
         {
-           return await _communityGroupRepo.GetCommunityByIdAsync(communityGroupId);
+            return await _communityGroupRepo.GetCommunityByIdAsync(communityGroupId);
         }
 
         public async Task<CommunityMember> GetCommunityMembersByIdAsync(string communityMemberId)
@@ -67,7 +62,7 @@ namespace Service.Services
 
         public Task<int> UpdateCommunityPostAsync(CommunityPost communityPost)
         {
-           return _communityPostRepo.UpdateCommunityPostAsync(communityPost);
+            return _communityPostRepo.UpdateCommunityPostAsync(communityPost);
         }
 
         public Task<int> UpdateUserCommunityAsync(UserCommunity userCommunity)
