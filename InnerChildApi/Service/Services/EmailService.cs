@@ -83,7 +83,18 @@ namespace Service.Services
             string body = LoadTemplate(templatePath, replacements);
             await SendEmailAsync(toEmail, "Confirm Account Registration", body);
         }
+        public async Task SendResetPasswordEmailAsync(string toEmail, string userName, string confirmLink)
+        {
+            var replacements = new Dictionary<string, string>
+        {
+        { "{{ResetLink}}", confirmLink },
+        { "{{UserName}}", userName },
 
+        };
+            var templatePath = Path.Combine(AppContext.BaseDirectory, "Templates", "ResetPasswordTemplate.html");
+            string body = LoadTemplate(templatePath, replacements);
+            await SendEmailAsync(toEmail, "Reset Password", body);
+        }
 
         #region verify account (gmail confirm)
         public async Task<bool> VerifyAccount(string userId)

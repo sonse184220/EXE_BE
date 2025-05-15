@@ -16,6 +16,8 @@
         PreLogin,
         FinalLogin,
         EmailConfirm,
+        ForgotPassword,
+        ResetPassword,
         Other
     }
 }

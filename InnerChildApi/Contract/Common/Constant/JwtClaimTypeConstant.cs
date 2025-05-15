@@ -7,6 +7,7 @@
         public const string ProfileId = "ProfileId";
         public const string SessionId = "SessionId";
         public const string Email = "Email";
+        public const string PasswordHash = "PasswordHash";
 
     }
 }

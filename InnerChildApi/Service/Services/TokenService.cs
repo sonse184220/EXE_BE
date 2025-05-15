@@ -31,6 +31,67 @@ namespace Service.Services
             _refreshTokenRepo = refreshTokenRepo;
             _httpContextAccessor = httpContextAccessor;
         }
+        #region forget password section
+        public string GenerateForgotPasswordToken(string userId)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId),
+                new Claim(JwtClaimTypeConstant.TokenType,JwtTypeEnum.ForgotPassword.ToString())
+            };
+            return GenerateToken(claims, TimeSpan.FromMinutes(5));
+        }
+        public string ValidateForgotPasswordToken(string token)
+        {
+            var principle = ValidateToken(token);
+            var typeClaim = principle.FindFirst(JwtClaimTypeConstant.TokenType)?.Value;
+            if (typeClaim != JwtTypeEnum.ForgotPassword.ToString())
+            {
+                throw new InvalidCredentialException("Invalid token type");
+            }
+            var userId = principle.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new InvalidCredentialException("User Id not found in token");
+            }
+            return userId;
+        }
+        public string GenerateResetPasswordToken(string userId,string password)
+        {
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId),
+                new Claim(JwtClaimTypeConstant.PasswordHash, hashedPassword),
+                new Claim(JwtClaimTypeConstant.TokenType,JwtTypeEnum.ResetPassword.ToString())
+            };
+            return GenerateToken(claims, TimeSpan.FromDays(1));
+        }
+        public (string userId, string newPasswordHash) ValidateResetPasswordToken(string token)
+        {
+            var principle = ValidateToken(token);
+            var typeClaim = principle.FindFirst(JwtClaimTypeConstant.TokenType)?.Value;
+            if (typeClaim != JwtTypeEnum.ResetPassword.ToString())
+            {
+                throw new InvalidCredentialException("Invalid token type");
+            }
+            var userId = principle.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var newPasswordHash = principle.FindFirst(JwtClaimTypeConstant.PasswordHash)?.Value;
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(newPasswordHash))
+            {
+                throw new InvalidCredentialException("User Id or password not found in token");
+            }
+            return (userId, newPasswordHash);
+        }
+
+        #endregion
+
+
+
+
+
+
+
         #region generate email confirmation token
         public string GenerateEmailConfirmationToken(string userId)
         {
@@ -186,6 +247,15 @@ namespace Service.Services
             var baseUrl = $"{requestUrl.Scheme}://{requestUrl.Host.Value}";
             var emailConfirmationTokenLink = $"{baseUrl}/innerchild/auth/confirm-email?token={emailConfirmationToken}";
             return emailConfirmationTokenLink;
+        }
+
+        public string GenerateEmailConfirmationResetPasswordLink(string token)
+        {
+          
+            var requestUrl = _httpContextAccessor.HttpContext.Request;
+            var baseUrl = $"{requestUrl.Scheme}://{requestUrl.Host.Value}";
+            var emailResetPasswordTokenLink = $"{baseUrl}/innerchild/auth/verify-reset-password?token={token}";
+            return emailResetPasswordTokenLink;
         }
     }
 }

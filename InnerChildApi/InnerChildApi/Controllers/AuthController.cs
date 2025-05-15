@@ -2,11 +2,16 @@
 using Contract.Dtos.Requests.Auth;
 using Contract.Dtos.Responses.Auth;
 using FirebaseAdmin.Auth;
+using FirebaseAdmin.Auth.Hash;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Service.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Authentication;
 using System.Security.Claims;
+using System.Text;
 
 namespace InnerChildApi.Controllers
 {
@@ -128,10 +133,13 @@ namespace InnerChildApi.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-
+        [Authorize]
         [HttpPut("update-profile/{id}")]
-        public async Task<IActionResult> UpdateProfile(string id, [FromForm] ProfileUpdateRequest request)
+        public async Task<IActionResult> UpdateProfile([FromForm] ProfileUpdateRequest request)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized("Invalid token or missing token");
             if (request.ProfilePicture != null)
             {
                 if (!request.ProfilePicture.ContentType.StartsWith("image/"))
@@ -141,7 +149,7 @@ namespace InnerChildApi.Controllers
             }
             try
             {
-                var user = await _userService.GetUserByIdAsync(id);
+                var user = await _userService.GetUserByIdAsync(userId);
                 if (user == null)
                 {
                     return NotFound("User not found");
@@ -304,6 +312,104 @@ namespace InnerChildApi.Controllers
             }
         }
 
+
+
+
+
+
+
+
+
+
+        //forget password section
+
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgetPassword([FromBody] ForgetPasswordRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var user = await _userService.GetByEmailAsync(request.Email);
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+                if (user.Verified == false)
+                {
+                    return BadRequest("Email not confirmed");
+                }
+                var token = _tokenService.GenerateForgotPasswordToken(user.UserId);
+                return Ok(token);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var userId =  _tokenService.ValidateForgotPasswordToken(request.Token);
+                if (userId == null)
+                {
+                    return NotFound("User not found");
+                }
+                var user = await _userService.GetUserByIdAsync(userId);
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+                if (user.Verified == false)
+                {
+                    return BadRequest("Email not confirmed");
+                }
+
+                var token = _tokenService.GenerateResetPasswordToken(userId,request.NewPassword);
+                var resetLink = _tokenService.GenerateEmailConfirmationResetPasswordLink(token);
+                await _emailService.SendResetPasswordEmailAsync(user.Email,user.FullName , resetLink);
+                return Ok("Reset password link has been sent, please check gmail");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
+        [HttpGet("verify-reset-password")]
+        public async Task<IActionResult> VerifyResetPassword(string token)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(token))
+                {
+                    return BadRequest("Missing token");
+                }
+                var result = _tokenService.ValidateResetPasswordToken(token);
+                var user = await _userService.GetUserByIdAsync(result.userId);
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+                user.PasswordHash = result.newPasswordHash;
+                var updateResult = await _userService.UpdateUserAsync(user);
+                return Ok($"Password changed for {user.Email}. You can now close this tab!");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
 
     }
 }

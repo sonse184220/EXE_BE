@@ -54,6 +54,10 @@ namespace InnerChildApi.Controllers
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateAudioCategory(string id, [FromBody] AudioCategoryRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var existingAudioCategory = await _audioService.GetAudioCategoryByIdAsync(id);
             if (existingAudioCategory == null)
             {
