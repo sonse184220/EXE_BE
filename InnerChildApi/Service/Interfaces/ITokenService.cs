@@ -15,8 +15,13 @@ namespace Service.Interfaces
         Task<int> RevokeTokenAsync(RefreshToken refreshToken);
 
         string GenerateEmailConfirmationLink(string userId);
+        //forgot and reset
+        string GenerateForgotPasswordToken(string userId);
 
-
-
+        
+        string ValidateForgotPasswordToken(string token);
+        (string userId, string newPasswordHash) ValidateResetPasswordToken(string token);
+        string GenerateResetPasswordToken(string userId, string password);
+        string GenerateEmailConfirmationResetPasswordLink(string token);
     }
 }
