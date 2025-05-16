@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository.Interfaces
+namespace Contract.Common.Enums
 {
-    public interface IChatSessionRepository
+    public enum ChatMessageEnum
     {
+        System,
+        User,
     }
 }

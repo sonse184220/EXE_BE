@@ -6,6 +6,8 @@ namespace Repository.Interfaces
     {
         Task<CommunityMember> GetCommunityMembersByIdAsync(string communityMemberId);
 
+        Task<CommunityMember> GetCommunityMembersByProfileIdAndGroupIdAsync(string profileId, string groupId);
+
 
         Task<IEnumerable<CommunityMember>> GetAllCommunityMemberAsync();
 
@@ -14,5 +16,7 @@ namespace Repository.Interfaces
 
 
         Task<int> UpdateUserCommunityMemberAsync(CommunityMember communityMember);
+
+        Task<bool> DeleteUserCommunityMemberAsync(CommunityMember communityMember);
     }
 }

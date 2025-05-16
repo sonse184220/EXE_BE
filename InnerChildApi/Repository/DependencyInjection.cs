@@ -25,6 +25,7 @@ namespace Repository
             service.AddScoped<ICommunityPostRepository, CommunityPostRepository>();
             service.AddScoped<IMoodJournalTypeRepository, MoodJournalTypeRepository>();
             service.AddScoped<IMoodJournalRepository, MoodJournalRepository>();
+            service.AddScoped<IChatRepository, ChatRepository>();
             return service;
         }
     }

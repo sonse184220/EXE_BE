@@ -30,6 +30,11 @@ namespace Service.Services
             return await _communityPostRepo.CreateCommunityPostAsync(communityPost);
         }
 
+        public async Task<bool> DeleteUserCommunityMemberAsync(CommunityMember communityMember)
+        {
+            return await _communityMemberRepo.DeleteUserCommunityMemberAsync(communityMember);
+        }
+
         public async Task<IEnumerable<UserCommunity>> GetAllCommunitiesAsync()
         {
             return await _communityGroupRepo.GetAllCommunitiesAsync();
@@ -53,6 +58,11 @@ namespace Service.Services
         public async Task<CommunityMember> GetCommunityMembersByIdAsync(string communityMemberId)
         {
             return await _communityMemberRepo.GetCommunityMembersByIdAsync(communityMemberId);
+        }
+
+        public async Task<CommunityMember> GetCommunityMembersByProfileIdAndGroupIdAsync(string profileId, string groupId)
+        {
+            return await _communityMemberRepo.GetCommunityMembersByProfileIdAndGroupIdAsync(profileId, groupId);
         }
 
         public async Task<CommunityPost> GetCommunityPostByIdAsync(string communityPostId)

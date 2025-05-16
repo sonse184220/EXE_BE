@@ -11,11 +11,13 @@ namespace Service.Interfaces
         Task<int> UpdateUserCommunityAsync(UserCommunity userCommunity);
 
 
+
         Task<CommunityMember> GetCommunityMembersByIdAsync(string communityMemberId);
         Task<IEnumerable<CommunityMember>> GetAllCommunityMemberAsync();
         Task<int> CreateCommunityMemberAsync(CommunityMember communityMember);
         Task<int> UpdateUserCommunityMemberAsync(CommunityMember communityMember);
-
+        Task<bool> DeleteUserCommunityMemberAsync(CommunityMember communityMember);
+        Task<CommunityMember> GetCommunityMembersByProfileIdAndGroupIdAsync(string profileId, string groupId);
 
         Task<CommunityPost> GetCommunityPostByIdAsync(string communityPostId);
         Task<IEnumerable<CommunityPost>> GetAllCommunityPostsAsync();

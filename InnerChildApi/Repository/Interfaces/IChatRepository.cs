@@ -1,8 +1,8 @@
 ﻿using Repository.MongoDbModels;
 
-namespace Service.Interfaces
+namespace Repository.Interfaces
 {
-    public interface IChatService
+    public interface IChatRepository
     {
         Task CreateSession(AiChatSessionMongo session);
 
@@ -15,5 +15,6 @@ namespace Service.Interfaces
         Task<bool> DeleteSessionAsync(string sessionId, string profileId);
 
         Task<AiChatSessionMongo?> GetSessionBySessionIdAndProfileId(string sessionId, string profileId);
+
     }
 }
