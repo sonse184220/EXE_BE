@@ -18,7 +18,7 @@ namespace InnerChildApi
             services.Configure<AppSettingConfig.CloudinarySettingConfig>(config.GetSection("CloudinarySettings"));
             services.Configure<AppSettingConfig.EmailSettingConfig>(config.GetSection("EmailSettings"));
             services.Configure<AppSettingConfig.AiSettingConfig>(config.GetSection("AiSettings"));
-
+            services.Configure<AppSettingConfig.ChatDbSettingConfig>(config.GetSection("MongoDbSettings:ChatDb"));
 
 
 
@@ -49,7 +49,7 @@ namespace InnerChildApi
                 options.MultipartBodyLengthLimit = 104857600; // 100 MB
             });
 
-            
+
 
         }
     }

@@ -129,7 +129,7 @@ namespace InnerChildApi.Controllers
             }
         }
         [Authorize]
-        [HttpPut("update-profile/{id}")]
+        [HttpPut("update-profile")]
         public async Task<IActionResult> UpdateProfile([FromForm] ProfileUpdateRequest request)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

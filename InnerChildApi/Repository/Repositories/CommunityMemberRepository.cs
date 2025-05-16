@@ -1,4 +1,5 @@
-﻿using Repository.Base;
+﻿using Microsoft.EntityFrameworkCore;
+using Repository.Base;
 using Repository.DBContext;
 using Repository.Interfaces;
 using Repository.Models;
@@ -29,6 +30,17 @@ namespace Repository.Repositories
         public async Task<int> UpdateUserCommunityMemberAsync(CommunityMember communityMember)
         {
             return await base.UpdateAsync(communityMember);
+        }
+
+        public async Task<bool> DeleteUserCommunityMemberAsync(CommunityMember communityMember)
+        {
+            return await RemoveAsync(communityMember);
+        }
+
+        public async Task<CommunityMember> GetCommunityMembersByProfileIdAndGroupIdAsync(string profileId, string groupId)
+        {
+            return await _context.CommunityMembers.FirstOrDefaultAsync(x => x.ProfileId == profileId && x.CommunityGroupId == groupId);
+
         }
     }
 

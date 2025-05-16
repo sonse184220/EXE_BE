@@ -79,3 +79,8 @@ innerchildapi.strings.v9.bin
 # Ignore SlickEdit workspace files
 .suo
 *.csproj.user
+
+
+**/Properties/PublishProfiles/
+**/Properties/PublishProfiles/*.pubxml
+**/Properties/PublishProfiles/*.pubxml.user

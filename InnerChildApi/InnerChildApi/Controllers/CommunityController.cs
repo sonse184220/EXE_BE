@@ -118,7 +118,7 @@ namespace InnerChildApi.Controllers
         }
         [Authorize]
         [HttpPost("join-community")]
-        public async Task<IActionResult> JoinCommunity([FromForm] CommunityMemberCreateRequest request)
+        public async Task<IActionResult> JoinCommunity([FromBody] CommunityMemberCreateRequest request)
         {
             try
             {
@@ -133,6 +133,11 @@ namespace InnerChildApi.Controllers
                 {
                     return NotFound("Community not found");
                 }
+                var alreadyJoined = await _communityService.GetCommunityMembersByProfileIdAndGroupIdAsync(profileId, request.CommunityGroupId);
+                if (alreadyJoined != null)
+                {
+                    return BadRequest("User already joined this group");
+                }
                 var userCommunityMember = new CommunityMember()
                 {
                     CommunityMemberId = profileId,
@@ -141,6 +146,32 @@ namespace InnerChildApi.Controllers
                 };
                 await _communityService.CreateCommunityMemberAsync(userCommunityMember);
                 return Created("", new { message = "Community member joined successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
+        }
+        [Authorize]
+        [HttpPost("leave-community/{communityId}")]
+        public async Task<IActionResult> LeaveCommunity(string communityId)
+        {
+            try
+            {
+                var profileId = User.FindFirst(JwtClaimTypeConstant.ProfileId)?.Value;
+
+                if (string.IsNullOrEmpty(profileId))
+                {
+                    return BadRequest("User not found");
+                }
+                var communityMember = await _communityService.GetCommunityMembersByProfileIdAndGroupIdAsync(profileId, communityId);
+                if (communityMember == null)
+                {
+                    return NotFound("Community member not found in this group");
+                }
+                await _communityService.DeleteUserCommunityMemberAsync(communityMember);
+                return Ok("Left community");
             }
             catch (Exception ex)
             {

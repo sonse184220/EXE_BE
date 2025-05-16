@@ -34,5 +34,11 @@
             public string AssistantRole { get; set; }
             public string SystemRole { get; set; }
         }
+        public class ChatDbSettingConfig
+        {
+            public string ConnectionString { get; set; }
+            public string DatabaseName { get; set; }
+        }
+
     }
 }
