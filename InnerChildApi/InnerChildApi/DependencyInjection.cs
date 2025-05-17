@@ -19,6 +19,7 @@ namespace InnerChildApi
             services.Configure<AppSettingConfig.EmailSettingConfig>(config.GetSection("EmailSettings"));
             services.Configure<AppSettingConfig.AiSettingConfig>(config.GetSection("AiSettings"));
             services.Configure<AppSettingConfig.ChatDbSettingConfig>(config.GetSection("MongoDbSettings:ChatDb"));
+            services.Configure<AppSettingConfig.SendGridSettingConfig>(config.GetSection("SendGridSettings"));
 
 
 

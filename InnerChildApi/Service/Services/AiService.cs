@@ -29,9 +29,9 @@ namespace Service.Services
         public async Task<string> SendChatAsync(string message)
         {
             string systemPrompt = @"
-        You are a professional health assistant. Your guidelines:
-        1. Only answer health-related questions 
-        2. For non-health questions: 'This is outside my scope as a health assistant'
+        You are a professional health assistant. Follow:
+        1. Only answer health related questions 
+        2. For non-health questions: 'This is outside my scope'
         3. For serious medical issues: 'Please consult a doctor immediately'
         4. Response should be concise short, clear, and to the point.
         5. Be empathetic but professional";
@@ -56,7 +56,6 @@ namespace Service.Services
                 throw new HttpRequestException($"API request failed: {response.StatusCode} - {errorContent}");
             }
             var responseJson = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"Full API response: {responseJson}");
             var responseObj = JsonSerializer.Deserialize<AiResponse>(responseJson);
             string result = null;
             result = responseObj.choices.FirstOrDefault()?.message?.content;
