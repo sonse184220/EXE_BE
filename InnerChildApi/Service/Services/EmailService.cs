@@ -8,34 +8,52 @@ namespace Service.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly string _smtpServer;
-        private readonly int _smtpPort;
-        private readonly string _smtpUser;
-        private readonly string _smtpPass;
-        private readonly string _fromEmail;
-        private readonly string _displayName;
+        #region variables gmail
+        //private readonly string _smtpServer;
+        //private readonly int _smtpPort;
+        //private readonly string _smtpUser;
+        //private readonly string _smtpPass;
+        //private readonly string _fromEmail;
+        //private readonly string _displayName;
+        #endregion
         private readonly IAccountRepository _accountRepo;
-        private readonly EmailSettingConfig _emailSettingConfig;
+        //private readonly EmailSettingConfig _emailSettingConfig;
+        private readonly string sendGridApiKey;
+        public string sendGridFromEmail;
+        public string sendGridSmtpPass;
+        public string sendGridSmtpHost;
+        public string sendGridSmtpUser;
+        public string sendGridDisplayName;
+        public int sendGridSmtpPort;
         private readonly ITokenService _tokenService;
-        public EmailService(IConfiguration config, IAccountRepository accountRepo, IOptions<EmailSettingConfig> emailSettingConfig, ITokenService tokenService)
+        private readonly SendGridSettingConfig _sendGridSettingConfig;
+        public EmailService(IConfiguration config, IAccountRepository accountRepo,/* IOptions<EmailSettingConfig> emailSettingConfig,*/ ITokenService tokenService,IOptions<SendGridSettingConfig> sendGridSettingConfig)
         {
-            _emailSettingConfig = emailSettingConfig.Value;
+            //_emailSettingConfig = emailSettingConfig.Value;
+            _sendGridSettingConfig = sendGridSettingConfig.Value;
             _accountRepo = accountRepo;
-
-
-            _smtpServer = _emailSettingConfig.SmtpServer;
-            _smtpPort = _emailSettingConfig.SmtpPort;
-            _smtpUser = _emailSettingConfig.SmtpUser;
-            _smtpPass = _emailSettingConfig.SmtpPass;
-            _fromEmail = _emailSettingConfig.FromEmail;
-            _displayName = _emailSettingConfig.DisplayName;
+            sendGridApiKey = _sendGridSettingConfig.ApiKey;
+            sendGridFromEmail = _sendGridSettingConfig.FromEmail;
+            sendGridSmtpPass = _sendGridSettingConfig.SmtpPass;
+            sendGridSmtpHost = _sendGridSettingConfig.SmtpHost;
+            sendGridSmtpUser = _sendGridSettingConfig.SmtpUser;
+            sendGridSmtpPort = _sendGridSettingConfig.SmtpPort;
+            sendGridDisplayName = _sendGridSettingConfig.DisplayName;
+            #region bind value
+            //_smtpServer = _emailSettingConfig.SmtpServer;
+            //_smtpPort = _emailSettingConfig.SmtpPort;
+            //_smtpUser = _emailSettingConfig.SmtpUser;
+            //_smtpPass = _emailSettingConfig.SmtpPass;
+            //_fromEmail = _emailSettingConfig.FromEmail;
+            //_displayName = _emailSettingConfig.DisplayName;
+            #endregion
             _tokenService = tokenService;
         }
 
         public async Task SendEmailAsync(string toEmail, string subject, string body)
         {
             var email = new MimeMessage();
-            email.From.Add(new MailboxAddress(_displayName, _fromEmail));
+            email.From.Add(new MailboxAddress(sendGridDisplayName, sendGridFromEmail));
             email.To.Add(MailboxAddress.Parse(toEmail));
             email.Subject = subject;
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -45,11 +63,8 @@ namespace Service.Services
             using var smtp = new MailKit.Net.Smtp.SmtpClient();
             try
             {
-                await smtp.ConnectAsync(_smtpServer, _smtpPort, MailKit.Security.SecureSocketOptions.Auto);
-                if (!string.IsNullOrEmpty(_smtpUser) && !string.IsNullOrEmpty(_smtpPass))
-                {
-                    smtp.Authenticate(_smtpUser, _smtpPass);
-                }
+                await smtp.ConnectAsync(sendGridSmtpHost, sendGridSmtpPort, MailKit.Security.SecureSocketOptions.Auto);
+                smtp.Authenticate(sendGridSmtpUser, sendGridSmtpPass);
                 await smtp.SendAsync(email);
             }
             catch (Exception ex)
