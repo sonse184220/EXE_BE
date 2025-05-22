@@ -1,10 +1,18 @@
 ﻿using Repository.Base;
 using Repository.DBContext;
-using Repository.Interfaces;
 using Repository.Models;
 
 namespace Repository.Repositories
 {
+    public interface IArticleRepository
+    {
+        Task<int> CreateArticleAsync(Article article);
+        Task<List<Article>> GetAllArticlesAsync();
+        Task<int> UpdateArticleAsync(Article article);
+        Task<bool> DeleteArticleAsync(Article article);
+        Task<Article> GetArticleByIdAsync(string id);
+
+    }
     public class ArticleRepository : GenericRepository<Article>, IArticleRepository
     {
         public ArticleRepository() : base()

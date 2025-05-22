@@ -1,9 +1,30 @@
-﻿using Repository.Interfaces;
-using Repository.Models;
-using Service.Interfaces;
+﻿using Repository.Models;
+using Repository.Repositories;
 
 namespace Service.Services
 {
+    public interface ICommunityService
+    {
+
+        Task<UserCommunity> GetCommunityByIdAsync(string communityGroupId);
+        Task<IEnumerable<UserCommunity>> GetAllCommunitiesAsync();
+        Task<int> CreateCommunityAsync(UserCommunity userCommunity);
+        Task<int> UpdateUserCommunityAsync(UserCommunity userCommunity);
+
+
+
+        Task<CommunityMember> GetCommunityMembersByIdAsync(string communityMemberId);
+        Task<IEnumerable<CommunityMember>> GetAllCommunityMemberAsync();
+        Task<int> CreateCommunityMemberAsync(CommunityMember communityMember);
+        Task<int> UpdateUserCommunityMemberAsync(CommunityMember communityMember);
+        Task<bool> DeleteUserCommunityMemberAsync(CommunityMember communityMember);
+        Task<CommunityMember> GetCommunityMembersByProfileIdAndGroupIdAsync(string profileId, string groupId);
+
+        Task<CommunityPost> GetCommunityPostByIdAsync(string communityPostId);
+        Task<IEnumerable<CommunityPost>> GetAllCommunityPostsAsync();
+        Task<int> CreateCommunityPostAsync(CommunityPost communityPost);
+        Task<int> UpdateCommunityPostAsync(CommunityPost communityPost);
+    }
     public class CommunityService : ICommunityService
     {
         private readonly ICommunityGroupRepository _communityGroupRepo;

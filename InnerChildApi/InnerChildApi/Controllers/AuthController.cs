@@ -4,7 +4,7 @@ using Contract.Dtos.Responses.Auth;
 using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Service.Interfaces;
+using Service.Services;
 using System.Security.Authentication;
 using System.Security.Claims;
 
@@ -129,7 +129,7 @@ namespace InnerChildApi.Controllers
             }
         }
         [Authorize]
-        [HttpPut("update-profile")]
+        [HttpPut("update-user")]
         public async Task<IActionResult> UpdateProfile([FromForm] ProfileUpdateRequest request)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -404,6 +404,78 @@ namespace InnerChildApi.Controllers
             {
                 return StatusCode(500, ex.Message);
             }
+        }
+        [Authorize]
+        [HttpGet("personal-detail")]
+        public async Task<IActionResult> GetPersonalDetail()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+            {
+                NotFound("User not found");
+            }
+            var user = await _userService.GetUserByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+            var result = new UserDetailResponse()
+            {
+                UserId = user.UserId,
+                Email = user.Email,
+                DateOfBirth = user.DateOfBirth,
+                FullName = user.FullName,
+                Gender = user.Gender,
+                PhoneNumber = user.PhoneNumber,
+                ProfilePicture = user.ProfilePicture
+            };
+            return Ok(result);
+        }
+        [HttpGet("get-user-detail/{userId}")]
+        public async Task<IActionResult> GetUserDetail(string userId)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return NotFound("User not found");
+            }
+            var user = await _userService.GetUserByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+            var result = new UserDetailResponse()
+            {
+                UserId = user.UserId,
+                Email = user.Email,
+                DateOfBirth = user.DateOfBirth,
+                FullName = user.FullName,
+                Gender = user.Gender,
+                PhoneNumber = user.PhoneNumber,
+                ProfilePicture = user.ProfilePicture
+            };
+            return Ok(result);
+        }
+        [Authorize]
+        [HttpGet("get-all-users")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await _userService.GetAllUsersAsync();
+            var result = users.Select(x => new AllUsersResponse()
+            {
+                UserId = x.UserId,
+                Email = x.Email,
+                FullName = x.FullName,
+                DateOfBirth = x.DateOfBirth,
+                Gender = x.Gender,
+                PhoneNumber = x.PhoneNumber,
+                ProfilePicture = x.ProfilePicture,
+                CreatedAt = x.CreatedAt,
+                LastLoginDate = x.CreatedAt,
+                Status = x.Status,
+                Verified = x.Verified,
+                RoleName = x.Role?.RoleName,
+            });
+            return Ok(result);
         }
 
     }

@@ -1,14 +1,22 @@
-﻿using Repository.Interfaces;
-using Repository.Models;
-using Service.Interfaces;
+﻿using Repository.Models;
+using Repository.Repositories;
 
 namespace Service.Services
 {
+    public interface INotificationService
+    {
+        Task<int> CreateNotificationAsync(Notification notification);
+        Task<List<Notification>> GetAllNotificationsAsync();
+        Task<bool> DeleteNotificationAsync(Notification notification);
+        Task<Notification> GetNotificationByIdAsync(string id);
+    }
     public class NotificationService : INotificationService
     {
+        private readonly HttpClient _httpClient;
         private readonly INotificationRepository _notiRepo;
         public NotificationService(INotificationRepository notiRepo)
         {
+            _httpClient = new HttpClient();
             _notiRepo = notiRepo;
         }
         public async Task<int> CreateNotificationAsync(Notification notification)
@@ -30,5 +38,7 @@ namespace Service.Services
         {
             return await _notiRepo.GetNotificationByIdAsync(id);
         }
+
+
     }
 }

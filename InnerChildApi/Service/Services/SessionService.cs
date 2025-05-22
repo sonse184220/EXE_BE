@@ -1,9 +1,14 @@
-﻿using Repository.Interfaces;
-using Repository.Models;
-using Service.Interfaces;
+﻿using Repository.Models;
+using Repository.Repositories;
 
 namespace Service.Services
 {
+    public interface ISessionService
+    {
+        Task InvalidateOtherSessionsAsync(string userId, string profileId, string token);
+        Task<bool> IsSessionValidAsync(string userId, string profileId, string sessionId);
+        Task<int> CreateSessionAsync(Session session);
+    }
     public class SessionService : ISessionService
     {
         private readonly ISessionRepository _sessionRepo;

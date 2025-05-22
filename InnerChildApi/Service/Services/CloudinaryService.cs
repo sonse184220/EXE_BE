@@ -3,12 +3,20 @@ using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using Service.Interfaces;
 using System.Net;
 using static Contract.Common.Config.AppSettingConfig;
 
 namespace Service.Services
 {
+    public interface ICloudinaryService
+    {
+        Task<string> UploadAsync(RawUploadParams uploadParams, IFormFile file);
+
+        Task<bool> DeleteAsync(string fileUrl);
+        RawUploadParams CreateUploadParams(IFormFile file, string cloudinaryFolder);
+
+
+    }
     public class CloudinaryService : ICloudinaryService
     {
         private readonly Cloudinary _cloudinary;

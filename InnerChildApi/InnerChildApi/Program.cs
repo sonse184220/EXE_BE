@@ -24,6 +24,7 @@ builder.Services.AddRepositories();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.Limits.MaxRequestBodySize = 104857600; // 100 MB

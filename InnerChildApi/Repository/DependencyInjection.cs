@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Repository.Interfaces;
 using Repository.Repositories;
 using Repository.SeedData;
 

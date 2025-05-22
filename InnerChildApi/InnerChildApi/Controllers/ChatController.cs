@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using Repository.MongoDbModels;
-using Service.Interfaces;
-using System.Security.Claims;
+using Service.Services;
 
 namespace InnerChildApi.Controllers
 {
@@ -17,7 +16,7 @@ namespace InnerChildApi.Controllers
     {
         private readonly IAiService _aiService;
         private readonly IChatService _chatService;
-        public ChatController(IAiService aiService,IChatService chatService)
+        public ChatController(IAiService aiService, IChatService chatService)
         {
             _aiService = aiService;
             _chatService = chatService;
@@ -40,16 +39,16 @@ namespace InnerChildApi.Controllers
                     AiChatSessionTitle = request.SessionTitle,
                     AiChatSessionCreatedAt = DateTime.UtcNow,
                     AiChatMessages = new List<AiChatMessageMongo>(),
-                    
+
                 };
                 await _chatService.CreateSession(session);
                 return Created("", new { message = $"Session with id {session.AiChatSessionId} created" });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
-           
+
         }
         [Authorize]
         [HttpPost("send-chat")]
@@ -66,21 +65,34 @@ namespace InnerChildApi.Controllers
                 {
                     return NotFound("User not found");
                 }
-                var existingSession = await _chatService.GetSessionBySessionIdAndProfileId(request.AiChatSessionId, profileId);
-                if (existingSession == null)
+                var session = await _chatService.GetMessagesBySessionIdAndProfileIdAsync(request.AiChatSessionId, profileId);
+                if (session == null)
                 {
                     return NotFound("Session not found");
                 }
-                
+
+                var chatHistory = session.AiChatMessages.Select(x => new AllChatHistoryResponse()
+                {
+                    Role = x.AiChatMessageSenderType.Trim(),
+                    Content = x.AiChatMessageContent.Trim(),
+                }).ToList();
+
+                int totalChars = chatHistory.Sum(m =>
+                    (m.Content?.Length ?? 0) + (m.Role?.Length ?? 0));
+                if (totalChars > 130_000)
+                {
+                    return BadRequest($"Chat history is too long . Please create new session.");
+                }
                 var userChatMessage = new AiChatMessageMongo()
                 {
                     AiChatMessageId = ObjectId.GenerateNewId().ToString(),
                     AiChatMessageSenderType = ChatMessageEnum.User.ToString(),
-                    AiChatMessageSentAt =  DateTime.UtcNow,
+                    AiChatMessageSentAt = DateTime.UtcNow,
                     AiChatMessageContent = request.Message,
                 };
                 await _chatService.AddMessageToSessionAsync(request.AiChatSessionId, userChatMessage);
-                var result = await _aiService.SendChatAsync(request.Message);
+
+                var result = await _aiService.SendChatAsync(request.Message, chatHistory);
                 var systemResponseMessage = new AiChatMessageMongo()
                 {
                     AiChatMessageId = ObjectId.GenerateNewId().ToString(),
@@ -120,11 +132,11 @@ namespace InnerChildApi.Controllers
 
                 return Ok(response);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(500);
             }
-           
+
         }
         [Authorize]
         [HttpGet("load-all-messages/{sessionId}")]
@@ -150,8 +162,8 @@ namespace InnerChildApi.Controllers
             {
                 return StatusCode(500);
             }
-          
-           
+
+
         }
         [Authorize]
         [HttpDelete("delete-session/{sessionId}")]
@@ -172,10 +184,12 @@ namespace InnerChildApi.Controllers
                 await _chatService.DeleteSessionAsync(sessionId, profileId);
                 return Ok($"{sessionId} was deleted!");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
         }
+
+
     }
 }

@@ -2,7 +2,7 @@
 using Contract.Dtos.Responses.Audio;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Models;
-using Service.Interfaces;
+using Service.Services;
 
 namespace InnerChildApi.Controllers
 {

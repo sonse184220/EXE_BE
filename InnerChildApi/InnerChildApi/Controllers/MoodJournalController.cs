@@ -4,7 +4,7 @@ using Contract.Dtos.Responses.MoodJournal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Models;
-using Service.Interfaces;
+using Service.Services;
 
 namespace InnerChildApi.Controllers
 {
