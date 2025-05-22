@@ -13,13 +13,17 @@ public partial class Transaction
 
     public double? TransactionAmount { get; set; }
 
+    public string TransactionCurrency { get; set; }
+
     public string TransactionStatus { get; set; }
+
+    public string TransactionPaymentStatus { get; set; }
 
     public string TransactionCode { get; set; }
 
     public DateTime? TransactionCreatedAt { get; set; }
 
-    public string PurchaseId { get; set; }
+    public string UserId { get; set; }
 
-    public virtual Purchase Purchase { get; set; }
+    public virtual User User { get; set; }
 }

@@ -14,23 +14,16 @@ namespace Repository.Repositories
     }
     public class AudioRepository : GenericRepository<Audio>, IAudioRepository
     {
-        public AudioRepository() : base()
-        {
-
-        }
-        public AudioRepository(InnerChildExeContext context) : base(context)
-        {
-
-        }
+       
 
         public async Task<int> CreateAudioAsync(Audio audio)
         {
-            return await base.CreateAsync(audio);
+            return await CreateAsync(audio);
         }
 
         public async Task<List<Audio>> GetAllAudioAsync()
         {
-            return await base.GetAllAsync();
+            return await GetAllAsync();
         }
 
         public async Task<Audio> GetAudioByIdAsync(string audioId)
@@ -40,7 +33,7 @@ namespace Repository.Repositories
 
         public async Task<int> UpdateAudioAsync(Audio audio)
         {
-            return await base.UpdateAsync(audio);
+            return await UpdateAsync(audio);
         }
     }
 }

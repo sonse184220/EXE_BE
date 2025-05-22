@@ -14,13 +14,7 @@ namespace Repository.Repositories
     }
     public class CommunityPostRepository : GenericRepository<CommunityPost>, ICommunityPostRepository
     {
-        public CommunityPostRepository() : base()
-        {
-
-        }
-        public CommunityPostRepository(InnerChildExeContext context) : base(context)
-        {
-        }
+       
         public async Task<CommunityPost> GetCommunityPostByIdAsync(string communityPostId)
         {
             return await _context.CommunityPosts.

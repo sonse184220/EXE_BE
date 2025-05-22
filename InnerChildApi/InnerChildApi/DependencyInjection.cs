@@ -11,8 +11,7 @@ namespace InnerChildApi
     {
         public static void AddApplicationConfiguration(this IServiceCollection services, IConfiguration config)
         {
-            services.AddDbContext<InnerChildExeContext>(options =>
-            options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
+            
             //configure jwt settings
             services.Configure<AppSettingConfig.JwtTokenSetting>(config.GetSection("JwtSettings"));
             services.Configure<AppSettingConfig.CloudinarySettingConfig>(config.GetSection("CloudinarySettings"));

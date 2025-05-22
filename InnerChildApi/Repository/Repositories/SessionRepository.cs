@@ -13,15 +13,10 @@ namespace Repository.Repositories
     }
     public class SessionRepository : GenericRepository<Session>, ISessionRepository
     {
-        public SessionRepository(InnerChildExeContext context) : base(context)
-        {
-        }
-        public SessionRepository() : base()
-        {
-        }
+      
         public async Task<int> CreateSessionAsync(Session session)
         {
-            return await base.CreateAsync(session);
+            return await CreateAsync(session);
         }
         public async Task InvalidateOtherSessionsAsync(string userId, string profileId, string token)
         {

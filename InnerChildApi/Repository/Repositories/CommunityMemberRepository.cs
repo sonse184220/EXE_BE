@@ -24,28 +24,22 @@ namespace Repository.Repositories
     }
     public class CommunityMemberRepository : GenericRepository<CommunityMember>, ICommunityMemberRepository
     {
-        public CommunityMemberRepository() : base()
-        {
-
-        }
-        public CommunityMemberRepository(InnerChildExeContext context) : base(context)
-        {
-        }
+       
         public async Task<CommunityMember> GetCommunityMembersByIdAsync(string communityMemberId)
         {
-            return await base.GetByIdAsync(communityMemberId);
+            return await GetByIdAsync(communityMemberId);
         }
         public async Task<IEnumerable<CommunityMember>> GetAllCommunityMemberAsync()
         {
-            return await base.GetAllAsync();
+            return await GetAllAsync();
         }
         public async Task<int> CreateCommunityMemberAsync(CommunityMember communityMember)
         {
-            return await base.CreateAsync(communityMember);
+            return await CreateAsync(communityMember);
         }
         public async Task<int> UpdateUserCommunityMemberAsync(CommunityMember communityMember)
         {
-            return await base.UpdateAsync(communityMember);
+            return await UpdateAsync(communityMember);
         }
 
         public async Task<bool> DeleteUserCommunityMemberAsync(CommunityMember communityMember)

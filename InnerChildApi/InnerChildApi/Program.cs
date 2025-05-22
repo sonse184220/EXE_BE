@@ -4,6 +4,7 @@ using InnerChildApi;
 using InnerChildApi.Common.Middleware;
 using Repository;
 using Repository.DataSeeder;
+using Repository.SeedData;
 using Service;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,8 +35,7 @@ var app = builder.Build();
 //data seeding
 using (var scope = app.Services.CreateScope())
 {
-    var services = scope.ServiceProvider;
-    DataSeeder.SeedAll(services);
+    await DataSeeder.SeedAllAsync(scope.ServiceProvider);
 }
 ;
 

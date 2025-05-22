@@ -20,14 +20,7 @@ namespace Repository.Repositories
     }
     public class AccountRepository : GenericRepository<User>, IAccountRepository
     {
-        public AccountRepository() : base()
-        {
-        }
-        public AccountRepository(InnerChildExeContext context) : base(context)
-        {
-
-
-        }
+       
         public async Task<List<User>> GetAllUsersAsync()
         {
             return await _context.Users.Include(x => x.Role).ToListAsync() ?? new List<User>();
@@ -43,15 +36,15 @@ namespace Repository.Repositories
         }
         public async Task<User> GetByUserIdAsync(string userId)
         {
-            return await base.GetByIdAsync(userId);
+            return await GetByIdAsync(userId);
         }
         public async Task<int> CreateUserAsync(User user)
         {
-            return await base.CreateAsync(user);
+            return await CreateAsync(user);
         }
         public async Task<int> UpdateUserAsync(User user)
         {
-            return await base.UpdateAsync(user);
+            return await UpdateAsync(user);
         }
 
         public async Task<User> LoginAsync(string email, string password)
