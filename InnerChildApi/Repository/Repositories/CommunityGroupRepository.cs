@@ -22,13 +22,7 @@ namespace Repository.Repositories
     }
     public class CommunityGroupRepository : GenericRepository<UserCommunity>, ICommunityGroupRepository
     {
-        public CommunityGroupRepository() : base()
-        {
-
-        }
-        public CommunityGroupRepository(InnerChildExeContext context) : base(context)
-        {
-        }
+       
         public async Task<UserCommunity> GetCommunityByIdAsync(string communityGroupId)
         {
             return await _context.UserCommunities.
@@ -40,15 +34,15 @@ namespace Repository.Repositories
         }
         public async Task<IEnumerable<UserCommunity>> GetAllCommunitiesAsync()
         {
-            return await base.GetAllAsync();
+            return await GetAllAsync();
         }
         public async Task<int> CreateCommunityAsync(UserCommunity userCommunity)
         {
-            return await base.CreateAsync(userCommunity);
+            return await CreateAsync(userCommunity);
         }
         public async Task<int> UpdateUserCommunityAsync(UserCommunity userCommunity)
         {
-            return await base.UpdateAsync(userCommunity);
+            return await UpdateAsync(userCommunity);
         }
 
     }

@@ -15,17 +15,10 @@ namespace Repository.Repositories
     }
     public class SubAudioCategoryRepository : GenericRepository<SubAudioCategory>, ISubAudioCategoryRepository
     {
-        public SubAudioCategoryRepository() : base()
-        {
-        }
-        public SubAudioCategoryRepository(InnerChildExeContext context) : base(context)
-        {
-
-
-        }
+       
         public async Task<int> CreateSubAudioCategoryAsync(SubAudioCategory subAudioCategory)
         {
-            return await base.CreateAsync(subAudioCategory);
+            return await CreateAsync(subAudioCategory);
         }
 
         public async Task<List<SubAudioCategory>> GetAllSubAudioCategoryAsync()
@@ -41,7 +34,7 @@ namespace Repository.Repositories
 
         public async Task<int> UpdateSubAudioSubCategoryAsync(SubAudioCategory subAudioCategory)
         {
-            return await base.UpdateAsync(subAudioCategory);
+            return await UpdateAsync(subAudioCategory);
         }
     }
 }

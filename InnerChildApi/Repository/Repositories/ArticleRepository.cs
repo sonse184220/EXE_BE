@@ -15,32 +15,26 @@ namespace Repository.Repositories
     }
     public class ArticleRepository : GenericRepository<Article>, IArticleRepository
     {
-        public ArticleRepository() : base()
-        {
-
-        }
-        public ArticleRepository(InnerChildExeContext context) : base(context)
-        {
-        }
+      
         public async Task<int> CreateArticleAsync(Article article)
         {
-            return await base.CreateAsync(article);
+            return await CreateAsync(article);
         }
         public async Task<List<Article>> GetAllArticlesAsync()
         {
-            return await base.GetAllAsync();
+            return await GetAllAsync();
         }
         public async Task<int> UpdateArticleAsync(Article article)
         {
-            return await base.UpdateAsync(article);
+            return await UpdateAsync(article);
         }
         public async Task<bool> DeleteArticleAsync(Article article)
         {
-            return await base.RemoveAsync(article);
+            return await RemoveAsync(article);
         }
         public async Task<Article> GetArticleByIdAsync(string id)
         {
-            return await base.GetByIdAsync(id);
+            return await GetByIdAsync(id);
         }
     }
 

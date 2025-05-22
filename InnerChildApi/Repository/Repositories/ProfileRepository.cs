@@ -11,22 +11,15 @@ namespace Repository.Repositories
     }
     public class ProfileRepository : GenericRepository<Profile>, IProfileRepository
     {
-        public ProfileRepository() : base()
-        {
-
-        }
-        public ProfileRepository(InnerChildExeContext context) : base(context)
-        {
-
-        }
+      
         public async Task<int> CreateProfileAsync(Profile profile)
         {
-            return await base.CreateAsync(profile);
+            return await CreateAsync(profile);
         }
 
         public async Task<Profile> GetByProfileIdAsync(string profileId)
         {
-            return await base.GetByIdAsync(profileId);
+            return await GetByIdAsync(profileId);
         }
     }
 }

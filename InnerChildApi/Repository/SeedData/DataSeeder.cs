@@ -5,10 +5,10 @@ namespace Repository.DataSeeder
 {
     public static class DataSeeder
     {
-        public static void SeedAll(IServiceProvider serviceProvider)
+        public static async Task SeedAllAsync(IServiceProvider serviceProvider)
         {
             var seedRoles = serviceProvider.GetRequiredService<SeedRoles>();
-            seedRoles.SeedRolesData();
+            await seedRoles.SeedRolesData();
         }
     }
 }

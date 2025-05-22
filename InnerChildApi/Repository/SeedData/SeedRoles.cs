@@ -1,32 +1,20 @@
 ﻿using Contract.Common.Enums;
 using Repository.DBContext;
+using Repository.Repositories;
 
 namespace Repository.SeedData
 {
     public class SeedRoles
     {
-        private readonly InnerChildExeContext _context;
-        public SeedRoles(InnerChildExeContext context)
+        private readonly IRoleRepository _roleRepo;
+        public SeedRoles(IRoleRepository roleRepo)
         {
-            _context = context;
+            _roleRepo = roleRepo;
         }
 
-        public void SeedRolesData()
+        public async Task SeedRolesData()
         {
-            var existingRoles = _context.Roles.Select(r => r.RoleName).ToList();
-            foreach (var roleName in Enum.GetNames(typeof(RoleEnum)))
-            {
-                if (!existingRoles.Contains(roleName))
-                {
-                    var role = new Repository.Models.Role
-                    {
-                        RoleId = Guid.NewGuid().ToString(),
-                        RoleName = roleName
-                    };
-                    _context.Roles.Add(role);
-                }
-            }
-            _context.SaveChanges();
+            await _roleRepo.SeedRolesAsync();
         }
     }
 

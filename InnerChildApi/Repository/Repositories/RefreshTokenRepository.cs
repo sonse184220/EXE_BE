@@ -13,12 +13,7 @@ namespace Repository.Repositories
     }
     public class RefreshTokenRepository : GenericRepository<RefreshToken>, IRefreshTokenRepository
     {
-        public RefreshTokenRepository() : base()
-        {
-        }
-        public RefreshTokenRepository(InnerChildExeContext context) : base(context)
-        {
-        }
+       
         public async Task<int> CreateRefreshTokenAsync(string userId, string profileId, string token, DateTime createAt, DateTime expireAt)
         {
             var refreshToken = new RefreshToken
@@ -47,7 +42,7 @@ namespace Repository.Repositories
         public async Task<int> RevokeTokenAsync(RefreshToken refreshToken)
         {
             refreshToken.IsRevoked = true;
-            return await base.UpdateAsync(refreshToken);
+            return await UpdateAsync(refreshToken);
         }
     }
 

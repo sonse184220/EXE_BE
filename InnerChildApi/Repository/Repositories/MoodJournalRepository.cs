@@ -20,12 +20,7 @@ namespace Repository.Repositories
     }
     public class MoodJournalRepository : GenericRepository<MoodJournal>, IMoodJournalRepository
     {
-        public MoodJournalRepository() : base()
-        {
-        }
-        public MoodJournalRepository(InnerChildExeContext context) : base(context)
-        {
-        }
+       
         public async Task<int> CreateMoodJournalAsync(MoodJournal moodJournal)
         {
             return await CreateAsync(moodJournal);
