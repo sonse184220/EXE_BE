@@ -1,11 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repository.Base;
 using Repository.DBContext;
-using Repository.Interfaces;
 using Repository.Models;
 
 namespace Repository.Repositories
 {
+    public interface ISubAudioCategoryRepository
+    {
+
+        Task<List<SubAudioCategory>> GetAllSubAudioCategoryAsync();
+        Task<int> CreateSubAudioCategoryAsync(SubAudioCategory subAudioCategory);
+        Task<SubAudioCategory> GetSubAudioCategoryByIdAsync(string subAudioCategoryId);
+        Task<int> UpdateSubAudioSubCategoryAsync(SubAudioCategory subAudioCategory);
+    }
     public class SubAudioCategoryRepository : GenericRepository<SubAudioCategory>, ISubAudioCategoryRepository
     {
         public SubAudioCategoryRepository() : base()

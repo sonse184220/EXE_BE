@@ -1,11 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repository.Base;
 using Repository.DBContext;
-using Repository.Interfaces;
 using Repository.Models;
 
 namespace Repository.Repositories
 {
+    public interface IAudioRepository
+    {
+        Task<List<Audio>> GetAllAudioAsync();
+        Task<int> CreateAudioAsync(Audio audio);
+        Task<Audio> GetAudioByIdAsync(string audioId);
+        Task<int> UpdateAudioAsync(Audio audio);
+    }
     public class AudioRepository : GenericRepository<Audio>, IAudioRepository
     {
         public AudioRepository() : base()

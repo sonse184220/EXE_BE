@@ -20,7 +20,7 @@ namespace InnerChildApi
             services.Configure<AppSettingConfig.AiSettingConfig>(config.GetSection("AiSettings"));
             services.Configure<AppSettingConfig.ChatDbSettingConfig>(config.GetSection("MongoDbSettings:ChatDb"));
             services.Configure<AppSettingConfig.SendGridSettingConfig>(config.GetSection("SendGridSettings"));
-
+            services.Configure<AppSettingConfig.PayOsSettingConfig>(config.GetSection("PayOsSettings"));
 
 
 

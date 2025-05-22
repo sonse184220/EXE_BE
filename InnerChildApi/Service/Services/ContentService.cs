@@ -1,9 +1,18 @@
-﻿using Repository.Interfaces;
-using Repository.Models;
-using Service.Interfaces;
+﻿using Repository.Models;
+using Repository.Repositories;
 
 namespace Service.Services
 {
+    public interface IContentService
+    {
+        //article
+        Task<int> CreateArticleAsync(Article article);
+        Task<List<Article>> GetAllArticlesAsync();
+        Task<int> UpdateArticleAsync(Article article);
+        Task<bool> DeleteArticleAsync(Article article);
+        Task<Article> GetArticleByIdAsync(string id);
+
+    }
     public class ContentService : IContentService
     {
         private readonly IArticleRepository _articleRepo;

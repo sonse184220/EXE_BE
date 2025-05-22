@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Service.Interfaces;
 using Service.Services;
 
 namespace Service
@@ -21,6 +20,7 @@ namespace Service
             service.AddScoped<ICommunityService, CommunityService>();
             service.AddScoped<IMoodJournalService, MoodJournalService>();
             service.AddScoped<IChatService, ChatService>();
+            service.AddScoped<IPaymentService, PaymentService>();
             return service;
         }
     }

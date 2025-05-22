@@ -1,11 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repository.Base;
 using Repository.DBContext;
-using Repository.Interfaces;
 using Repository.Models;
 
 namespace Repository.Repositories
 {
+    public interface IRoleRepository
+    {
+        Task<Role?> GetByRoleNameAsync(string roleName);
+    }
     public class RoleRepository : GenericRepository<Role>, IRoleRepository
     {
         public RoleRepository() : base()

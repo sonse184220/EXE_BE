@@ -42,7 +42,7 @@
         public class SendGridSettingConfig
         {
             public string ApiKey { get; set; }
-            public string FromEmail { get; set; }  
+            public string FromEmail { get; set; }
             public string SmtpPass { get; set; }
             public string SmtpHost { get; set; }
             public string SmtpUser { get; set; }
@@ -50,8 +50,14 @@
             public int SmtpPort { get; set; }
 
 
-      
-       
+
+
+        }
+        public class PayOsSettingConfig
+        {
+            public string ClientId { get; set; }
+            public string ApiKey { get; set; }
+            public string ChecksumKey { get; set; }
         }
 
     }

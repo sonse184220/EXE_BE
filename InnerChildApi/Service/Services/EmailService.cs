@@ -1,11 +1,18 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using Repository.Interfaces;
-using Service.Interfaces;
+using Repository.Repositories;
 using static Contract.Common.Config.AppSettingConfig;
 namespace Service.Services
 {
+    public interface IEmailService
+    {
+        Task SendEmailAsync(string toEmail, string subject, string body);
+        Task SendConfirmationEmailAsync(string toEmail, string userName, string confirmLink);
+        Task SendResetPasswordEmailAsync(string toEmail, string userName, string confirmLink);
+        Task<bool> VerifyAccount(string userId);
+
+    }
     public class EmailService : IEmailService
     {
         #region variables gmail
@@ -27,7 +34,7 @@ namespace Service.Services
         public int sendGridSmtpPort;
         private readonly ITokenService _tokenService;
         private readonly SendGridSettingConfig _sendGridSettingConfig;
-        public EmailService(IConfiguration config, IAccountRepository accountRepo,/* IOptions<EmailSettingConfig> emailSettingConfig,*/ ITokenService tokenService,IOptions<SendGridSettingConfig> sendGridSettingConfig)
+        public EmailService(IConfiguration config, IAccountRepository accountRepo,/* IOptions<EmailSettingConfig> emailSettingConfig,*/ ITokenService tokenService, IOptions<SendGridSettingConfig> sendGridSettingConfig)
         {
             //_emailSettingConfig = emailSettingConfig.Value;
             _sendGridSettingConfig = sendGridSettingConfig.Value;

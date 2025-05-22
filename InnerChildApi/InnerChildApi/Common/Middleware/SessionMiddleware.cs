@@ -1,6 +1,6 @@
 ﻿using Contract.Common.Constant;
 using Contract.Common.Enums;
-using Service.Interfaces;
+using Service.Services;
 using System.Security.Claims;
 
 namespace InnerChildApi.Common.Middleware

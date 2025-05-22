@@ -1,11 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repository.Base;
 using Repository.DBContext;
-using Repository.Interfaces;
 using Repository.Models;
 
 namespace Repository.Repositories
 {
+    public interface ISessionRepository
+    {
+        Task<int> CreateSessionAsync(Session session);
+        Task InvalidateOtherSessionsAsync(string userId, string profileId, string token);
+        Task<bool> IsSessionValidAsync(string userId, string profileId, string token);
+    }
     public class SessionRepository : GenericRepository<Session>, ISessionRepository
     {
         public SessionRepository(InnerChildExeContext context) : base(context)

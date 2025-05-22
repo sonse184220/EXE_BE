@@ -3,13 +3,20 @@ using Contract.Dtos.Requests.Auth;
 using Contract.Dtos.Responses.Auth;
 using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Http;
-using Repository.Interfaces;
 using Repository.Models;
-using Service.Interfaces;
+using Repository.Repositories;
 using System.Security.Authentication;
 
 namespace Service.Services
 {
+    public interface IAuthService
+    {
+        Task RegisterAccountAsync(RegisterRequest request);
+        Task<List<PreLoginResponse>> CheckLoginAccountAsync(LoginRequest request);
+        Task<FinalLoginResponse> LoginAccountAsync(string userId, string profileId);
+        Task ChangePassword(string userId, string currentPassword, string newPassword);
+        Task<List<PreLoginResponse>> AuthenticateWithFirebaseAsync(FirebaseTokenRequest request);
+    }
     public class AuthService : IAuthService
     {
         //repo

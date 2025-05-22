@@ -1,12 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repository.Base;
 using Repository.DBContext;
-using Repository.Interfaces;
 using Repository.Models;
 
 namespace Repository.Repositories
 {
-    internal class CommunityMemberRepository : GenericRepository<CommunityMember>, ICommunityMemberRepository
+    public interface ICommunityMemberRepository
+    {
+        Task<CommunityMember> GetCommunityMembersByIdAsync(string communityMemberId);
+
+        Task<CommunityMember> GetCommunityMembersByProfileIdAndGroupIdAsync(string profileId, string groupId);
+
+
+        Task<IEnumerable<CommunityMember>> GetAllCommunityMemberAsync();
+
+
+        Task<int> CreateCommunityMemberAsync(CommunityMember communityMember);
+
+
+        Task<int> UpdateUserCommunityMemberAsync(CommunityMember communityMember);
+
+        Task<bool> DeleteUserCommunityMemberAsync(CommunityMember communityMember);
+    }
+    public class CommunityMemberRepository : GenericRepository<CommunityMember>, ICommunityMemberRepository
     {
         public CommunityMemberRepository() : base()
         {

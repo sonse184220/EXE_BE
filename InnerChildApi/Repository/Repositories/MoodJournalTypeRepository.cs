@@ -1,10 +1,20 @@
 ﻿using Repository.Base;
 using Repository.DBContext;
-using Repository.Interfaces;
 using Repository.Models;
 
 namespace Repository.Repositories
 {
+    public interface IMoodJournalTypeRepository
+    {
+        Task<int> CreateMoodJournalTypeAsync(MoodJournalType moodJournalType);
+
+        Task<int> UpdateMoodJournalTypeAsync(MoodJournalType moodJournalType);
+
+        Task<List<MoodJournalType>> GetAllMoodJournalTypeAsync();
+
+        Task<MoodJournalType> GetMoodJournalTypeByIdAsync(string moodJournalTypeId);
+
+    }
     public class MoodJournalTypeRepository : GenericRepository<MoodJournalType>, IMoodJournalTypeRepository
     {
         public MoodJournalTypeRepository() : base()

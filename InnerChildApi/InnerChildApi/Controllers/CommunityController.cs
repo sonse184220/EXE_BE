@@ -5,7 +5,7 @@ using Contract.Dtos.Responses.Community;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Models;
-using Service.Interfaces;
+using Service.Services;
 
 namespace InnerChildApi.Controllers
 {
@@ -71,6 +71,9 @@ namespace InnerChildApi.Controllers
                     CommunityMemberStatus = m.CommunityMemberStatus,
                     CommunityGroupId = m.CommunityGroupId,
                     ProfileId = m.ProfileId,
+                    UserId = m.Profile?.User?.UserId,
+                    ProfilePicture = m.Profile?.User.ProfilePicture,
+                    UserName = m.Profile?.User?.FullName,
                 }),
                 CommunityPostsDetail = community.CommunityPosts.Select(m => new CommunityPostDetail()
                 {
@@ -82,6 +85,9 @@ namespace InnerChildApi.Controllers
                     CommunityPostCreatedAt = m.CommunityPostCreatedAt,
                     CommunityGroupId = m.CommunityGroupId,
                     ProfileId = m.ProfileId,
+                    UserId = m.Profile?.User?.UserId,
+                    ProfilePicture = m.Profile?.User.ProfilePicture,
+                    UserName = m.Profile?.User?.FullName,
                 })
             };
 
@@ -272,7 +278,20 @@ namespace InnerChildApi.Controllers
             var postDetail = await _communityService.GetCommunityPostByIdAsync(id);
             if (postDetail == null)
                 return NotFound("Post not found");
-            return Ok(postDetail);
+            return Ok(new CommunityPostDetail()
+            {
+                CommunityGroupId = postDetail.CommunityGroupId,
+                CommunityPostId = postDetail.CommunityPostId,
+                CommunityPostTitle = postDetail.CommunityPostTitle,
+                CommunityPostContent = postDetail.CommunityPostContent,
+                CommunityPostImageUrl = postDetail.CommunityPostImageUrl,
+                CommunityPostStatus = postDetail.CommunityPostStatus,
+                CommunityPostCreatedAt = postDetail.CommunityPostCreatedAt,
+                ProfileId = postDetail.ProfileId,
+                UserName = postDetail?.Profile?.User?.FullName,
+                ProfilePicture = postDetail?.Profile?.User?.ProfilePicture,
+                UserId = postDetail.Profile?.UserId,
+            });
         }
 
 

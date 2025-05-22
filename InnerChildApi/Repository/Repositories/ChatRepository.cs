@@ -1,11 +1,25 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using Repository.Interfaces;
 using Repository.MongoDbModels;
 using static Contract.Common.Config.AppSettingConfig;
 
 namespace Repository.Repositories
 {
+    public interface IChatRepository
+    {
+        Task CreateSession(AiChatSessionMongo session);
+
+        Task<AiChatSessionMongo> GetMessagesBySessionIdAndProfileIdAsync(string sessionId, string profileId);
+
+        Task<List<AiChatSessionMongo>?> GetSessionsByProfileId(string profileId);
+
+        Task AddMessageToSessionAsync(string sessionId, AiChatMessageMongo message);
+
+        Task<bool> DeleteSessionAsync(string sessionId, string profileId);
+
+        Task<AiChatSessionMongo?> GetSessionBySessionIdAndProfileId(string sessionId, string profileId);
+
+    }
     public class ChatRepository : IChatRepository
     {
 
@@ -21,23 +35,19 @@ namespace Repository.Repositories
         {
             await _chatSessions.InsertOneAsync(session);
         }
-        public async Task<List<AiChatMessageMongo>> GetMessagesBySessionIdAndProfileIdAsync(string sessionId, string profileId)
+        public async Task<AiChatSessionMongo> GetMessagesBySessionIdAndProfileIdAsync(string sessionId, string profileId)
         {
             var session = await _chatSessions.Find(s => s.AiChatSessionId == sessionId && s.ProfileId == profileId).FirstOrDefaultAsync();
-            if (session != null)
-            {
-                return session.AiChatMessages;
-            }
-            return new List<AiChatMessageMongo>();
+            return session;
         }
         public async Task<List<AiChatSessionMongo>?> GetSessionsByProfileId(string profileId)
         {
             return await _chatSessions.Find(s => s.ProfileId == profileId).ToListAsync();
         }
-        public async Task<AiChatSessionMongo?> GetSessionBySessionIdAndProfileId(string sessionId,string profileId)
+        public async Task<AiChatSessionMongo?> GetSessionBySessionIdAndProfileId(string sessionId, string profileId)
         {
             return await _chatSessions.Find(x => x.AiChatSessionId == sessionId && x.ProfileId == profileId).FirstOrDefaultAsync();
-        } 
+        }
         public async Task AddMessageToSessionAsync(string sessionId, AiChatMessageMongo message)
         {
             var update = Builders<AiChatSessionMongo>.Update.Push(x => x.AiChatMessages, message);

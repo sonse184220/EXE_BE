@@ -1,11 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repository.Base;
 using Repository.DBContext;
-using Repository.Interfaces;
 using Repository.Models;
 
 namespace Repository.Repositories
 {
+    public interface IRefreshTokenRepository
+    {
+        Task<int> CreateRefreshTokenAsync(string userId, string profileId, string token, DateTime createAt, DateTime expireAt);
+        Task<RefreshToken> GetByRefreshTokenAsync(string refreshToken);
+        Task<int> RevokeTokenAsync(RefreshToken refreshToken);
+    }
     public class RefreshTokenRepository : GenericRepository<RefreshToken>, IRefreshTokenRepository
     {
         public RefreshTokenRepository() : base()

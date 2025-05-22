@@ -1,10 +1,16 @@
 ﻿using Repository.Base;
 using Repository.DBContext;
-using Repository.Interfaces;
 using Repository.Models;
 
 namespace Repository.Repositories
 {
+    public interface INotificationRepository
+    {
+        Task<int> CreateNotificationAsync(Notification notification);
+        Task<List<Notification>> GetAllNotificationsAsync();
+        Task<bool> DeleteNotificationAsync(Notification notification);
+        Task<Notification> GetNotificationByIdAsync(string id);
+    }
     public class NotificationRepository : GenericRepository<Notification>, INotificationRepository
     {
         public NotificationRepository() : base()
