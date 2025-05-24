@@ -93,12 +93,11 @@ public partial class InnerChildExeContext : DbContext
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer(GetConnectionString("DefaultConnection")).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AichatMessage>(entity =>
         {
-            entity.HasKey(e => e.AichatMessageId).HasName("PK__AIChatMe__C47E9CB33E17FB15");
+            entity.HasKey(e => e.AichatMessageId).HasName("PK__AIChatMe__C47E9CB3F3A59BAC");
 
             entity.ToTable("AIChatMessage");
 
@@ -123,7 +122,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<AichatSession>(entity =>
         {
-            entity.HasKey(e => e.AichatSessionId).HasName("PK__AIChatSe__96B1B9FC79F42F0B");
+            entity.HasKey(e => e.AichatSessionId).HasName("PK__AIChatSe__96B1B9FCBB012B8A");
 
             entity.ToTable("AIChatSession");
 
@@ -145,7 +144,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Article>(entity =>
         {
-            entity.HasKey(e => e.ArticleId).HasName("PK__Article__9C6270E8CD4D6C50");
+            entity.HasKey(e => e.ArticleId).HasName("PK__Article__9C6270E8F78EEBF5");
 
             entity.ToTable("Article");
 
@@ -159,7 +158,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Audio>(entity =>
         {
-            entity.HasKey(e => e.AudioId).HasName("PK__Audio__A28A94507EE39E0A");
+            entity.HasKey(e => e.AudioId).HasName("PK__Audio__A28A94504F3E9CBD");
 
             entity.ToTable("Audio");
 
@@ -180,7 +179,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<AudioCategory>(entity =>
         {
-            entity.HasKey(e => e.AudioCategoryId).HasName("PK__AudioCat__B3B4EAFB1498053C");
+            entity.HasKey(e => e.AudioCategoryId).HasName("PK__AudioCat__B3B4EAFBE217BFA5");
 
             entity.ToTable("AudioCategory");
 
@@ -190,7 +189,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<CommunityMember>(entity =>
         {
-            entity.HasKey(e => e.CommunityMemberId).HasName("PK__Communit__F315FAD6B2134B26");
+            entity.HasKey(e => e.CommunityMemberId).HasName("PK__Communit__F315FAD6975A3B13");
 
             entity.ToTable("CommunityMember");
 
@@ -210,7 +209,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<CommunityPost>(entity =>
         {
-            entity.HasKey(e => e.CommunityPostId).HasName("PK__Communit__9A60257E154EEB92");
+            entity.HasKey(e => e.CommunityPostId).HasName("PK__Communit__9A60257E8605047E");
 
             entity.ToTable("CommunityPost");
 
@@ -233,7 +232,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Goal>(entity =>
         {
-            entity.HasKey(e => e.GoalId).HasName("PK__Goal__8A4FFFD16FA9A6AE");
+            entity.HasKey(e => e.GoalId).HasName("PK__Goal__8A4FFFD1890EF3FB");
 
             entity.ToTable("Goal");
 
@@ -256,7 +255,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Habit>(entity =>
         {
-            entity.HasKey(e => e.HabitId).HasName("PK__Habit__C587AF63C0B1CBB7");
+            entity.HasKey(e => e.HabitId).HasName("PK__Habit__C587AF63430A0030");
 
             entity.ToTable("Habit");
 
@@ -272,7 +271,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Help>(entity =>
         {
-            entity.HasKey(e => e.HelpId).HasName("PK__Help__90E322CEF2790D70");
+            entity.HasKey(e => e.HelpId).HasName("PK__Help__90E322CE9D16A1B3");
 
             entity.ToTable("Help");
 
@@ -288,7 +287,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<HelpCategory>(entity =>
         {
-            entity.HasKey(e => e.HelpCategoryId).HasName("PK__HelpCate__83EECC2BCA46DF9B");
+            entity.HasKey(e => e.HelpCategoryId).HasName("PK__HelpCate__83EECC2BBB2C25D8");
 
             entity.ToTable("HelpCategory");
 
@@ -298,7 +297,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<MoodJournal>(entity =>
         {
-            entity.HasKey(e => e.MoodJournalId).HasName("PK__MoodJour__21FB5E62CDA2FCE6");
+            entity.HasKey(e => e.MoodJournalId).HasName("PK__MoodJour__21FB5E6241BA729B");
 
             entity.ToTable("MoodJournal");
 
@@ -321,7 +320,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<MoodJournalType>(entity =>
         {
-            entity.HasKey(e => e.MoodJournalTypeId).HasName("PK__MoodJour__A076863659CBAD0A");
+            entity.HasKey(e => e.MoodJournalTypeId).HasName("PK__MoodJour__A07686361C713936");
 
             entity.ToTable("MoodJournalType");
 
@@ -331,7 +330,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Notification>(entity =>
         {
-            entity.HasKey(e => e.NotificationId).HasName("PK__Notifica__20CF2E12DAEA097A");
+            entity.HasKey(e => e.NotificationId).HasName("PK__Notifica__20CF2E12D6F00FF4");
 
             entity.ToTable("Notification");
 
@@ -348,11 +347,12 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Profile>(entity =>
         {
-            entity.HasKey(e => e.ProfileId).HasName("PK__Profile__290C88E42762C323");
+            entity.HasKey(e => e.ProfileId).HasName("PK__Profile__290C88E46E408B87");
 
             entity.ToTable("Profile");
 
             entity.Property(e => e.ProfileId).HasMaxLength(50);
+            entity.Property(e => e.ProfileCreatedAt).HasColumnType("datetime");
             entity.Property(e => e.ProfileName).HasMaxLength(255);
             entity.Property(e => e.ProfileStatus).HasMaxLength(255);
             entity.Property(e => e.UserId).HasMaxLength(50);
@@ -364,11 +364,13 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Purchase>(entity =>
         {
-            entity.HasKey(e => e.PurchaseId).HasName("PK__Purchase__6B0A6BBE7FD03182");
+            entity.HasKey(e => e.PurchaseId).HasName("PK__Purchase__6B0A6BBEA901B995");
 
             entity.ToTable("Purchase");
 
             entity.Property(e => e.PurchaseId).HasMaxLength(50);
+            entity.Property(e => e.ExpireAt).HasColumnType("datetime");
+            entity.Property(e => e.PurchasedAt).HasColumnType("datetime");
             entity.Property(e => e.SubscriptionId).HasMaxLength(50);
             entity.Property(e => e.UserId).HasMaxLength(50);
 
@@ -383,7 +385,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Quiz>(entity =>
         {
-            entity.HasKey(e => e.QuizId).HasName("PK__Quiz__8B42AE8E64216175");
+            entity.HasKey(e => e.QuizId).HasName("PK__Quiz__8B42AE8EC03447BF");
 
             entity.ToTable("Quiz");
 
@@ -402,7 +404,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<QuizAnswerOption>(entity =>
         {
-            entity.HasKey(e => e.QuizAnswerOptionId).HasName("PK__QuizAnsw__6E9E14FFB064231A");
+            entity.HasKey(e => e.QuizAnswerOptionId).HasName("PK__QuizAnsw__6E9E14FF9DEF0D15");
 
             entity.ToTable("QuizAnswerOption");
 
@@ -417,7 +419,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<QuizCategory>(entity =>
         {
-            entity.HasKey(e => e.QuizCategoryId).HasName("PK__QuizCate__60A2C1D879C02B6D");
+            entity.HasKey(e => e.QuizCategoryId).HasName("PK__QuizCate__60A2C1D86BC644E6");
 
             entity.ToTable("QuizCategory");
 
@@ -428,7 +430,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<QuizQuestion>(entity =>
         {
-            entity.HasKey(e => e.QuizQuestionId).HasName("PK__QuizQues__45E34D3E96AF9C80");
+            entity.HasKey(e => e.QuizQuestionId).HasName("PK__QuizQues__45E34D3E20365DCC");
 
             entity.ToTable("QuizQuestion");
 
@@ -442,7 +444,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<QuizUserAnswer>(entity =>
         {
-            entity.HasKey(e => e.QuizUserAnswerId).HasName("PK__QuizUser__F1FA402F2EBC2B9C");
+            entity.HasKey(e => e.QuizUserAnswerId).HasName("PK__QuizUser__F1FA402F533A521B");
 
             entity.ToTable("QuizUserAnswer");
 
@@ -476,7 +478,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<QuizUserAttempt>(entity =>
         {
-            entity.HasKey(e => e.QuizUserAttemptId).HasName("PK__QuizUser__6052F260469F950A");
+            entity.HasKey(e => e.QuizUserAttemptId).HasName("PK__QuizUser__6052F26034CFB6D7");
 
             entity.ToTable("QuizUserAttempt");
 
@@ -496,7 +498,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<QuizUserResult>(entity =>
         {
-            entity.HasKey(e => e.QuizUserResultId).HasName("PK__QuizUser__4FDB2EB11AAA6F43");
+            entity.HasKey(e => e.QuizUserResultId).HasName("PK__QuizUser__4FDB2EB147243565");
 
             entity.ToTable("QuizUserResult");
 
@@ -520,7 +522,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<RefreshToken>(entity =>
         {
-            entity.HasKey(e => e.RefreshTokenId).HasName("PK__RefreshT__F5845E39FAD3018B");
+            entity.HasKey(e => e.RefreshTokenId).HasName("PK__RefreshT__F5845E3929DBD74B");
 
             entity.ToTable("RefreshToken");
 
@@ -542,7 +544,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.RoleId).HasName("PK__Role__8AFACE1A35EAA7EC");
+            entity.HasKey(e => e.RoleId).HasName("PK__Role__8AFACE1ADBA91BE0");
 
             entity.ToTable("Role");
 
@@ -552,7 +554,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Session>(entity =>
         {
-            entity.HasKey(e => e.SessionId).HasName("PK__Session__C9F49290C1B228E1");
+            entity.HasKey(e => e.SessionId).HasName("PK__Session__C9F492907AC2DFE8");
 
             entity.ToTable("Session");
 
@@ -572,7 +574,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<SubAudioCategory>(entity =>
         {
-            entity.HasKey(e => e.SubAudioCategoryId).HasName("PK__SubAudio__7BA6BA64AE08E6EC");
+            entity.HasKey(e => e.SubAudioCategoryId).HasName("PK__SubAudio__7BA6BA64484FC968");
 
             entity.ToTable("SubAudioCategory");
 
@@ -587,7 +589,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Subscription>(entity =>
         {
-            entity.HasKey(e => e.SubscriptionId).HasName("PK__Subscrip__9A2B249DFDA59CE9");
+            entity.HasKey(e => e.SubscriptionId).HasName("PK__Subscrip__9A2B249D833B3CFA");
 
             entity.ToTable("Subscription");
 
@@ -598,7 +600,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Transaction>(entity =>
         {
-            entity.HasKey(e => e.TransactionId).HasName("PK__Transact__55433A6B1253CB6E");
+            entity.HasKey(e => e.TransactionId).HasName("PK__Transact__55433A6B0E9126C9");
 
             entity.ToTable("Transaction");
 
@@ -623,7 +625,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__User__1788CC4C4E8B5E2B");
+            entity.HasKey(e => e.UserId).HasName("PK__User__1788CC4CA54F1108");
 
             entity.ToTable("User");
 
@@ -647,7 +649,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<UserCommunity>(entity =>
         {
-            entity.HasKey(e => e.CommunityGroupId).HasName("PK__UserComm__ECEBBBC534DF871A");
+            entity.HasKey(e => e.CommunityGroupId).HasName("PK__UserComm__ECEBBBC5417A8CBD");
 
             entity.ToTable("UserCommunity");
 

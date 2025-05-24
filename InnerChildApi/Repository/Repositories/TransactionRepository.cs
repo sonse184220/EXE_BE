@@ -1,4 +1,5 @@
-﻿using Repository.Base;
+﻿using Microsoft.EntityFrameworkCore;
+using Repository.Base;
 using Repository.DBContext;
 using Repository.Models;
 
@@ -22,7 +23,7 @@ namespace Repository.Repositories
         }
         public async Task<Transaction> GetTransactionByIdAsync(string transactionId)
         {
-            return await GetByIdAsync(transactionId);
+            return await _context.Transactions.Include(x => x.Subscription).Include(x => x.User).ThenInclude(x => x.Profiles).FirstOrDefaultAsync(x => x.TransactionId == transactionId);
         }
         public async Task<int> CreateTransactionAsync(Transaction transaction)
         {

@@ -85,6 +85,7 @@ namespace Service.Services
                     ProfileId = Guid.NewGuid().ToString(),
                     UserId = user.UserId,
                     ProfileStatus = UserAccountEnum.Active.ToString(),
+                    ProfileCreatedAt = DateTime.UtcNow,
                 };
                 await _profileRepo.CreateProfileAsync(profile);
             }
@@ -116,8 +117,18 @@ namespace Service.Services
                 throw new InvalidCredentialException("Email not verified.");
             }
             var userProfiles = await _accountRepo.GetUserProfilesAsync(existingUser.UserId);
+            var latestPurchased = existingUser.Purchases.OrderByDescending(x => x.PurchasedAt).FirstOrDefault();
+            List<Profile> allowedProfiles;
+            if (latestPurchased != null && latestPurchased.IsActive == true && latestPurchased.Subscription?.SubscriptionType == SubscriptionEnum.FamilyPlan.ToString())
+            {
+                allowedProfiles = userProfiles;
+            }
+            else
+            {
+                allowedProfiles = userProfiles.OrderBy(x => x.ProfileCreatedAt).Take(1).ToList();
+            }
+            var result = _tokenService.GeneratePreLoginJwtTokens(allowedProfiles);
 
-            var result = _tokenService.GeneratePreLoginJwtTokens(userProfiles);
             return result;
         }
         #endregion

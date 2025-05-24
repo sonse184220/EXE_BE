@@ -15,6 +15,8 @@ public partial class Profile
 
     public string ProfileStatus { get; set; }
 
+    public DateTime? ProfileCreatedAt { get; set; }
+
     public virtual ICollection<AichatSession> AichatSessions { get; set; } = new List<AichatSession>();
 
     public virtual ICollection<CommunityMember> CommunityMembers { get; set; } = new List<CommunityMember>();

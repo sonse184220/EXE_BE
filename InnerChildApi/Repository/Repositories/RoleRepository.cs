@@ -1,6 +1,7 @@
 ﻿using Contract.Common.Enums;
 using Microsoft.EntityFrameworkCore;
 using Repository.Base;
+using Repository.DBContext;
 using Repository.Models;
 
 namespace Repository.Repositories
@@ -12,7 +13,14 @@ namespace Repository.Repositories
     }
     public class RoleRepository : GenericRepository<Role>, IRoleRepository
     {
+        public RoleRepository()
+        {
 
+        }
+        public RoleRepository(InnerChildExeContext context) : base(context)
+        {
+
+        }
         public async Task<Role> GetByRoleNameAsync(string roleName)
         {
             return await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == roleName);
