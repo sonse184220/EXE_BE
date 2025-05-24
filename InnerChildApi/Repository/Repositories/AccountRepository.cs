@@ -31,7 +31,7 @@ namespace Repository.Repositories
         }
         public async Task<User> GetByEmailAsync(string email)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+            return await _context.Users.Include(x => x.Purchases).FirstOrDefaultAsync(x => x.Email == email);
         }
         public async Task<User> GetByUserIdAsync(string userId)
         {

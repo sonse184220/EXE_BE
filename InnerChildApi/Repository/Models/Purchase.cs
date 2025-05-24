@@ -13,6 +13,12 @@ public partial class Purchase
 
     public string SubscriptionId { get; set; }
 
+    public DateTime? PurchasedAt { get; set; }
+
+    public DateTime? ExpireAt { get; set; }
+
+    public bool? IsActive { get; set; }
+
     public virtual Subscription Subscription { get; set; }
 
     public virtual User User { get; set; }

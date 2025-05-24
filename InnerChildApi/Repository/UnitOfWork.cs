@@ -9,6 +9,9 @@ namespace Repository
         ITransactionRepository TransactionRepository { get; }
         IPurchaseRepository PurchaseRepository { get; }
 
+        IProfileRepository ProfileRepository { get; }
+        IRoleRepository RoleRepository { get; }
+
         Task BeginTransactionAsync();
         Task CommitAsync();
         Task RollbackAsync();
@@ -23,11 +26,17 @@ namespace Repository
 
         public IPurchaseRepository PurchaseRepository { get; }
 
+        public IRoleRepository RoleRepository { get; }
+
+        public IProfileRepository ProfileRepository { get; }
+
         public UnitOfWork()
         {
             _context ??= new InnerChildExeContext();
             TransactionRepository = new TransactionRepository(_context);
             PurchaseRepository = new PurchaseRepository(_context);
+            RoleRepository = new RoleRepository(_context);
+            ProfileRepository = new ProfileRepository(_context);
         }
 
 

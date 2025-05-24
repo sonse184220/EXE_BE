@@ -119,13 +119,33 @@ namespace Service.Services
                     existingTransaction.TransactionStatus = PaymentStatusEnum.Success.ToString();
                     existingTransaction.TransactionPaymentStatus = verifiedData.desc;
                     await _unitOfWork.TransactionRepository.UpdateTransactionAsync(existingTransaction);
+                    var purchasedTime = DateTime.UtcNow;
                     var newPurchase = new Purchase()
                     {
                         PurchaseId = Guid.NewGuid().ToString(),
                         SubscriptionId = existingTransaction.SubscriptionId,
                         UserId = existingTransaction.UserId,
-                        
+                        PurchasedAt = purchasedTime,
+                        ExpireAt = purchasedTime.AddDays(60),
+                        IsActive = true
                     };
+                    var subscriptionChecked = existingTransaction.Subscription?.SubscriptionType.Equals(SubscriptionEnum.FamilyPlan);
+                    if (subscriptionChecked == true && existingTransaction.User?.Profiles.Count == 1)
+                    {
+                        List<Profile> profiles = new List<Profile>();
+                        for (int i = 0; i < 3; i++)
+                        {
+                            var newProfile = new Profile()
+                            {
+                                ProfileId = Guid.NewGuid().ToString(),
+                                UserId = existingTransaction.UserId,
+                                ProfileCreatedAt = DateTime.UtcNow,
+                                ProfileStatus = UserAccountEnum.Active.ToString(),
+                            };
+                            profiles.Add(newProfile);
+                        }
+                        _unitOfWork.ProfileRepository.CreateMutipleProfiles(profiles);
+                    }
                     await _unitOfWork.PurchaseRepository.CreatePurchaseAsync(newPurchase);
                     await _unitOfWork.SaveChangesAsync();
                     await _unitOfWork.CommitAsync();

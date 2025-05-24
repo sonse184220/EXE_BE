@@ -1,4 +1,5 @@
 ﻿using Repository.Base;
+using Repository.DBContext;
 using Repository.Models;
 
 namespace Repository.Repositories
@@ -7,9 +8,18 @@ namespace Repository.Repositories
     {
         Task<int> CreateProfileAsync(Profile profile);
         Task<Profile> GetByProfileIdAsync(string profileId);
+        void CreateMutipleProfiles(List<Profile> profiles);
     }
     public class ProfileRepository : GenericRepository<Profile>, IProfileRepository
     {
+        public ProfileRepository()
+        {
+
+        }
+        public ProfileRepository(InnerChildExeContext context) : base(context)
+        {
+
+        }
 
         public async Task<int> CreateProfileAsync(Profile profile)
         {
@@ -20,5 +30,13 @@ namespace Repository.Repositories
         {
             return await GetByIdAsync(profileId);
         }
+        public void CreateMutipleProfiles(List<Profile> profiles)
+        {
+            foreach (var profile in profiles)
+            {
+                PrepareCreate(profile);
+            }
+        }
+
     }
 }
