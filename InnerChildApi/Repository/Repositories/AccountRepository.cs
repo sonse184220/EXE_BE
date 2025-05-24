@@ -1,7 +1,6 @@
 ﻿using Contract.Common.Enums;
 using Microsoft.EntityFrameworkCore;
 using Repository.Base;
-using Repository.DBContext;
 using Repository.Models;
 
 namespace Repository.Repositories
@@ -20,7 +19,7 @@ namespace Repository.Repositories
     }
     public class AccountRepository : GenericRepository<User>, IAccountRepository
     {
-       
+
         public async Task<List<User>> GetAllUsersAsync()
         {
             return await _context.Users.Include(x => x.Role).ToListAsync() ?? new List<User>();

@@ -12,10 +12,12 @@ namespace InnerChildApi.Controllers
     {
         private readonly IContentService _contentService;
         private readonly ICloudinaryService _cloudinaryService;
-        public ArticleController(IContentService contentService, ICloudinaryService cloudinaryService)
+        private readonly ILogger<ArticleController> _logger;
+        public ArticleController(IContentService contentService, ICloudinaryService cloudinaryService, ILogger<ArticleController> logger)
         {
             _contentService = contentService;
             _cloudinaryService = cloudinaryService;
+            _logger = logger;
         }
         [HttpPost("create")]
         public async Task<IActionResult> CreateArticle([FromForm] ArticleCreateRequest request)
@@ -56,7 +58,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Something went wrong " + ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500, $"Something went wrong ");
             }
 
         }
@@ -97,7 +100,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred: {ex.Message}");
+                _logger.LogError(ex.Message);
+                return StatusCode(500, $"An error occurred");
             }
         }
         [HttpPut("update/{id}")]
@@ -140,7 +144,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred: {ex.Message}");
+                _logger.LogError(ex.Message);
+                return StatusCode(500, $"An error occurred");
             }
 
         }

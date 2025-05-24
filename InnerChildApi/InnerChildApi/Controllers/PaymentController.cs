@@ -1,7 +1,7 @@
 ﻿using Contract.Dtos.Requests.Payment;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Net.payOS.Types;
-using Repository.Models;
 using Service.Services;
 using System.Security.Claims;
 
@@ -14,11 +14,13 @@ namespace InnerChildApi.Controllers
         private readonly IMoodJournalService _moodJournalService;
         private readonly IPaymentService _paymentService;
         private readonly IUserService _userService;
-        public PaymentController(IPaymentService paymentService,IUserService userService, IMoodJournalService moodJournalService)
+        private readonly ILogger<PaymentController> _logger;
+        public PaymentController(IPaymentService paymentService, IUserService userService, IMoodJournalService moodJournalService, ILogger<PaymentController> logger)
         {
             _paymentService = paymentService;
             _userService = userService;
             _moodJournalService = moodJournalService;
+            _logger = logger;
         }
         [HttpGet("success")]
         public IActionResult Success()
@@ -35,52 +37,68 @@ namespace InnerChildApi.Controllers
         {
             try
             {
-                var result = await _paymentService.ConfirmWebhook(webhookBody);
-              
-                Console.WriteLine("webhook confirmed");
-                Console.WriteLine("result" + result);
-                Console.WriteLine("webhook body:" + webhookBody);
-                return Ok(result);
+                await _paymentService.ConfirmWebhook(webhookBody);
+                return Ok();
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
         }
+        [Authorize]
         [HttpPost("payment-create")]
-        public async Task<IActionResult> CreatePayment()
+        public async Task<IActionResult> CreatePayment([FromBody] BuySubscriptionRequest buyRequest)
         {
             var email = User.FindFirst(ClaimTypes.Email)?.Value;
-            var user = await _userService.GetByEmailAsync(email);
-            if (user == null)
-            {
-                return NotFound("User not found.");
-            }
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             try
             {
+                if (userId == null)
+                {
+                    return NotFound();
+                }
+                var user = await _userService.GetByEmailAsync(email);
+                if (user == null)
+                {
+                    return NotFound("User not found.");
+                }
+
+                var existingPlan = await _paymentService.GetSubscriptionByIdAsync(buyRequest.SubscriptionId);
+                if (existingPlan == null)
+                {
+                    return NotFound("Plan not found.");
+                }
+                if (existingPlan.SubscriptionPrice % 1 != 0)
+                {
+                    return BadRequest("Subscription price is invalid.");
+                }
+                int planAmount = (int)existingPlan.SubscriptionPrice;
                 var domain = $"{Request.Scheme}://{Request.Host.Value}";
                 PaymentRequest request = new PaymentRequest
                 {
                     BuyerEmail = email,
                     BuyerName = user.FullName,
                     OrderCode = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
-                    Amount = 2000,
-                    Description = "Test payment",
+                    Amount = planAmount,
+                    Description = $"Purchase {existingPlan.SubscriptionDescription}",
                     PaymentItems = new List<PaymentItem>
                     {
-                        new PaymentItem { Name = "Item1", Quantity = 1, Price = 500 },
-                        new PaymentItem { Name = "Item2", Quantity = 2, Price = 250 }
+                        new PaymentItem { Name = $"{existingPlan.SubscriptionType}", Quantity = 1, Price = planAmount },
                     },
                     ReturnUrl = domain + "/innerchild/payment/success",
                     CancelUrl = domain + "/innerchild/payment/cancel",
-                    ExpiredAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 1800
+                    ExpiredAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 3600,
+                    UserId = userId,
+                    SubscriptionId = buyRequest.SubscriptionId,
                 };
                 var result = await _paymentService.CreatePayment(request);
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
         }
     }

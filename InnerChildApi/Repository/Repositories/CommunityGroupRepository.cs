@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repository.Base;
-using Repository.DBContext;
 using Repository.Models;
 
 namespace Repository.Repositories
@@ -22,7 +21,7 @@ namespace Repository.Repositories
     }
     public class CommunityGroupRepository : GenericRepository<UserCommunity>, ICommunityGroupRepository
     {
-       
+
         public async Task<UserCommunity> GetCommunityByIdAsync(string communityGroupId)
         {
             return await _context.UserCommunities.

@@ -16,11 +16,13 @@ namespace InnerChildApi.Controllers
         private readonly ICommunityService _communityService;
         private readonly IUserService _userService;
         private readonly ICloudinaryService _cloudinaryService;
-        public CommunityController(ICommunityService communityService, IUserService userService, ICloudinaryService cloudinaryService)
+        private readonly ILogger<CommunityController> _logger;
+        public CommunityController(ICommunityService communityService, IUserService userService, ICloudinaryService cloudinaryService, ILogger<CommunityController> logger)
         {
             _communityService = communityService;
             _userService = userService;
             _cloudinaryService = cloudinaryService;
+            _logger = logger;
         }
         [HttpPost("create-community")]
         public async Task<IActionResult> CreateCommunity([FromForm] CommunityCreateRequest request)
@@ -41,7 +43,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
 
         }
@@ -118,7 +121,8 @@ namespace InnerChildApi.Controllers
 
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred: {ex.Message}");
+                _logger.LogError(ex.Message);
+                return StatusCode(500, $"An error occurred");
             }
 
         }
@@ -155,7 +159,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
 
         }
@@ -181,7 +186,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
 
         }
@@ -223,7 +229,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
 
         }
@@ -267,7 +274,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
 
         }

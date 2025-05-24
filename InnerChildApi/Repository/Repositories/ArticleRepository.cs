@@ -1,5 +1,4 @@
 ﻿using Repository.Base;
-using Repository.DBContext;
 using Repository.Models;
 
 namespace Repository.Repositories
@@ -15,7 +14,7 @@ namespace Repository.Repositories
     }
     public class ArticleRepository : GenericRepository<Article>, IArticleRepository
     {
-      
+
         public async Task<int> CreateArticleAsync(Article article)
         {
             return await CreateAsync(article);

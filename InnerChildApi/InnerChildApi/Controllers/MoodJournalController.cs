@@ -14,9 +14,11 @@ namespace InnerChildApi.Controllers
     public class MoodJournalController : ControllerBase
     {
         private readonly IMoodJournalService _moodJournalService;
-        public MoodJournalController(IMoodJournalService moodJournalService)
+        private readonly ILogger<MoodJournalController> _logger;
+        public MoodJournalController(IMoodJournalService moodJournalService, ILogger<MoodJournalController> logger)
         {
             _moodJournalService = moodJournalService;
+            _logger = logger;
         }
 
         [HttpPost("create-type")]
@@ -38,7 +40,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Something went wrong " + ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500, $"Something went wrong ");
             }
 
         }
@@ -66,7 +69,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
 
         }
@@ -130,7 +134,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
 
         }
@@ -165,7 +170,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
 
         }

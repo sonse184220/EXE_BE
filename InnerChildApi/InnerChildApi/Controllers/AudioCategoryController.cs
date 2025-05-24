@@ -10,10 +10,12 @@ namespace InnerChildApi.Controllers
     public class AudioCategoryController : ControllerBase
     {
         private readonly IAudioService _audioService;
+        private readonly ILogger<AudioCategoryController> _logger;
 
-        public AudioCategoryController(IAudioService audioService)
+        public AudioCategoryController(IAudioService audioService, ILogger<AudioCategoryController> logger)
         {
             _audioService = audioService;
+            _logger = logger;
         }
 
         [HttpGet("all")]

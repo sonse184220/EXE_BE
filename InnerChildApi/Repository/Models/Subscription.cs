@@ -16,4 +16,6 @@ public partial class Subscription
     public double? SubscriptionPrice { get; set; }
 
     public virtual ICollection<Purchase> Purchases { get; set; } = new List<Purchase>();
+
+    public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 }

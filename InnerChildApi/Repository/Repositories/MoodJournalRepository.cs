@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repository.Base;
-using Repository.DBContext;
 using Repository.Models;
 
 namespace Repository.Repositories
@@ -20,7 +19,7 @@ namespace Repository.Repositories
     }
     public class MoodJournalRepository : GenericRepository<MoodJournal>, IMoodJournalRepository
     {
-       
+
         public async Task<int> CreateMoodJournalAsync(MoodJournal moodJournal)
         {
             return await CreateAsync(moodJournal);

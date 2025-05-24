@@ -11,9 +11,11 @@ namespace InnerChildApi.Controllers
     public class SubAudioCategoryController : ControllerBase
     {
         private readonly IAudioService _audioService;
-        public SubAudioCategoryController(IAudioService audioService)
+        private readonly ILogger<SubAudioCategoryController> _logger;
+        public SubAudioCategoryController(IAudioService audioService, ILogger<SubAudioCategoryController> logger)
         {
             _audioService = audioService;
+            _logger = logger;
         }
         [HttpGet("all")]
         public async Task<IActionResult> GetAllSubAudioCategories()

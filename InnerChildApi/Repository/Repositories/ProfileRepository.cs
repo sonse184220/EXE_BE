@@ -1,5 +1,4 @@
 ﻿using Repository.Base;
-using Repository.DBContext;
 using Repository.Models;
 
 namespace Repository.Repositories
@@ -11,7 +10,7 @@ namespace Repository.Repositories
     }
     public class ProfileRepository : GenericRepository<Profile>, IProfileRepository
     {
-      
+
         public async Task<int> CreateProfileAsync(Profile profile)
         {
             return await CreateAsync(profile);

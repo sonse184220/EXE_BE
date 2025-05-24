@@ -1,8 +1,6 @@
 ﻿using Contract.Common.Config;
 using InnerChildApi.Common.Configurations;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.EntityFrameworkCore;
-using Repository.DBContext;
 using System.Text.Json.Serialization;
 
 namespace InnerChildApi
@@ -11,7 +9,7 @@ namespace InnerChildApi
     {
         public static void AddApplicationConfiguration(this IServiceCollection services, IConfiguration config)
         {
-            
+
             //configure jwt settings
             services.Configure<AppSettingConfig.JwtTokenSetting>(config.GetSection("JwtSettings"));
             services.Configure<AppSettingConfig.CloudinarySettingConfig>(config.GetSection("CloudinarySettings"));

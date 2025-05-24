@@ -25,5 +25,9 @@ public partial class Transaction
 
     public string UserId { get; set; }
 
+    public string SubscriptionId { get; set; }
+
+    public virtual Subscription Subscription { get; set; }
+
     public virtual User User { get; set; }
 }
