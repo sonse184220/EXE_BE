@@ -1,6 +1,4 @@
-﻿using Contract.Common.Enums;
-using Repository.DBContext;
-using Repository.Repositories;
+﻿using Repository.Repositories;
 
 namespace Repository.SeedData
 {

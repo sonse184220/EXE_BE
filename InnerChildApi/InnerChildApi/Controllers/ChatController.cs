@@ -16,10 +16,12 @@ namespace InnerChildApi.Controllers
     {
         private readonly IAiService _aiService;
         private readonly IChatService _chatService;
-        public ChatController(IAiService aiService, IChatService chatService)
+        private readonly ILogger<ChatController> _logger;
+        public ChatController(IAiService aiService, IChatService chatService, ILogger<ChatController> logger)
         {
             _aiService = aiService;
             _chatService = chatService;
+            _logger = logger;
         }
         [Authorize]
         [HttpPost("create-session")]
@@ -46,7 +48,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
 
         }
@@ -105,7 +108,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
         }
 
@@ -134,6 +138,7 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return StatusCode(500);
             }
 
@@ -160,6 +165,7 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return StatusCode(500);
             }
 
@@ -186,7 +192,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
         }
 

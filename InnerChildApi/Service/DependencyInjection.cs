@@ -21,6 +21,7 @@ namespace Service
             service.AddScoped<IMoodJournalService, MoodJournalService>();
             service.AddScoped<IChatService, ChatService>();
             service.AddScoped<IPaymentService, PaymentService>();
+            service.AddScoped<ISubscriptionService, SubscriptionService>();
             return service;
         }
     }

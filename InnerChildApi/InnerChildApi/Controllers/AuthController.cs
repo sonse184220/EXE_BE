@@ -19,13 +19,15 @@ namespace InnerChildApi.Controllers
         private readonly ICloudinaryService _cloudinaryService;
         private readonly ITokenService _tokenService;
         private readonly IEmailService _emailService;
-        public AuthController(IAuthService authService, IUserService userService, ICloudinaryService cloudinaryService, ITokenService tokenService, IEmailService emailService)
+        private readonly ILogger<AuthController> _logger;
+        public AuthController(IAuthService authService, IUserService userService, ICloudinaryService cloudinaryService, ITokenService tokenService, IEmailService emailService, ILogger<AuthController> logger)
         {
             _authService = authService;
             _userService = userService;
             _cloudinaryService = cloudinaryService;
             _tokenService = tokenService;
             _emailService = emailService;
+            _logger = logger;
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromForm] RegisterRequest request)
@@ -60,10 +62,11 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return StatusCode(500, new RegisterResponse()
                 {
                     IsSuccess = false,
-                    Message = ex.Message,
+                    Message = "Error Occured",
                 });
             }
         }
@@ -96,7 +99,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
 
 
@@ -125,7 +129,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
         }
         [Authorize]
@@ -184,7 +189,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Failed to update profile, " + ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Failed to update profile");
             }
 
 
@@ -208,7 +214,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
 
 
@@ -233,7 +240,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
         }
         [Authorize]
@@ -258,7 +266,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
 
         }
@@ -276,11 +285,13 @@ namespace InnerChildApi.Controllers
             }
             catch (FirebaseAuthException ex)
             {
-                throw new UnauthorizedAccessException("Firebase authentication failed: " + ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Firebase authen login failed");
             }
             catch (Exception ex)
             {
-                throw new Exception("Error authorization:" + ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "error login with firebase");
             }
         }
         [HttpPost("refresh-token")]
@@ -303,7 +314,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
         }
 
@@ -342,7 +354,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
         }
         [HttpPost("reset-password")]
@@ -376,7 +389,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
         }
 
@@ -402,7 +416,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
         }
         [Authorize]

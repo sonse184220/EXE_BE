@@ -1,5 +1,4 @@
 ﻿using Repository.Base;
-using Repository.DBContext;
 using Repository.Models;
 
 namespace Repository.Repositories
@@ -17,7 +16,7 @@ namespace Repository.Repositories
     }
     public class MoodJournalTypeRepository : GenericRepository<MoodJournalType>, IMoodJournalTypeRepository
     {
-      
+
         public async Task<int> CreateMoodJournalTypeAsync(MoodJournalType moodJournalType)
         {
             return await CreateAsync(moodJournalType);

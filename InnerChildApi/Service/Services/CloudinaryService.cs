@@ -122,7 +122,6 @@ namespace Service.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{ex.Message}");
                 return null;
             }
         }

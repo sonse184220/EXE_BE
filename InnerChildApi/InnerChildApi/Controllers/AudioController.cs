@@ -13,10 +13,12 @@ namespace InnerChildApi.Controllers
     {
         private readonly ICloudinaryService _cloudinaryService;
         private readonly IAudioService _audioService;
-        public AudioController(ICloudinaryService cloudinaryService, IAudioService audioService)
+        private readonly ILogger<AudioController> _logger;
+        public AudioController(ICloudinaryService cloudinaryService, IAudioService audioService, ILogger<AudioController> logger)
         {
             _cloudinaryService = cloudinaryService;
             _audioService = audioService;
+            _logger = logger;
         }
         [HttpPost("create")]
         public async Task<IActionResult> CreateAudio([FromForm] AudioCreateRequest request)
@@ -79,7 +81,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
             }
 
         }
@@ -182,7 +185,8 @@ namespace InnerChildApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred: {ex.Message}");
+                _logger.LogError(ex.Message);
+                return StatusCode(500, $"An error occurred");
             }
 
 

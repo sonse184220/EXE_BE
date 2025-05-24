@@ -9,6 +9,7 @@ namespace InnerChildApi.Controllers
     public class NotificationController : ControllerBase
     {
         private readonly INotificationService _notificationService;
+
         public NotificationController(INotificationService notificationService)
         {
             _notificationService = notificationService;

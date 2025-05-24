@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repository.Base;
-using Repository.DBContext;
 using Repository.Models;
 
 namespace Repository.Repositories
@@ -15,7 +14,7 @@ namespace Repository.Repositories
     }
     public class SubAudioCategoryRepository : GenericRepository<SubAudioCategory>, ISubAudioCategoryRepository
     {
-       
+
         public async Task<int> CreateSubAudioCategoryAsync(SubAudioCategory subAudioCategory)
         {
             return await CreateAsync(subAudioCategory);

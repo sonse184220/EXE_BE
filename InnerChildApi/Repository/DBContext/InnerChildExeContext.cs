@@ -98,7 +98,7 @@ public partial class InnerChildExeContext : DbContext
     {
         modelBuilder.Entity<AichatMessage>(entity =>
         {
-            entity.HasKey(e => e.AichatMessageId).HasName("PK__AIChatMe__C47E9CB364E10DD3");
+            entity.HasKey(e => e.AichatMessageId).HasName("PK__AIChatMe__C47E9CB33E17FB15");
 
             entity.ToTable("AIChatMessage");
 
@@ -118,12 +118,12 @@ public partial class InnerChildExeContext : DbContext
 
             entity.HasOne(d => d.AichatSession).WithMany(p => p.AichatMessages)
                 .HasForeignKey(d => d.AichatSessionId)
-                .HasConstraintName("FK__AIChatMes__AICha__74AE54BC");
+                .HasConstraintName("FK__AIChatMes__AICha__75A278F5");
         });
 
         modelBuilder.Entity<AichatSession>(entity =>
         {
-            entity.HasKey(e => e.AichatSessionId).HasName("PK__AIChatSe__96B1B9FCCBB2F201");
+            entity.HasKey(e => e.AichatSessionId).HasName("PK__AIChatSe__96B1B9FC79F42F0B");
 
             entity.ToTable("AIChatSession");
 
@@ -140,12 +140,12 @@ public partial class InnerChildExeContext : DbContext
 
             entity.HasOne(d => d.Profile).WithMany(p => p.AichatSessions)
                 .HasForeignKey(d => d.ProfileId)
-                .HasConstraintName("FK__AIChatSes__Profi__71D1E811");
+                .HasConstraintName("FK__AIChatSes__Profi__72C60C4A");
         });
 
         modelBuilder.Entity<Article>(entity =>
         {
-            entity.HasKey(e => e.ArticleId).HasName("PK__Article__9C6270E831E0EAAD");
+            entity.HasKey(e => e.ArticleId).HasName("PK__Article__9C6270E8CD4D6C50");
 
             entity.ToTable("Article");
 
@@ -159,7 +159,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Audio>(entity =>
         {
-            entity.HasKey(e => e.AudioId).HasName("PK__Audio__A28A94509A0EB05C");
+            entity.HasKey(e => e.AudioId).HasName("PK__Audio__A28A94507EE39E0A");
 
             entity.ToTable("Audio");
 
@@ -175,12 +175,12 @@ public partial class InnerChildExeContext : DbContext
 
             entity.HasOne(d => d.SubAudioCategory).WithMany(p => p.Audios)
                 .HasForeignKey(d => d.SubAudioCategoryId)
-                .HasConstraintName("FK__Audio__SubAudioC__02084FDA");
+                .HasConstraintName("FK__Audio__SubAudioC__02FC7413");
         });
 
         modelBuilder.Entity<AudioCategory>(entity =>
         {
-            entity.HasKey(e => e.AudioCategoryId).HasName("PK__AudioCat__B3B4EAFBCC0ACD05");
+            entity.HasKey(e => e.AudioCategoryId).HasName("PK__AudioCat__B3B4EAFB1498053C");
 
             entity.ToTable("AudioCategory");
 
@@ -190,7 +190,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<CommunityMember>(entity =>
         {
-            entity.HasKey(e => e.CommunityMemberId).HasName("PK__Communit__F315FAD63832D0E4");
+            entity.HasKey(e => e.CommunityMemberId).HasName("PK__Communit__F315FAD6B2134B26");
 
             entity.ToTable("CommunityMember");
 
@@ -201,16 +201,16 @@ public partial class InnerChildExeContext : DbContext
 
             entity.HasOne(d => d.CommunityGroup).WithMany(p => p.CommunityMembers)
                 .HasForeignKey(d => d.CommunityGroupId)
-                .HasConstraintName("FK__Community__Commu__0D7A0286");
+                .HasConstraintName("FK__Community__Commu__0E6E26BF");
 
             entity.HasOne(d => d.Profile).WithMany(p => p.CommunityMembers)
                 .HasForeignKey(d => d.ProfileId)
-                .HasConstraintName("FK__Community__Profi__0E6E26BF");
+                .HasConstraintName("FK__Community__Profi__0F624AF8");
         });
 
         modelBuilder.Entity<CommunityPost>(entity =>
         {
-            entity.HasKey(e => e.CommunityPostId).HasName("PK__Communit__9A60257E6C9744A4");
+            entity.HasKey(e => e.CommunityPostId).HasName("PK__Communit__9A60257E154EEB92");
 
             entity.ToTable("CommunityPost");
 
@@ -224,16 +224,16 @@ public partial class InnerChildExeContext : DbContext
 
             entity.HasOne(d => d.CommunityGroup).WithMany(p => p.CommunityPosts)
                 .HasForeignKey(d => d.CommunityGroupId)
-                .HasConstraintName("FK__Community__Commu__114A936A");
+                .HasConstraintName("FK__Community__Commu__123EB7A3");
 
             entity.HasOne(d => d.Profile).WithMany(p => p.CommunityPosts)
                 .HasForeignKey(d => d.ProfileId)
-                .HasConstraintName("FK__Community__Profi__123EB7A3");
+                .HasConstraintName("FK__Community__Profi__1332DBDC");
         });
 
         modelBuilder.Entity<Goal>(entity =>
         {
-            entity.HasKey(e => e.GoalId).HasName("PK__Goal__8A4FFFD17BBF1353");
+            entity.HasKey(e => e.GoalId).HasName("PK__Goal__8A4FFFD16FA9A6AE");
 
             entity.ToTable("Goal");
 
@@ -251,12 +251,12 @@ public partial class InnerChildExeContext : DbContext
 
             entity.HasOne(d => d.Profile).WithMany(p => p.Goals)
                 .HasForeignKey(d => d.ProfileId)
-                .HasConstraintName("FK__Goal__ProfileId__6EF57B66");
+                .HasConstraintName("FK__Goal__ProfileId__6FE99F9F");
         });
 
         modelBuilder.Entity<Habit>(entity =>
         {
-            entity.HasKey(e => e.HabitId).HasName("PK__Habit__C587AF636C2C8A0D");
+            entity.HasKey(e => e.HabitId).HasName("PK__Habit__C587AF63C0B1CBB7");
 
             entity.ToTable("Habit");
 
@@ -267,12 +267,12 @@ public partial class InnerChildExeContext : DbContext
 
             entity.HasOne(d => d.Profile).WithMany(p => p.Habits)
                 .HasForeignKey(d => d.ProfileId)
-                .HasConstraintName("FK__Habit__ProfileId__6C190EBB");
+                .HasConstraintName("FK__Habit__ProfileId__6D0D32F4");
         });
 
         modelBuilder.Entity<Help>(entity =>
         {
-            entity.HasKey(e => e.HelpId).HasName("PK__Help__90E322CE2CA0DD4D");
+            entity.HasKey(e => e.HelpId).HasName("PK__Help__90E322CEF2790D70");
 
             entity.ToTable("Help");
 
@@ -283,12 +283,12 @@ public partial class InnerChildExeContext : DbContext
 
             entity.HasOne(d => d.HelpCategory).WithMany(p => p.Helps)
                 .HasForeignKey(d => d.HelpCategoryId)
-                .HasConstraintName("FK__Help__HelpCatego__06CD04F7");
+                .HasConstraintName("FK__Help__HelpCatego__07C12930");
         });
 
         modelBuilder.Entity<HelpCategory>(entity =>
         {
-            entity.HasKey(e => e.HelpCategoryId).HasName("PK__HelpCate__83EECC2B0C762C30");
+            entity.HasKey(e => e.HelpCategoryId).HasName("PK__HelpCate__83EECC2BCA46DF9B");
 
             entity.ToTable("HelpCategory");
 
@@ -298,7 +298,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<MoodJournal>(entity =>
         {
-            entity.HasKey(e => e.MoodJournalId).HasName("PK__MoodJour__21FB5E62A69BAE90");
+            entity.HasKey(e => e.MoodJournalId).HasName("PK__MoodJour__21FB5E62CDA2FCE6");
 
             entity.ToTable("MoodJournal");
 
@@ -312,16 +312,16 @@ public partial class InnerChildExeContext : DbContext
 
             entity.HasOne(d => d.MoodJournalType).WithMany(p => p.MoodJournals)
                 .HasForeignKey(d => d.MoodJournalTypeId)
-                .HasConstraintName("FK__MoodJourn__MoodJ__797309D9");
+                .HasConstraintName("FK__MoodJourn__MoodJ__7A672E12");
 
             entity.HasOne(d => d.Profile).WithMany(p => p.MoodJournals)
                 .HasForeignKey(d => d.ProfileId)
-                .HasConstraintName("FK__MoodJourn__Profi__7A672E12");
+                .HasConstraintName("FK__MoodJourn__Profi__7B5B524B");
         });
 
         modelBuilder.Entity<MoodJournalType>(entity =>
         {
-            entity.HasKey(e => e.MoodJournalTypeId).HasName("PK__MoodJour__A0768636B68347E3");
+            entity.HasKey(e => e.MoodJournalTypeId).HasName("PK__MoodJour__A076863659CBAD0A");
 
             entity.ToTable("MoodJournalType");
 
@@ -331,7 +331,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Notification>(entity =>
         {
-            entity.HasKey(e => e.NotificationId).HasName("PK__Notifica__20CF2E1202FE01BF");
+            entity.HasKey(e => e.NotificationId).HasName("PK__Notifica__20CF2E12DAEA097A");
 
             entity.ToTable("Notification");
 
@@ -343,12 +343,12 @@ public partial class InnerChildExeContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.Notifications)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Notificat__UserI__4F7CD00D");
+                .HasConstraintName("FK__Notificat__UserI__5070F446");
         });
 
         modelBuilder.Entity<Profile>(entity =>
         {
-            entity.HasKey(e => e.ProfileId).HasName("PK__Profile__290C88E48761372A");
+            entity.HasKey(e => e.ProfileId).HasName("PK__Profile__290C88E42762C323");
 
             entity.ToTable("Profile");
 
@@ -364,7 +364,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Purchase>(entity =>
         {
-            entity.HasKey(e => e.PurchaseId).HasName("PK__Purchase__6B0A6BBE6179F7DE");
+            entity.HasKey(e => e.PurchaseId).HasName("PK__Purchase__6B0A6BBE7FD03182");
 
             entity.ToTable("Purchase");
 
@@ -383,7 +383,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Quiz>(entity =>
         {
-            entity.HasKey(e => e.QuizId).HasName("PK__Quiz__8B42AE8EB13CC94E");
+            entity.HasKey(e => e.QuizId).HasName("PK__Quiz__8B42AE8E64216175");
 
             entity.ToTable("Quiz");
 
@@ -397,12 +397,12 @@ public partial class InnerChildExeContext : DbContext
 
             entity.HasOne(d => d.QuizCategory).WithMany(p => p.Quizzes)
                 .HasForeignKey(d => d.QuizCategoryId)
-                .HasConstraintName("FK__Quiz__QuizCatego__5441852A");
+                .HasConstraintName("FK__Quiz__QuizCatego__5535A963");
         });
 
         modelBuilder.Entity<QuizAnswerOption>(entity =>
         {
-            entity.HasKey(e => e.QuizAnswerOptionId).HasName("PK__QuizAnsw__6E9E14FFFEFB6ACB");
+            entity.HasKey(e => e.QuizAnswerOptionId).HasName("PK__QuizAnsw__6E9E14FFB064231A");
 
             entity.ToTable("QuizAnswerOption");
 
@@ -412,12 +412,12 @@ public partial class InnerChildExeContext : DbContext
 
             entity.HasOne(d => d.Question).WithMany(p => p.QuizAnswerOptions)
                 .HasForeignKey(d => d.QuestionId)
-                .HasConstraintName("FK__QuizAnswe__Quest__59FA5E80");
+                .HasConstraintName("FK__QuizAnswe__Quest__5AEE82B9");
         });
 
         modelBuilder.Entity<QuizCategory>(entity =>
         {
-            entity.HasKey(e => e.QuizCategoryId).HasName("PK__QuizCate__60A2C1D8C231024D");
+            entity.HasKey(e => e.QuizCategoryId).HasName("PK__QuizCate__60A2C1D879C02B6D");
 
             entity.ToTable("QuizCategory");
 
@@ -428,7 +428,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<QuizQuestion>(entity =>
         {
-            entity.HasKey(e => e.QuizQuestionId).HasName("PK__QuizQues__45E34D3E79B1A9E3");
+            entity.HasKey(e => e.QuizQuestionId).HasName("PK__QuizQues__45E34D3E96AF9C80");
 
             entity.ToTable("QuizQuestion");
 
@@ -437,12 +437,12 @@ public partial class InnerChildExeContext : DbContext
 
             entity.HasOne(d => d.Quiz).WithMany(p => p.QuizQuestions)
                 .HasForeignKey(d => d.QuizId)
-                .HasConstraintName("FK__QuizQuest__QuizI__571DF1D5");
+                .HasConstraintName("FK__QuizQuest__QuizI__5812160E");
         });
 
         modelBuilder.Entity<QuizUserAnswer>(entity =>
         {
-            entity.HasKey(e => e.QuizUserAnswerId).HasName("PK__QuizUser__F1FA402FAFC15FF3");
+            entity.HasKey(e => e.QuizUserAnswerId).HasName("PK__QuizUser__F1FA402F2EBC2B9C");
 
             entity.ToTable("QuizUserAnswer");
 
@@ -455,28 +455,28 @@ public partial class InnerChildExeContext : DbContext
 
             entity.HasOne(d => d.Profile).WithMany(p => p.QuizUserAnswers)
                 .HasForeignKey(d => d.ProfileId)
-                .HasConstraintName("FK__QuizUserA__Profi__68487DD7");
+                .HasConstraintName("FK__QuizUserA__Profi__693CA210");
 
             entity.HasOne(d => d.QuizAnswerOption).WithMany(p => p.QuizUserAnswers)
                 .HasForeignKey(d => d.QuizAnswerOptionId)
-                .HasConstraintName("FK__QuizUserA__QuizA__6754599E");
+                .HasConstraintName("FK__QuizUserA__QuizA__68487DD7");
 
             entity.HasOne(d => d.Quiz).WithMany(p => p.QuizUserAnswers)
                 .HasForeignKey(d => d.QuizId)
-                .HasConstraintName("FK__QuizUserA__QuizI__656C112C");
+                .HasConstraintName("FK__QuizUserA__QuizI__66603565");
 
             entity.HasOne(d => d.QuizQuestion).WithMany(p => p.QuizUserAnswers)
                 .HasForeignKey(d => d.QuizQuestionId)
-                .HasConstraintName("FK__QuizUserA__QuizQ__66603565");
+                .HasConstraintName("FK__QuizUserA__QuizQ__6754599E");
 
             entity.HasOne(d => d.QuizUserAttempt).WithMany(p => p.QuizUserAnswers)
                 .HasForeignKey(d => d.QuizUserAttemptId)
-                .HasConstraintName("FK__QuizUserA__QuizU__693CA210");
+                .HasConstraintName("FK__QuizUserA__QuizU__6A30C649");
         });
 
         modelBuilder.Entity<QuizUserAttempt>(entity =>
         {
-            entity.HasKey(e => e.QuizUserAttemptId).HasName("PK__QuizUser__6052F2601AE972B5");
+            entity.HasKey(e => e.QuizUserAttemptId).HasName("PK__QuizUser__6052F260469F950A");
 
             entity.ToTable("QuizUserAttempt");
 
@@ -487,16 +487,16 @@ public partial class InnerChildExeContext : DbContext
 
             entity.HasOne(d => d.Profile).WithMany(p => p.QuizUserAttempts)
                 .HasForeignKey(d => d.ProfileId)
-                .HasConstraintName("FK__QuizUserA__Profi__5CD6CB2B");
+                .HasConstraintName("FK__QuizUserA__Profi__5DCAEF64");
 
             entity.HasOne(d => d.Quiz).WithMany(p => p.QuizUserAttempts)
                 .HasForeignKey(d => d.QuizId)
-                .HasConstraintName("FK__QuizUserA__QuizI__5DCAEF64");
+                .HasConstraintName("FK__QuizUserA__QuizI__5EBF139D");
         });
 
         modelBuilder.Entity<QuizUserResult>(entity =>
         {
-            entity.HasKey(e => e.QuizUserResultId).HasName("PK__QuizUser__4FDB2EB1C71B83D7");
+            entity.HasKey(e => e.QuizUserResultId).HasName("PK__QuizUser__4FDB2EB11AAA6F43");
 
             entity.ToTable("QuizUserResult");
 
@@ -507,20 +507,20 @@ public partial class InnerChildExeContext : DbContext
 
             entity.HasOne(d => d.Profile).WithMany(p => p.QuizUserResults)
                 .HasForeignKey(d => d.ProfileId)
-                .HasConstraintName("FK__QuizUserR__Profi__628FA481");
+                .HasConstraintName("FK__QuizUserR__Profi__6383C8BA");
 
             entity.HasOne(d => d.Quiz).WithMany(p => p.QuizUserResults)
                 .HasForeignKey(d => d.QuizId)
-                .HasConstraintName("FK__QuizUserR__QuizI__619B8048");
+                .HasConstraintName("FK__QuizUserR__QuizI__628FA481");
 
             entity.HasOne(d => d.QuizUserAttempt).WithMany(p => p.QuizUserResults)
                 .HasForeignKey(d => d.QuizUserAttemptId)
-                .HasConstraintName("FK__QuizUserR__QuizU__60A75C0F");
+                .HasConstraintName("FK__QuizUserR__QuizU__619B8048");
         });
 
         modelBuilder.Entity<RefreshToken>(entity =>
         {
-            entity.HasKey(e => e.RefreshTokenId).HasName("PK__RefreshT__F5845E39DE40685F");
+            entity.HasKey(e => e.RefreshTokenId).HasName("PK__RefreshT__F5845E39FAD3018B");
 
             entity.ToTable("RefreshToken");
 
@@ -542,7 +542,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.RoleId).HasName("PK__Role__8AFACE1AD30E7803");
+            entity.HasKey(e => e.RoleId).HasName("PK__Role__8AFACE1A35EAA7EC");
 
             entity.ToTable("Role");
 
@@ -552,7 +552,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Session>(entity =>
         {
-            entity.HasKey(e => e.SessionId).HasName("PK__Session__C9F49290C661D5AD");
+            entity.HasKey(e => e.SessionId).HasName("PK__Session__C9F49290C1B228E1");
 
             entity.ToTable("Session");
 
@@ -572,7 +572,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<SubAudioCategory>(entity =>
         {
-            entity.HasKey(e => e.SubAudioCategoryId).HasName("PK__SubAudio__7BA6BA64BC720F0C");
+            entity.HasKey(e => e.SubAudioCategoryId).HasName("PK__SubAudio__7BA6BA64AE08E6EC");
 
             entity.ToTable("SubAudioCategory");
 
@@ -582,12 +582,12 @@ public partial class InnerChildExeContext : DbContext
 
             entity.HasOne(d => d.AudioCategory).WithMany(p => p.SubAudioCategories)
                 .HasForeignKey(d => d.AudioCategoryId)
-                .HasConstraintName("FK__SubAudioC__Audio__7F2BE32F");
+                .HasConstraintName("FK__SubAudioC__Audio__00200768");
         });
 
         modelBuilder.Entity<Subscription>(entity =>
         {
-            entity.HasKey(e => e.SubscriptionId).HasName("PK__Subscrip__9A2B249DDF9B70DF");
+            entity.HasKey(e => e.SubscriptionId).HasName("PK__Subscrip__9A2B249DFDA59CE9");
 
             entity.ToTable("Subscription");
 
@@ -598,11 +598,12 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<Transaction>(entity =>
         {
-            entity.HasKey(e => e.TransactionId).HasName("PK__Transact__55433A6BEAEA507E");
+            entity.HasKey(e => e.TransactionId).HasName("PK__Transact__55433A6B1253CB6E");
 
             entity.ToTable("Transaction");
 
             entity.Property(e => e.TransactionId).HasMaxLength(50);
+            entity.Property(e => e.SubscriptionId).HasMaxLength(50);
             entity.Property(e => e.TransactionCode).HasMaxLength(50);
             entity.Property(e => e.TransactionCreatedAt).HasColumnType("datetime");
             entity.Property(e => e.TransactionCurrency).HasMaxLength(100);
@@ -611,14 +612,18 @@ public partial class InnerChildExeContext : DbContext
             entity.Property(e => e.TransactionStatus).HasMaxLength(100);
             entity.Property(e => e.UserId).HasMaxLength(50);
 
+            entity.HasOne(d => d.Subscription).WithMany(p => p.Transactions)
+                .HasForeignKey(d => d.SubscriptionId)
+                .HasConstraintName("FK__Transacti__Subsc__4CA06362");
+
             entity.HasOne(d => d.User).WithMany(p => p.Transactions)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Transacti__UserI__4CA06362");
+                .HasConstraintName("FK__Transacti__UserI__4D94879B");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__User__1788CC4C179B0524");
+            entity.HasKey(e => e.UserId).HasName("PK__User__1788CC4C4E8B5E2B");
 
             entity.ToTable("User");
 
@@ -642,7 +647,7 @@ public partial class InnerChildExeContext : DbContext
 
         modelBuilder.Entity<UserCommunity>(entity =>
         {
-            entity.HasKey(e => e.CommunityGroupId).HasName("PK__UserComm__ECEBBBC5A688DFC9");
+            entity.HasKey(e => e.CommunityGroupId).HasName("PK__UserComm__ECEBBBC534DF871A");
 
             entity.ToTable("UserCommunity");
 

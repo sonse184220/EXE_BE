@@ -10,7 +10,9 @@
         public List<PaymentItem> PaymentItems { get; set; }
         public string ReturnUrl { get; set; }
         public string CancelUrl { get; set; }
-        public long? ExpiredAt { get; set; } 
+        public long? ExpiredAt { get; set; }
+        public string UserId { get; set; }
+        public string SubscriptionId { get; set; }
 
     }
     public class PaymentItem

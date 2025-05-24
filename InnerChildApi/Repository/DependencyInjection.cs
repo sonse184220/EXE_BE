@@ -25,6 +25,10 @@ namespace Repository
             service.AddScoped<IMoodJournalTypeRepository, MoodJournalTypeRepository>();
             service.AddScoped<IMoodJournalRepository, MoodJournalRepository>();
             service.AddScoped<IChatRepository, ChatRepository>();
+            service.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+            service.AddScoped<IPurchaseRepository, PurchaseRepository>();
+            service.AddScoped<ITransactionRepository, TransactionRepository>();
+            service.AddScoped<IUnitOfWork, UnitOfWork>();
             return service;
         }
     }

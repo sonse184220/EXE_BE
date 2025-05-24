@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Repository.Base;
-using Repository.DBContext;
 using Repository.Models;
 
 namespace Repository.Repositories
@@ -13,7 +12,7 @@ namespace Repository.Repositories
     }
     public class RefreshTokenRepository : GenericRepository<RefreshToken>, IRefreshTokenRepository
     {
-       
+
         public async Task<int> CreateRefreshTokenAsync(string userId, string profileId, string token, DateTime createAt, DateTime expireAt)
         {
             var refreshToken = new RefreshToken
