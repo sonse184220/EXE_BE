@@ -8,6 +8,9 @@ namespace Service.Services
         Task InvalidateOtherSessionsAsync(string userId, string profileId, string token);
         Task<bool> IsSessionValidAsync(string userId, string profileId, string sessionId);
         Task<int> CreateSessionAsync(Session session);
+
+        Task DeleteAllInactiveSessionsAsync();
+        
     }
     public class SessionService : ISessionService
     {
@@ -19,6 +22,11 @@ namespace Service.Services
         public async Task<int> CreateSessionAsync(Session session)
         {
             return await _sessionRepo.CreateSessionAsync(session);
+        }
+
+        public async Task DeleteAllInactiveSessionsAsync()
+        {
+             await _sessionRepo.DeleteAllInactiveSessionsAsync();
         }
 
         public async Task InvalidateOtherSessionsAsync(string userId, string profileId, string token)

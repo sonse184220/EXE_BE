@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Service.BackgroundJobs;
 using Service.Services;
 
 namespace Service
@@ -22,6 +23,14 @@ namespace Service
             service.AddScoped<IChatService, ChatService>();
             service.AddScoped<IPaymentService, PaymentService>();
             service.AddScoped<ISubscriptionService, SubscriptionService>();
+            service.AddScoped<IPurchaseService, PurchaseService>();
+
+
+
+            #region hangfire jobs
+            service.AddScoped<PurchaseCheckJob>();
+            service.AddScoped<AuthSessionJob>();
+            #endregion
             return service;
         }
     }

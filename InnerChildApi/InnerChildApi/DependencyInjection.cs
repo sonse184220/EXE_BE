@@ -1,4 +1,5 @@
 ﻿using Contract.Common.Config;
+using Hangfire;
 using InnerChildApi.Common.Configurations;
 using Microsoft.AspNetCore.Http.Features;
 using System.Text.Json.Serialization;
@@ -18,7 +19,7 @@ namespace InnerChildApi
             services.Configure<AppSettingConfig.ChatDbSettingConfig>(config.GetSection("MongoDbSettings:ChatDb"));
             services.Configure<AppSettingConfig.SendGridSettingConfig>(config.GetSection("SendGridSettings"));
             services.Configure<AppSettingConfig.PayOsSettingConfig>(config.GetSection("PayOsSettings"));
-
+            services.Configure<AppSettingConfig.AccountSeedingSettings>(config.GetSection("AccountSeedingSettings"));
 
 
             services.AddHttpContextAccessor();
@@ -46,6 +47,9 @@ namespace InnerChildApi
             {
                 options.MultipartBodyLengthLimit = 104857600; // 100 MB
             });
+            services.AddHangfire(configuration => configuration
+                .UseSqlServerStorage(config.GetConnectionString("DefaultConnection")));
+            services.AddHangfireServer();
 
 
 

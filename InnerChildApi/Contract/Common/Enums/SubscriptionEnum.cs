@@ -4,5 +4,6 @@
     {
         FamilyPlan,
         PremiumPlan,
+        FreePlan,
     }
 }

@@ -59,6 +59,10 @@
             public string ApiKey { get; set; }
             public string ChecksumKey { get; set; }
         }
-
+        public class AccountSeedingSettings
+        {
+            public string AdminAccountEmail { get; set; }
+            public string AdminAccountPass { get; set; }
+        }
     }
 }
