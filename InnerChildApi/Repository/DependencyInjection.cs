@@ -8,7 +8,9 @@ namespace Repository
     {
         public static IServiceCollection AddRepositories(this IServiceCollection service)
         {
+            #region seed data injection
             service.AddScoped<SeedRoles>();
+            #endregion
             service.AddScoped<IAccountRepository, AccountRepository>();
             service.AddScoped<IProfileRepository, ProfileRepository>();
             service.AddScoped<IRoleRepository, RoleRepository>();

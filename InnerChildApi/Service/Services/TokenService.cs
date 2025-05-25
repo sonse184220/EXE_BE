@@ -18,7 +18,7 @@ namespace Service.Services
     {
         string GenerateEmailConfirmationToken(string userId);
         List<PreLoginResponse> GeneratePreLoginJwtTokens(List<Profile> profiles);
-        string GenerateFinalLoginJwtToken(string userId, string email, string profileId, string sessionId);
+        string GenerateFinalLoginJwtToken(string userId, string email, string profileId, string sessionId,string purchasePlan,string role);
         string ValidateEmailConfirmationToken(string token);
         PreFinalLoginResponse ValidatePreLoginJwtToken(string token);
         Task<string> GenerateRefreshToken(string userId, string profileId);
@@ -34,6 +34,8 @@ namespace Service.Services
         (string userId, string newPasswordHash) ValidateResetPasswordToken(string token);
         string GenerateResetPasswordToken(string userId, string password);
         string GenerateEmailConfirmationResetPasswordLink(string token);
+
+        Task DeleteRevokedTokenAsync();
     }
     public class TokenService : ITokenService
     {
@@ -125,7 +127,7 @@ namespace Service.Services
         }
         #endregion
         #region generate final jwt token
-        public string GenerateFinalLoginJwtToken(string userId, string email, string profileId, string sessionId)
+        public string GenerateFinalLoginJwtToken(string userId, string email, string profileId, string sessionId, string purchasePlan,string role)
         {
 
             var claims = new List<Claim>
@@ -134,7 +136,9 @@ namespace Service.Services
         new Claim(ClaimTypes.Email, email),
         new Claim(JwtClaimTypeConstant.ProfileId, profileId),
         new Claim(JwtClaimTypeConstant.SessionId, sessionId),
-        new Claim(JwtClaimTypeConstant.TokenType,JwtTypeEnum.FinalLogin.ToString())
+        new Claim(JwtClaimTypeConstant.TokenType,JwtTypeEnum.FinalLogin.ToString()),
+        new Claim(JwtClaimTypeConstant.PurchasePlan, purchasePlan),
+        new Claim(ClaimTypes.Role,role),
         };
 
             return GenerateToken(claims, TimeSpan.FromDays(_jwtTokenSetting.ExpiresAccessToken));
@@ -276,6 +280,11 @@ namespace Service.Services
             var baseUrl = $"{requestUrl.Scheme}://{requestUrl.Host.Value}";
             var emailResetPasswordTokenLink = $"{baseUrl}/innerchild/auth/verify-reset-password?token={token}";
             return emailResetPasswordTokenLink;
+        }
+
+        public async Task DeleteRevokedTokenAsync()
+        {
+            await _refreshTokenRepo.DeleteRevokedTokenAsync();
         }
     }
 }

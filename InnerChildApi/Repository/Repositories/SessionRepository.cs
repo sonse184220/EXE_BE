@@ -9,6 +9,8 @@ namespace Repository.Repositories
         Task<int> CreateSessionAsync(Session session);
         Task InvalidateOtherSessionsAsync(string userId, string profileId, string token);
         Task<bool> IsSessionValidAsync(string userId, string profileId, string token);
+
+        Task DeleteAllInactiveSessionsAsync();
     }
     public class SessionRepository : GenericRepository<Session>, ISessionRepository
     {
@@ -17,6 +19,14 @@ namespace Repository.Repositories
         {
             return await CreateAsync(session);
         }
+
+        public async Task DeleteAllInactiveSessionsAsync()
+        {
+            var allInactiveSessions = await _context.Sessions.Where(x => x.SessionIsActive == false).ToListAsync();
+            _context.RemoveRange(allInactiveSessions);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task InvalidateOtherSessionsAsync(string userId, string profileId, string token)
         {
             var otherSession = await _context.Sessions.Where(x => x.UserId == userId && x.ProfileId == profileId && x.Token != token).ToListAsync();

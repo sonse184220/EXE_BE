@@ -11,6 +11,7 @@ namespace Repository.Repositories
         Task<Purchase> GetOwnPuchase(string userId);
         Task<int> UpdatePurchaseAsync(Purchase purchase);
         void PrepareCreatePurchase(Purchase purchase);
+        Task CheckPurchaseExpiry();
     }
     public class PurchaseRepository : GenericRepository<Purchase>, IPurchaseRepository
     {
@@ -39,6 +40,19 @@ namespace Repository.Repositories
         public void PrepareCreatePurchase(Purchase purchase)
         {
             PrepareCreate(purchase);
+        }
+
+
+        public async Task CheckPurchaseExpiry()
+        {
+            var timeNow = DateTime.UtcNow;
+            var allPurchases = await _context.Purchases.Where(x=>x.ExpireAt < timeNow && x.IsActive==true).ToListAsync();
+            foreach (var purchase in allPurchases)
+            {
+                purchase.IsActive = false;
+                _context.Purchases.Update(purchase);
+            }
+            await _context.SaveChangesAsync();
         }
     }
 }

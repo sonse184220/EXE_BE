@@ -117,7 +117,7 @@ namespace Service.Services
                 throw new InvalidCredentialException("Email not verified.");
             }
             var userProfiles = await _accountRepo.GetUserProfilesAsync(existingUser.UserId);
-            var latestPurchased = existingUser.Purchases.OrderByDescending(x => x.PurchasedAt).FirstOrDefault();
+            var latestPurchased = existingUser.Purchases?.OrderByDescending(x => x.PurchasedAt).FirstOrDefault();
             List<Profile> allowedProfiles;
             if (latestPurchased != null && latestPurchased.IsActive == true && latestPurchased.Subscription?.SubscriptionType == SubscriptionEnum.FamilyPlan.ToString())
             {
@@ -140,6 +140,19 @@ namespace Service.Services
             {
                 throw new InvalidCredentialException("User not found.");
             }
+            var latestPurchased = user.Purchases?.OrderByDescending(x => x.PurchasedAt).FirstOrDefault();
+            string purchasePlan = null;
+            if (latestPurchased != null && latestPurchased.IsActive == true && latestPurchased.Subscription?.SubscriptionType == SubscriptionEnum.FamilyPlan.ToString())
+            {
+                purchasePlan = SubscriptionEnum.FamilyPlan.ToString();
+            }
+            else if (latestPurchased != null && latestPurchased.IsActive == true && latestPurchased.Subscription?.SubscriptionType == SubscriptionEnum.PremiumPlan.ToString())
+            {
+                purchasePlan = SubscriptionEnum.PremiumPlan.ToString();
+            } else
+            {
+                purchasePlan = SubscriptionEnum.FreePlan.ToString();
+            }
             var profile = await _profileRepo.GetByProfileIdAsync(profileId);
             if (profile == null)
             {
@@ -153,13 +166,15 @@ namespace Service.Services
                 ProfileId = profileId,
                 Token = sessionId,
                 SessionIsActive = true,
+                
             };
             var sessionCreated = await _sessionService.CreateSessionAsync(userSession);
             if (sessionCreated > 0)
             {
                 await _sessionService.InvalidateOtherSessionsAsync(user.UserId, profileId, sessionId);
             }
-            var accessToken = _tokenService.GenerateFinalLoginJwtToken(user.UserId, user.Email, profile.ProfileId, sessionId);
+            var role = user.Role?.RoleName;
+            var accessToken = _tokenService.GenerateFinalLoginJwtToken(user.UserId, user.Email, profile.ProfileId, sessionId,purchasePlan, role);
             var refreshToken = await _tokenService.GenerateRefreshToken(user.UserId, profile.ProfileId);
             return new FinalLoginResponse
             {
@@ -240,13 +255,25 @@ namespace Service.Services
                         ProfileId = Guid.NewGuid().ToString(),
                         UserId = user.UserId,
                         ProfileStatus = UserAccountEnum.Active.ToString(),
+                        ProfileCreatedAt = DateTime.UtcNow,
+                        
                     };
                     await _profileRepo.CreateProfileAsync(profile);
                 }
                 user = await _accountRepo.GetByEmailAsync(email);
             }
             var userProfiles = await _accountRepo.GetUserProfilesAsync(user.UserId);
-            var result = _tokenService.GeneratePreLoginJwtTokens(userProfiles);
+            var latestPurchased = user.Purchases?.OrderByDescending(x => x.PurchasedAt).FirstOrDefault();
+            List<Profile> allowedProfiles;
+            if (latestPurchased != null && latestPurchased.IsActive == true && latestPurchased.Subscription?.SubscriptionType == SubscriptionEnum.FamilyPlan.ToString())
+            {
+                allowedProfiles = userProfiles;
+            }
+            else
+            {
+                allowedProfiles = userProfiles.OrderBy(x => x.ProfileCreatedAt).Take(1).ToList();
+            }
+            var result = _tokenService.GeneratePreLoginJwtTokens(allowedProfiles);
 
             return result;
         }

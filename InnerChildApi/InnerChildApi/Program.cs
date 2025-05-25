@@ -1,10 +1,13 @@
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
+using Hangfire;
 using InnerChildApi;
 using InnerChildApi.Common.Middleware;
 using Repository;
 using Repository.DataSeeder;
 using Service;
+using Service.BackgroundJobs;
+using Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 if (FirebaseApp.DefaultInstance == null)
@@ -41,8 +44,19 @@ using (var scope = app.Services.CreateScope())
 app.UseCors("AllowAll");
 app.UseSwagger();
 app.UseSwaggerUI();
-
-
+app.UseHangfireDashboard();
+RecurringJob.AddOrUpdate<PurchaseCheckJob>(
+    "check-purchase-expiry",
+    job => job.Run(),
+    Cron.Daily);
+RecurringJob.AddOrUpdate<AuthSessionJob>(
+    "remove-inactive-session",
+    job => job.Run(),
+    Cron.Weekly);
+RecurringJob.AddOrUpdate<CleanTokenJob>(
+    "remove-revoked-token",
+    job => job.Run(),
+    Cron.Weekly);
 //app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
