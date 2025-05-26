@@ -10,7 +10,7 @@ namespace Service.Services
         Task<int> CreateSessionAsync(Session session);
 
         Task DeleteAllInactiveSessionsAsync();
-        
+
     }
     public class SessionService : ISessionService
     {
@@ -26,7 +26,7 @@ namespace Service.Services
 
         public async Task DeleteAllInactiveSessionsAsync()
         {
-             await _sessionRepo.DeleteAllInactiveSessionsAsync();
+            await _sessionRepo.DeleteAllInactiveSessionsAsync();
         }
 
         public async Task InvalidateOtherSessionsAsync(string userId, string profileId, string token)

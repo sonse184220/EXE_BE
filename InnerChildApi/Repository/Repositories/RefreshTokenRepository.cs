@@ -34,7 +34,7 @@ namespace Repository.Repositories
 
         public async Task DeleteRevokedTokenAsync()
         {
-            var allRevokedTokens = await _context.RefreshTokens.Where(x => x.IsRevoked==true).ToListAsync();
+            var allRevokedTokens = await _context.RefreshTokens.Where(x => x.IsRevoked == true).ToListAsync();
             _context.RemoveRange(allRevokedTokens);
             await _context.SaveChangesAsync();
         }

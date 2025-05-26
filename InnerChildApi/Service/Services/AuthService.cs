@@ -149,7 +149,8 @@ namespace Service.Services
             else if (latestPurchased != null && latestPurchased.IsActive == true && latestPurchased.Subscription?.SubscriptionType == SubscriptionEnum.PremiumPlan.ToString())
             {
                 purchasePlan = SubscriptionEnum.PremiumPlan.ToString();
-            } else
+            }
+            else
             {
                 purchasePlan = SubscriptionEnum.FreePlan.ToString();
             }
@@ -166,7 +167,7 @@ namespace Service.Services
                 ProfileId = profileId,
                 Token = sessionId,
                 SessionIsActive = true,
-                
+
             };
             var sessionCreated = await _sessionService.CreateSessionAsync(userSession);
             if (sessionCreated > 0)
@@ -174,7 +175,7 @@ namespace Service.Services
                 await _sessionService.InvalidateOtherSessionsAsync(user.UserId, profileId, sessionId);
             }
             var role = user.Role?.RoleName;
-            var accessToken = _tokenService.GenerateFinalLoginJwtToken(user.UserId, user.Email, profile.ProfileId, sessionId,purchasePlan, role);
+            var accessToken = _tokenService.GenerateFinalLoginJwtToken(user.UserId, user.Email, profile.ProfileId, sessionId, purchasePlan, role);
             var refreshToken = await _tokenService.GenerateRefreshToken(user.UserId, profile.ProfileId);
             return new FinalLoginResponse
             {
@@ -256,7 +257,7 @@ namespace Service.Services
                         UserId = user.UserId,
                         ProfileStatus = UserAccountEnum.Active.ToString(),
                         ProfileCreatedAt = DateTime.UtcNow,
-                        
+
                     };
                     await _profileRepo.CreateProfileAsync(profile);
                 }

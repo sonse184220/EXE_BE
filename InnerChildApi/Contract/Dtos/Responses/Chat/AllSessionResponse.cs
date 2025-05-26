@@ -3,11 +3,11 @@
     public class AllSessionResponse
     {
 
-        public string AichatSessionId { get; set; }
+        public string AiChatSessionId { get; set; }
 
-        public string AichatSessionTitle { get; set; }
+        public string AiChatSessionTitle { get; set; }
 
-        public DateTime? AichatSessionCreatedAt { get; set; }
+        public DateTime? AiChatSessionCreatedAt { get; set; }
 
         public string ProfileId { get; set; }
     }

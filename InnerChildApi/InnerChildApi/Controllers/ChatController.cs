@@ -127,9 +127,9 @@ namespace InnerChildApi.Controllers
                 var sessions = await _chatService.GetSessionsByProfileId(profileId);
                 var response = sessions.Select(session => new AllSessionResponse()
                 {
-                    AichatSessionId = session.AiChatSessionId,
-                    AichatSessionTitle = session.AiChatSessionTitle,
-                    AichatSessionCreatedAt = session.AiChatSessionCreatedAt,
+                    AiChatSessionId = session.AiChatSessionId,
+                    AiChatSessionTitle = session.AiChatSessionTitle,
+                    AiChatSessionCreatedAt = session.AiChatSessionCreatedAt,
                     ProfileId = session.ProfileId,
                 }).ToList();
 
