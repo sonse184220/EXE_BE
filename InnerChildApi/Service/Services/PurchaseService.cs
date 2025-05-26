@@ -1,10 +1,4 @@
-﻿using Org.BouncyCastle.Security;
-using Repository.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Repository.Repositories;
 
 namespace Service.Services
 {
@@ -17,11 +11,11 @@ namespace Service.Services
         private readonly IPurchaseRepository _purchaseRepository;
         public PurchaseService(IPurchaseRepository purchaseRepository)
         {
-            _purchaseRepository = purchaseRepository;   
+            _purchaseRepository = purchaseRepository;
         }
         public async Task CheckPurchaseExpiry()
         {
-           await _purchaseRepository.CheckPurchaseExpiry();
+            await _purchaseRepository.CheckPurchaseExpiry();
         }
     }
 }

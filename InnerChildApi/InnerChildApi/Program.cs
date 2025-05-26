@@ -2,12 +2,12 @@ using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Hangfire;
 using InnerChildApi;
+using InnerChildApi.Common.Hubs;
 using InnerChildApi.Common.Middleware;
 using Repository;
 using Repository.DataSeeder;
 using Service;
 using Service.BackgroundJobs;
-using Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 if (FirebaseApp.DefaultInstance == null)
@@ -63,5 +63,5 @@ app.UseAuthorization();
 
 app.UseMiddleware<SessionMiddleware>();
 app.MapControllers();
-
+app.MapHub<SessionHub>("/hub/session");
 app.Run();

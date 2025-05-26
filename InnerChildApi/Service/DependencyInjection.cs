@@ -24,6 +24,7 @@ namespace Service
             service.AddScoped<IPaymentService, PaymentService>();
             service.AddScoped<ISubscriptionService, SubscriptionService>();
             service.AddScoped<IPurchaseService, PurchaseService>();
+            service.AddScoped<IGoalService, GoalService>();
 
 
 

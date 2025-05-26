@@ -50,7 +50,7 @@ namespace InnerChildApi
             services.AddHangfire(configuration => configuration
                 .UseSqlServerStorage(config.GetConnectionString("DefaultConnection")));
             services.AddHangfireServer();
-
+            services.AddSignalR();
 
 
         }

@@ -35,7 +35,7 @@ namespace Repository.Repositories
         }
         public async Task<User> GetByUserIdAsync(string userId)
         {
-            return await _context.Users.Include(x=>x.Role).Include(x => x.Purchases).FirstOrDefaultAsync(x => x.UserId == userId);
+            return await _context.Users.Include(x => x.Role).Include(x => x.Purchases).FirstOrDefaultAsync(x => x.UserId == userId);
         }
         public async Task<int> CreateUserAsync(User user)
         {
@@ -59,9 +59,9 @@ namespace Repository.Repositories
         public async Task<User> GetUserByProfileIdAsync(string profileId)
         {
             var query = from p in _context.Profiles
-                         join u in _context.Users on p.UserId equals u.UserId
-                         where p.ProfileId == profileId
-                         select u;
+                        join u in _context.Users on p.UserId equals u.UserId
+                        where p.ProfileId == profileId
+                        select u;
             return await query.FirstOrDefaultAsync();
         }
     }

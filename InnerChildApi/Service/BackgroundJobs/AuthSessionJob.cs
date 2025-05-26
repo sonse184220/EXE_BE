@@ -1,9 +1,4 @@
 ﻿using Service.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service.BackgroundJobs
 {
@@ -12,7 +7,7 @@ namespace Service.BackgroundJobs
         private readonly ISessionService _sessionService;
         public AuthSessionJob(ISessionService sessionService)
         {
-            _sessionService = sessionService;   
+            _sessionService = sessionService;
         }
         public async Task Run()
         {

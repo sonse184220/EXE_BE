@@ -46,7 +46,7 @@ namespace Repository.Repositories
         public async Task CheckPurchaseExpiry()
         {
             var timeNow = DateTime.UtcNow;
-            var allPurchases = await _context.Purchases.Where(x=>x.ExpireAt < timeNow && x.IsActive==true).ToListAsync();
+            var allPurchases = await _context.Purchases.Where(x => x.ExpireAt < timeNow && x.IsActive == true).ToListAsync();
             foreach (var purchase in allPurchases)
             {
                 purchase.IsActive = false;
