@@ -25,11 +25,13 @@ namespace Repository.Repositories
         public async Task<UserCommunity> GetCommunityByIdAsync(string communityGroupId)
         {
             return await _context.UserCommunities.
-                Include(x => x.CommunityPosts).
-                Include(x => x.CommunityMembers).
-                ThenInclude(x => x.Profile).
-                ThenInclude(x => x.User).
-                FirstOrDefaultAsync(x => x.CommunityGroupId == communityGroupId);
+                Include(x => x.CommunityPosts)
+                    .ThenInclude(x => x.Profile)
+                    .ThenInclude(x => x.User)
+                .Include(x => x.CommunityMembers)
+                    .ThenInclude(x => x.Profile)
+                    .ThenInclude(x => x.User)
+                .FirstOrDefaultAsync(x => x.CommunityGroupId == communityGroupId);
         }
         public async Task<IEnumerable<UserCommunity>> GetAllCommunitiesAsync()
         {
