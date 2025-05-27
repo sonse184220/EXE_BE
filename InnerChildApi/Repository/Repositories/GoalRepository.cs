@@ -12,7 +12,7 @@ namespace Repository.Repositories
         Task<int> UpdateGoalAsync(Goal goal);
 
         Task<bool> DeleteGoalAsync(Goal goal);
-        
+
     }
     public class GoalRepository : GenericRepository<Goal>, IGoalRepository
     {

@@ -223,7 +223,7 @@ namespace InnerChildApi.Controllers
                     CommunityPostCreatedAt = DateTime.UtcNow,
                     CommunityGroupId = group.CommunityGroupId,
                     ProfileId = profileId,
-                    
+
                 };
                 await _communityService.CreateCommunityPostAsync(userCommunityPost);
                 return Created("", new { message = "Community post created successfully" });

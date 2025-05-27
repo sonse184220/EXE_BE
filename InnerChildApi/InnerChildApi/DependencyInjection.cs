@@ -21,7 +21,7 @@ namespace InnerChildApi
             services.Configure<AppSettingConfig.PayOsSettingConfig>(config.GetSection("PayOsSettings"));
             services.Configure<AppSettingConfig.AccountSeedingSettings>(config.GetSection("AccountSeedingSettings"));
 
-
+            services.AddHttpClient();
             services.AddHttpContextAccessor();
             services.AddCors(options =>
             {
