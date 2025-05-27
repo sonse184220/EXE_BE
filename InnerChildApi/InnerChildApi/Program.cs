@@ -15,6 +15,7 @@ if (FirebaseApp.DefaultInstance == null)
     var firebaseApp = FirebaseApp.Create(new AppOptions()
     {
         Credential = GoogleCredential.FromFile("firebase-adminsdk.json")
+
     });
 }
 builder.WebHost.UseUrls("http://0.0.0.0:5000");

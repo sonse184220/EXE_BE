@@ -7,11 +7,11 @@ using System.Security.Claims;
 namespace InnerChildApi.Common.Hubs
 {
     [Authorize]
-    public class SessionHub:Hub
+    public class SessionHub : Hub
     {
         private static readonly Dictionary<string, ConnectionModel> _connections = new();
 
-       
+
         public async Task RegisterConnection()
         {
             var userId = Context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

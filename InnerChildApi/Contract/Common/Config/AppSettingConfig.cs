@@ -64,5 +64,9 @@
             public string AdminAccountEmail { get; set; }
             public string AdminAccountPass { get; set; }
         }
+        public class FirebaseSettings
+        {
+            public string ProjectId { get; set; }
+        }
     }
 }
