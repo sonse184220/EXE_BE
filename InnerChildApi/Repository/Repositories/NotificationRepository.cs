@@ -1,4 +1,5 @@
-﻿using Repository.Base;
+﻿using Microsoft.EntityFrameworkCore;
+using Repository.Base;
 using Repository.Models;
 
 namespace Repository.Repositories
@@ -6,9 +7,9 @@ namespace Repository.Repositories
     public interface INotificationRepository
     {
         Task<int> CreateNotificationAsync(Notification notification);
-        Task<List<Notification>> GetAllNotificationsAsync();
+        Task<List<Notification>> GetAllOwnNotificationsAsync(string userId);
         Task<bool> DeleteNotificationAsync(Notification notification);
-        Task<Notification> GetNotificationByIdAsync(string id);
+        Task<Notification> GetNotificationByIdAsync(string notificationId, string userId);
     }
     public class NotificationRepository : GenericRepository<Notification>, INotificationRepository
     {
@@ -23,14 +24,14 @@ namespace Repository.Repositories
             return await RemoveAsync(notification);
         }
 
-        public async Task<List<Notification>> GetAllNotificationsAsync()
+        public async Task<List<Notification>> GetAllOwnNotificationsAsync(string userId)
         {
-            return await GetAllAsync();
+            return await _context.Notifications.Where(x => x.UserId == userId).ToListAsync();
         }
 
-        public async Task<Notification> GetNotificationByIdAsync(string id)
+        public async Task<Notification> GetNotificationByIdAsync(string notificationId, string userId)
         {
-            return await GetByIdAsync(id);
+            return await _context.Notifications.FirstOrDefaultAsync(x => x.NotificationId == notificationId && x.UserId == userId);
         }
     }
 }

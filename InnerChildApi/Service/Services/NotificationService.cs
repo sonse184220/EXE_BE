@@ -12,9 +12,9 @@ namespace Service.Services
     public interface INotificationService
     {
         Task<int> CreateNotificationAsync(Notification notification);
-        Task<List<Notification>> GetAllNotificationsAsync();
+        Task<List<Notification>> GetAllOwnNotificationsAsync(string userId);
         Task<bool> DeleteNotificationAsync(Notification notification);
-        Task<Notification> GetNotificationByIdAsync(string id);
+        Task<Notification> GetNotificationByIdAsync(string id, string userId);
         Task<bool> SendPushAsync(string deviceToken, string title, string body);
     }
     public class NotificationService : INotificationService
@@ -23,7 +23,7 @@ namespace Service.Services
         private readonly INotificationRepository _notiRepo;
         private readonly string projectId;
         private readonly FirebaseSettings _firebaseSettingConfig;
-        public NotificationService(INotificationRepository notiRepo, IOptions<FirebaseSettings> firebaseSettingConfig,HttpClient httpClient)
+        public NotificationService(INotificationRepository notiRepo, IOptions<FirebaseSettings> firebaseSettingConfig, HttpClient httpClient)
         {
             _firebaseSettingConfig = firebaseSettingConfig.Value;
             projectId = _firebaseSettingConfig.ProjectId;
@@ -40,14 +40,14 @@ namespace Service.Services
             return await _notiRepo.DeleteNotificationAsync(notification);
         }
 
-        public async Task<List<Notification>> GetAllNotificationsAsync()
+        public async Task<List<Notification>> GetAllOwnNotificationsAsync(string userId)
         {
-            return await _notiRepo.GetAllNotificationsAsync();
+            return await _notiRepo.GetAllOwnNotificationsAsync(userId);
         }
 
-        public async Task<Notification> GetNotificationByIdAsync(string id)
+        public async Task<Notification> GetNotificationByIdAsync(string id, string userId)
         {
-            return await _notiRepo.GetNotificationByIdAsync(id);
+            return await _notiRepo.GetNotificationByIdAsync(id, userId);
         }
         private async Task<string> GetAccessToken()
         {
@@ -56,7 +56,8 @@ namespace Service.Services
             {
                 throw new Exception("Credential firebase not initialized.");
 
-            };
+            }
+            ;
             var scope = credential.CreateScoped("https://www.googleapis.com/auth/firebase.messaging");
             return await scope.UnderlyingCredential.GetAccessTokenForRequestAsync();
         }

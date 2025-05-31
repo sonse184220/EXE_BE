@@ -20,6 +20,8 @@ namespace InnerChildApi
             services.Configure<AppSettingConfig.SendGridSettingConfig>(config.GetSection("SendGridSettings"));
             services.Configure<AppSettingConfig.PayOsSettingConfig>(config.GetSection("PayOsSettings"));
             services.Configure<AppSettingConfig.AccountSeedingSettings>(config.GetSection("AccountSeedingSettings"));
+            services.Configure<AppSettingConfig.QuizzSettingConfig>(config.GetSection("MongoDbSettings:QuizzDb"));
+
 
             services.AddHttpClient();
             services.AddHttpContextAccessor();

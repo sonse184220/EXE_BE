@@ -31,7 +31,17 @@ namespace Repository
             service.AddScoped<IPurchaseRepository, PurchaseRepository>();
             service.AddScoped<ITransactionRepository, TransactionRepository>();
             service.AddScoped<IGoalRepository, GoalRepository>();
+            service.AddScoped<IHelpCategoryRepository, HelpCategoryRepository>();
+            service.AddScoped<IHelpRepository, HelpRepository>();
+            #region quizz
+            service.AddScoped<IQuizCategoryRepository, QuizCategoryRepository>();
+            service.AddScoped<IQuizzRepository, QuizzRepository>();
+            service.AddScoped<IQuizzQuestionRepository, QuizzQuestionRepository>();
+            service.AddScoped<IQuizzOptionRepository, QuizzOptionRepository>();
+
+            #endregion
             service.AddScoped<IUnitOfWork, UnitOfWork>();
+            service.AddScoped<IMongoUnitOfWork, MongoUnitOfWork>();
             return service;
         }
     }

@@ -39,6 +39,11 @@
             public string ConnectionString { get; set; }
             public string DatabaseName { get; set; }
         }
+        public class QuizzSettingConfig
+        {
+            public string ConnectionString { get; set; }
+            public string DatabaseName { get; set; }
+        }
         public class SendGridSettingConfig
         {
             public string ApiKey { get; set; }

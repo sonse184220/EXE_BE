@@ -21,7 +21,7 @@ namespace Service.Services
         private readonly string _userRole;
         private readonly string _systemRole;
         private readonly string _assistantRole;
-        public AiService(IOptions<AppSettingConfig.AiSettingConfig> aiSettingConfig,HttpClient httpClient)
+        public AiService(IOptions<AppSettingConfig.AiSettingConfig> aiSettingConfig, HttpClient httpClient)
         {
             _httpClient = httpClient;
             _aiSettingConfig = aiSettingConfig.Value;

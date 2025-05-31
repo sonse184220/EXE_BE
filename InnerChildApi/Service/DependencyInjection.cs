@@ -9,8 +9,8 @@ namespace Service
         public static IServiceCollection AddServices(this IServiceCollection service)
         {
             service.AddScoped<IAuthService, AuthService>();
-            service.AddScoped<IEmailService, EmailService>();
-            service.AddScoped<ICloudinaryService, CloudinaryService>();
+            service.AddTransient<IEmailService, EmailService>();
+            service.AddTransient<ICloudinaryService, CloudinaryService>();
             service.AddScoped<IContentService, ContentService>();
             service.AddScoped<IUserService, UserService>();
             service.AddScoped<INotificationService, NotificationService>();
@@ -25,8 +25,8 @@ namespace Service
             service.AddScoped<ISubscriptionService, SubscriptionService>();
             service.AddScoped<IPurchaseService, PurchaseService>();
             service.AddScoped<IGoalService, GoalService>();
-
-
+            service.AddScoped<IHelpAndAnswerService, HelpService>();
+            service.AddScoped<IQuizzService, QuizzService>();
 
             #region hangfire jobs
             service.AddScoped<PurchaseCheckJob>();
