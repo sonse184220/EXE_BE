@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Contract.Common.Enums;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Repository.MongoDbModels;
 using static Contract.Common.Config.AppSettingConfig;
@@ -29,7 +30,7 @@ namespace Repository.Repositories
         {
             var client = new MongoClient(settings.Value.ConnectionString);
             var database = client.GetDatabase(settings.Value.DatabaseName);
-            _chatSessions = database.GetCollection<AiChatSessionMongo>("AiChatSessions");
+            _chatSessions = database.GetCollection<AiChatSessionMongo>(MongoDBEnum.AiChatSessions.ToString());
         }
         public async Task CreateSession(AiChatSessionMongo session)
         {
